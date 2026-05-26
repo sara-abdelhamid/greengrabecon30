@@ -279,37 +279,14 @@
   .text-stats span { font-family: 'Lora', serif; font-size: 0.92rem; color: var(--ink); }
   .text-stats strong { font-family: 'Space Grotesk', sans-serif; color: var(--forest-mid); font-weight: 700; }
 
-  /* ── FLOW DIAGRAM ────────────────────────────────────────────────── */
-  .flow {
-    display: flex; align-items: flex-start; gap: 0;
-    margin: 3rem 0; overflow-x: auto; padding-bottom: 1rem;
+  /* ── SANKEY DIAGRAM ─────────────────────────────────────────────── */
+  .sankey-wrapper {
+    margin: 2rem 0 2.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .flow-node { flex: 1; min-width: 100px; text-align: center; }
-  .flow-icon {
-    width: 48px; height: 48px; border-radius: 50%;
-    background: var(--bg-alt); border: 1.5px solid var(--rule);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 0.5rem; color: var(--forest-mid);
-  }
-  .flow-icon svg { width: 22px; height: 22px; }
-  .flow-node-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.65rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.07em;
-    color: var(--muted); line-height: 1.4;
-  }
-  .flow-arrow {
-    flex: 0 0 auto; display: flex; flex-direction: column;
-    align-items: center; padding: 0.7rem 0.2rem 0; gap: 0.15rem;
-  }
-  .flow-arrow svg { color: var(--forest-lt); }
-  .flow-caption {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.58rem; font-weight: 700;
-    color: var(--amber); white-space: nowrap;
-    text-align: center; max-width: 72px; line-height: 1.3;
-  }
-  .flow-caption.danger { color: #b83030; }
+  .sankey-wrapper svg { min-width: 430px; display: block; }
+  .sankey-label { font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.9rem; }
 
   /* ── PULL QUOTES ─────────────────────────────────────────────────── */
   .pull-quote {
@@ -410,20 +387,21 @@
   .compare-table tr:last-child td { border-bottom: none; }
   .col-era { color: var(--amber); font-weight: 600; }
 
-  /* ── LENS / CALLOUT BOXES ────────────────────────────────────────── */
-  .lens-box {
-    background: var(--bg-alt);
-    border-left: 4px solid var(--forest-mid);
-    padding: 1.5rem 1.8rem 1.5rem 2rem;
-    margin: 2rem 0;
+  /* ── VERDICT ACCENT ─────────────────────────────────────────────── */
+  .verdict-block {
+    border-left: 3px solid var(--forest-mid);
+    padding-left: 1.4rem;
+    margin: 2.5rem 0;
   }
-  .lens-box h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.63rem; font-weight: 700;
-    letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--forest-mid); margin: 0 0 0.55rem;
+
+  /* ── MAP PIN PULSE ───────────────────────────────────────────────── */
+  @keyframes pin-pulse {
+    0%   { transform: scale(1);    opacity: 1; }
+    50%  { transform: scale(1.18); opacity: 0.85; }
+    100% { transform: scale(1);    opacity: 1; }
   }
-  .lens-box p { font-size: 0.93rem; margin-bottom: 0.8rem; }
+  .leaflet-marker-icon.custom-pin { cursor: pointer; }
+  .leaflet-marker-icon.custom-pin:hover svg { animation: pin-pulse 0.5s ease; }
 
   /* ── MAP SECTION ─────────────────────────────────────────────────── */
   #map-section { background: #0d1a0f; padding: 5rem 0; }
@@ -719,54 +697,78 @@
     </div>
 
     <h3 class="reveal">How value flows — and where it disappears</h3>
-    <div class="flow reveal">
-      <div class="flow-node">
-        <div class="flow-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M12 2C8 2 4 5.5 4 9.5C4 15 8 20 12 22C16 20 20 15 20 9.5C20 5.5 16 2 12 2Z"/>
-            <line x1="12" y1="22" x2="12" y2="14"/><path d="M8 11L12 15L16 11"/>
-          </svg>
-        </div>
-        <div class="flow-node-label">African forest or grassland</div>
-      </div>
-      <div class="flow-arrow" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="10" x2="17" y2="10"/><path d="M12 5l5 5-5 5"/></svg>
-        <span class="flow-caption">developer acquires rights</span>
-      </div>
-      <div class="flow-node">
-        <div class="flow-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M6 3H15L19 7V21H6Z"/><path d="M15 3V7H19"/>
-            <line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
-          </svg>
-        </div>
-        <div class="flow-node-label">Verra / Gold Standard certify</div>
-      </div>
-      <div class="flow-arrow" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="10" x2="17" y2="10"/><path d="M12 5l5 5-5 5"/></svg>
-        <span class="flow-caption">credits issued</span>
-      </div>
-      <div class="flow-node">
-        <div class="flow-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <rect x="3" y="7" width="18" height="14"/><path d="M8 7V4H16V7"/>
-            <rect x="8" y="11" width="3" height="3"/><rect x="13" y="11" width="3" height="3"/>
-          </svg>
-        </div>
-        <div class="flow-node-label">Corporate buyer claims net-zero</div>
-      </div>
-      <div class="flow-arrow" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#b83030" stroke-width="1.5"><line x1="3" y1="10" x2="17" y2="10"/><path d="M12 5l5 5-5 5"/></svg>
-        <span class="flow-caption danger">~$0 to community</span>
-      </div>
-      <div class="flow-node">
-        <div class="flow-icon" style="background:#fef0f0;border-color:#e0b0b0;color:#b83030;" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <circle cx="12" cy="8" r="4"/><path d="M4 20C4 16.7 7.6 14 12 14C16.4 14 20 16.7 20 20"/>
-          </svg>
-        </div>
-        <div class="flow-node-label" style="color:#b83030;">Community loses land access</div>
-      </div>
+    <div class="sankey-wrapper reveal" aria-label="Sankey diagram: where a $15 carbon credit goes">
+      <p class="sankey-label">What happens to a $15 carbon credit</p>
+      <svg viewBox="0 0 480 248" xmlns="http://www.w3.org/2000/svg" style="width:100%;" role="img" aria-label="Flow diagram showing developer takes $8.25 (55%), monitoring $1.80 (12%), government $1.65 (11%), broker $1.20 (8%), certification $1.35 (9%), community receives $0.45 (3%)">
+
+        <!-- ── Full bar: $15 ── -->
+        <rect x="0" y="0" width="220" height="22" fill="#1a3320" rx="1"/>
+        <text x="6" y="15" font-family="'Inter',sans-serif" font-size="8.5" font-weight="700" fill="rgba(255,255,255,0.75)">$15.00 — credit enters the market</text>
+
+        <!-- Trapezoid 220→99 (developer extracts 55%) -->
+        <path d="M0,22 L220,22 L99,42 L0,42 Z" fill="#2d5a27" opacity="0.09"/>
+        <path d="M99,42 L220,22 L220,42 Z" fill="#2d5a27" opacity="0.2"/>
+        <line x1="222" y1="32" x2="231" y2="32" stroke="#2d5a27" stroke-width="1"/>
+        <text x="234" y="28" font-family="'Inter',sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.1em" fill="#2d5a27">DEVELOPER</text>
+        <text x="234" y="40" font-family="'Inter',sans-serif" font-size="11" font-weight="700" fill="#1a1a18">$8.25 <tspan font-size="8" fill="#6b6560" font-weight="400">(55%)</tspan></text>
+
+        <!-- ── Bar: $6.75 remaining (99px = 45%) ── -->
+        <rect x="0" y="42" width="99" height="22" fill="#2d5a27" rx="1"/>
+        <text x="5" y="57" font-family="'Inter',sans-serif" font-size="7.5" fill="rgba(255,255,255,0.5)">$6.75 left</text>
+
+        <!-- Trapezoid 99→73 (monitoring 12%) -->
+        <path d="M0,64 L99,64 L73,84 L0,84 Z" fill="#4a7c42" opacity="0.09"/>
+        <path d="M73,84 L99,64 L99,84 Z" fill="#4a7c42" opacity="0.22"/>
+        <line x1="100" y1="74" x2="231" y2="74" stroke="#4a7c42" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="234" y="70" font-family="'Inter',sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.1em" fill="#4a7c42">MONITORING &amp; AUDIT</text>
+        <text x="234" y="82" font-family="'Inter',sans-serif" font-size="11" font-weight="700" fill="#1a1a18">$1.80 <tspan font-size="8" fill="#6b6560" font-weight="400">(12%)</tspan></text>
+
+        <!-- ── Bar: $4.95 remaining (73px = 33%) ── -->
+        <rect x="0" y="84" width="73" height="22" fill="#4a7c42" rx="1"/>
+        <text x="5" y="99" font-family="'Inter',sans-serif" font-size="7.5" fill="rgba(255,255,255,0.5)">$4.95</text>
+
+        <!-- Trapezoid 73→48 (government 11%) -->
+        <path d="M0,106 L73,106 L48,126 L0,126 Z" fill="#6a9c62" opacity="0.09"/>
+        <path d="M48,126 L73,106 L73,126 Z" fill="#6a9c62" opacity="0.22"/>
+        <line x1="74" y1="116" x2="231" y2="116" stroke="#6a9c62" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="234" y="112" font-family="'Inter',sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.1em" fill="#5a8c52">GOVERNMENT SHARE</text>
+        <text x="234" y="124" font-family="'Inter',sans-serif" font-size="11" font-weight="700" fill="#1a1a18">$1.65 <tspan font-size="8" fill="#6b6560" font-weight="400">(11%)</tspan></text>
+
+        <!-- ── Bar: $3.30 remaining (48px = 22%) ── -->
+        <rect x="0" y="126" width="48" height="22" fill="#6a9c62" rx="1"/>
+        <text x="5" y="141" font-family="'Inter',sans-serif" font-size="7.5" fill="rgba(255,255,255,0.65)">$3.30</text>
+
+        <!-- Trapezoid 48→31 (broker 8%) -->
+        <path d="M0,148 L48,148 L31,168 L0,168 Z" fill="#b85c00" opacity="0.09"/>
+        <path d="M31,168 L48,148 L48,168 Z" fill="#b85c00" opacity="0.25"/>
+        <line x1="49" y1="158" x2="231" y2="158" stroke="#b85c00" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="234" y="154" font-family="'Inter',sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.1em" fill="#b85c00">BROKER / EXCHANGE</text>
+        <text x="234" y="166" font-family="'Inter',sans-serif" font-size="11" font-weight="700" fill="#1a1a18">$1.20 <tspan font-size="8" fill="#6b6560" font-weight="400">(8%)</tspan></text>
+
+        <!-- ── Bar: $2.10 remaining (31px = 14%) ── -->
+        <rect x="0" y="168" width="31" height="22" fill="#c07020" rx="1"/>
+        <text x="5" y="183" font-family="'Inter',sans-serif" font-size="7.5" fill="rgba(255,255,255,0.7)">$2.10</text>
+
+        <!-- Trapezoid 31→12 (certification 9%) -->
+        <path d="M0,190 L31,190 L12,210 L0,210 Z" fill="#d07010" opacity="0.09"/>
+        <path d="M12,210 L31,190 L31,210 Z" fill="#d07010" opacity="0.28"/>
+        <line x1="32" y1="200" x2="231" y2="200" stroke="#d07010" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="234" y="196" font-family="'Inter',sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.1em" fill="#c06010">CERTIFICATION FEES</text>
+        <text x="234" y="208" font-family="'Inter',sans-serif" font-size="11" font-weight="700" fill="#1a1a18">$1.35 <tspan font-size="8" fill="#6b6560" font-weight="400">(9%)</tspan></text>
+
+        <!-- ── Community trickle: $0.45 (3% = ~6.6px, min 12px) ── -->
+        <rect x="0" y="210" width="12" height="22" fill="#b83030" rx="1"/>
+        <line x1="13" y1="221" x2="228" y2="221" stroke="#b83030" stroke-width="1.5"/>
+        <polygon points="225,217 233,221 225,225" fill="#b83030"/>
+        <text x="236" y="217" font-family="'Inter',sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.1em" fill="#b83030">COMMUNITY RECEIVES</text>
+        <text x="236" y="229" font-family="'Inter',sans-serif" font-size="11" font-weight="700" fill="#b83030">$0.45 <tspan font-size="8" font-weight="600">(3%)</tspan></text>
+
+        <!-- Scale indicator -->
+        <line x1="0" y1="240" x2="220" y2="240" stroke="#d4cfc6" stroke-width="0.5"/>
+        <line x1="0" y1="237" x2="0" y2="243" stroke="#d4cfc6" stroke-width="0.5"/>
+        <line x1="220" y1="237" x2="220" y2="243" stroke="#d4cfc6" stroke-width="0.5"/>
+        <text x="110" y="248" font-family="'Inter',sans-serif" font-size="7" fill="#6b6560" text-anchor="middle">bar width = value retained (proportional to $15)</text>
+      </svg>
     </div>
 
     <details>
@@ -1016,15 +1018,11 @@
 
     <p class="reveal">The Tanzania Kilosa study is the clearest evidence (Asiyanbi &amp; Lund, 2023). Using a quasi-experimental design—enrolled and non-enrolled villages in the same district, comparable on observable characteristics—enrollment in REDD+ was associated with measurable decline in household welfare. Carbon payments did not compensate for foregone agricultural growth. This is not anecdote. It is causal evidence that a climate mechanism designed to produce development co-benefits produced the opposite.</p>
 
-    <div class="lens-box reveal">
-      <h3>Who gains</h3>
-      <p>Corporations purchase the right to continue emitting while claiming neutrality. Project developers capture 55–65% of credit revenue (Oakland Institute, 2023). Global carbon accounting gains offsets that delay structural decarbonization. Wealthy-country governments gain flexibility in Paris Agreement commitments. World Bank analysis found less than 15% of project revenues reached local communities, with the majority captured by intermediaries and certification costs (World Bank, 2023).</p>
-    </div>
+    <h3 class="reveal">Who gains</h3>
+    <p class="reveal">Corporations purchase the right to continue emitting while claiming neutrality. Project developers capture 55–65% of credit revenue (Oakland Institute, 2023). Global carbon accounting gains offsets that delay structural decarbonization. Wealthy-country governments gain flexibility in Paris Agreement commitments. World Bank analysis found less than 15% of project revenues reached local communities, with the majority captured by intermediaries and certification costs (World Bank, 2023).</p>
 
-    <div class="lens-box reveal">
-      <h3>The real bottleneck: property rights</h3>
-      <p>Carbon markets require legal clarity about who controls sequestration rights. Without formally recognized community tenure, that clarity defaults to whoever holds state title—the government or a developer. Carbon markets have inverted the development logic: they formalized the asset (sequestration rights) for investors while leaving the underlying land rights of communities informal and therefore vulnerable. The market created capital from the forest without creating rights for the people in it (Benjaminsen &amp; Bryceson, 2023).</p>
-    </div>
+    <h3 class="reveal">The real bottleneck: property rights</h3>
+    <p class="reveal">Carbon markets require legal clarity about who controls sequestration rights. Without formally recognized community tenure, that clarity defaults to whoever holds state title—the government or a developer. Carbon markets have inverted the development logic: they formalized the asset (sequestration rights) for investors while leaving the underlying land rights of communities informal and therefore vulnerable. The market created capital from the forest without creating rights for the people in it (Benjaminsen &amp; Bryceson, 2023).</p>
 
     <details>
       <summary>
@@ -1041,9 +1039,10 @@
     </details>
 
     <h3 class="reveal">The Verdict</h3>
-    <p class="reveal">The carbon credit, as it currently operates in much of Africa, is a certificate of emissions reduction for the buyer and a certificate of land alienation for the community. The data shows a transfer: developers capture 55–65% of credit revenue (Oakland Institute, 2023), certification fees take another 20–30%, and communities receive single-digit percentages while losing access to land (Fern, 2023). The Tanzania study found enrolled communities measurably worse off in caloric sufficiency than control villages (Asiyanbi &amp; Lund, 2023). The pattern is consistent because the legal architecture—unrecognized customary tenure meeting state-to-developer agreements—reliably produces it.</p>
-
-    <p class="reveal">This doesn't mean carbon markets are irredeemable. It means a carbon market built on unrecognized land rights will reproduce dispossession. It means the certification architecture, funded by developers and audited by auditors hired by developers, cannot catch the fraud it has structural incentives to overlook. Progress on climate. Regression on everything else. That is not a win-win.</p>
+    <div class="verdict-block reveal">
+      <p>The carbon credit, as it currently operates in much of Africa, is a certificate of emissions reduction for the buyer and a certificate of land alienation for the community. The data shows a transfer: developers capture 55–65% of credit revenue (Oakland Institute, 2023), certification fees take another 20–30%, and communities receive single-digit percentages while losing access to land (Fern, 2023). The Tanzania study found enrolled communities measurably worse off in caloric sufficiency than control villages (Asiyanbi &amp; Lund, 2023). The pattern is consistent because the legal architecture—unrecognized customary tenure meeting state-to-developer agreements—reliably produces it.</p>
+      <p>This doesn't mean carbon markets are irredeemable. It means a carbon market built on unrecognized land rights will reproduce dispossession. It means the certification architecture, funded by developers and audited by auditors hired by developers, cannot catch the fraud it has structural incentives to overlook. Progress on climate. Regression on everything else. That is not a win-win.</p>
+    </div>
   </div>
 </section>
 
@@ -1053,21 +1052,21 @@
     <p class="eyebrow">Sources</p>
     <h2>Bibliography</h2>
     <div class="sources-grid">
-      <div class="source-item">ACMI (Africa Carbon Markets Initiative). (2022). "Roadmap Report." COP27, Sharm el-Sheikh.</div>
+      <div class="source-item">ACMI (Africa Carbon Markets Initiative). (2022). <em>Roadmap Report</em>. COP27, Sharm el-Sheikh.</div>
       <div class="source-item"><a href="https://afripoli.org/beyond-the-export-reflex-building-sovereign-carbon-markets-for-an-ndc-first-future" target="_blank" rel="noopener">AfriPoli. "Beyond the Export Reflex: Sovereign Carbon Markets."</a></div>
       <div class="source-item">Asiyanbi, A., &amp; Lund, J. (2023). "REDD+ and Household Welfare in Tanzania." <em>World Development</em>, 168. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0305750X23002504" target="_blank" rel="noopener">[link]</a></div>
       <div class="source-item">Badgley, G., et al. (2024). "Systematic Overestimation of Forest Carbon Offset Effectiveness." <em>Science</em>.</div>
       <div class="source-item">Benjaminsen, T., &amp; Bryceson, I. (2023). "Carbon Markets and Extractive Political Economy." <em>World Development</em>, 168.</div>
       <div class="source-item"><a href="https://www.corpwatch.org/article/blue-carbon-buys-rights-control-forest-lands-across-africa" target="_blank" rel="noopener">CorpWatch. "Blue Carbon Buys Rights to Control Forest Lands Across Africa." (2023)</a></div>
-      <div class="source-item">Ecosystem Marketplace. (2023). "State of Voluntary Carbon Markets 2023."</div>
+      <div class="source-item">Ecosystem Marketplace. (2023). <em>State of Voluntary Carbon Markets 2023</em>.</div>
       <div class="source-item"><a href="https://earthsight.org.uk/news-blog-item/investigation-phantom-carbon-credits" target="_blank" rel="noopener">Earthsight. "Phantom Carbon Credits." (2024)</a></div>
       <div class="source-item">FAO. (2020). <em>Global Forest Resources Assessment 2020</em>. United Nations.</div>
       <div class="source-item">FAO. (2020). <em>Voluntary Guidelines on the Responsible Governance of Tenure</em>. UN FAO.</div>
       <div class="source-item"><a href="https://www.fern.org/publications-insight/rights-based-approach-to-carbon-markets-brief-4858/" target="_blank" rel="noopener">Fern. "Rights-Based Approach to Carbon Markets." (2023)</a></div>
       <div class="source-item"><a href="https://www.ft.com/content/8cd4c0c8-57e4-4e1d-99b5-99959bbde3b9" target="_blank" rel="noopener">Financial Times. Blue Carbon and Liberia. (2023)</a></div>
-      <div class="source-item">Forest Peoples Programme. (2023). "Comparative Analysis of REDD+ Benefit Distribution Across Regions."</div>
+      <div class="source-item">Forest Peoples Programme. (2023). <em>Comparative Analysis of REDD+ Benefit Distribution Across Regions</em>.</div>
       <div class="source-item"><a href="https://www.greenpeace.org/africa/en/press/57470/kajiado-communities-resist-carbon-offset-land-grabs-disguised-as-climate-action/" target="_blank" rel="noopener">Greenpeace Africa. Kajiado Communities Investigation. (2024)</a></div>
-      <div class="source-item">Greenpeace International. (2023). "Carbon Offsetting Exposed: The Certification Industry's Conflicts of Interest."</div>
+      <div class="source-item">Greenpeace International. (2023). <em>Carbon Offsetting Exposed: The Certification Industry's Conflicts of Interest</em>.</div>
       <div class="source-item"><a href="https://grassrootsonline.org/learning_hub/resisting-redd-africas-struggles-against-false-climate-solutions/" target="_blank" rel="noopener">Grassroots International. "Resisting REDD: Africa's Struggles."</a></div>
       <div class="source-item">Katila, P., et al. (2019). "Customary Rights and Formal Land Law in Kenya." <em>World Development</em>, 124.</div>
       <div class="source-item"><a href="https://www.un.org/development/desa/indigenouspeoples/wp-content/uploads/sites/19/2018/01/Laltaika-and-Askew_UN-paper_rev3.pdf" target="_blank" rel="noopener">Laltaika, E., &amp; Askew, K. (2018). "Land Rights of Indigenous Peoples in Africa." UN DESA.</a></div>
@@ -1075,7 +1074,7 @@
       <div class="source-item"><a href="https://www.oaklandinstitute.org/report/evicted-carbon-credits" target="_blank" rel="noopener">Oakland Institute. <em>Evicted for Carbon Credits</em>. (2023)</a></div>
       <div class="source-item"><a href="https://www.oaklandinstitute.org/report/green-colonialism-20" target="_blank" rel="noopener">Oakland Institute. <em>Green Colonialism 2.0</em>.</a></div>
       <div class="source-item"><a href="https://www.aegis-eu.org/archive/ecas4/ecas-4/panels/121-140/panel-139/David-Olanya-full-paper.pdf" target="_blank" rel="noopener">Olanya, D. "Colonial Land Laws and African Societies." ECAS4.</a></div>
-      <div class="source-item">PACJA (Pan-African Climate Justice Alliance). (2023). "African Civil Society Position on Carbon Markets." November 2023.</div>
+      <div class="source-item">PACJA (Pan-African Climate Justice Alliance). (2023). <em>African Civil Society Position on Carbon Markets</em>. November 2023.</div>
       <div class="source-item"><a href="https://progressive.international/wire/2025-01-02-carbon-markets-and-the-new-scramble-for-african-land/en/" target="_blank" rel="noopener">Progressive International. "Carbon Markets and the New Scramble for African Land." (2025)</a></div>
       <div class="source-item"><a href="https://roape.net/2024/10/30/carbon-markets-and-the-new-scramble-for-african-land/" target="_blank" rel="noopener">Review of African Political Economy. "Carbon Markets and the New Scramble." (2024)</a></div>
       <div class="source-item">Schilling-Vacaflor, A., &amp; Lenschow, A. (2022). "FPIC: Procedural Compliance Without Substantive Consent." <em>Global Environmental Politics</em>, 22(3).</div>
@@ -1200,7 +1199,15 @@ function showPanel(p) {
 projects.forEach(p => {
   const m = L.marker([p.lat, p.lng], { icon: makePin(statusColors[p.status]) }).addTo(map);
   m.bindTooltip(p.name, { direction:'top', offset:[0,-37] });
-  m.on('click', () => showPanel(p));
+  m.on('click', () => {
+    showPanel(p);
+    /* on mobile the panel stacks below the map — scroll it into view */
+    if (window.innerWidth < 900) {
+      setTimeout(() => {
+        document.getElementById('map-panel').scrollIntoView({ behavior:'smooth', block:'nearest' });
+      }, 100);
+    }
+  });
 });
 
 /* ── CHARTS ─────────────────────────────────────────────────────────── */
