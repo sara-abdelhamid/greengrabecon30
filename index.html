@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Green Grab — Carbon Credits and the New Colonial Land Logic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #1a1a18;
+      --cream:     #f7f4ee;
+      --warm-bg:   #faf8f3;
+      --forest:    #1e3a1e;
+      --forest-mid:#2d5a27;
+      --forest-lt: #4a7c42;
+      --amber:     #b8620a;
+      --amber-lt:  #e07b1a;
+      --gold:      #c9933a;
+      --rule:      #d4cfc6;
+      --muted:     #6b6560;
+      --card-bg:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--ink);
+      background: var(--warm-bg);
+    }
+
+    /* ── Nav ───────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--forest);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 52px;
+      border-bottom: 2px solid var(--amber);
+    }
+
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #a5c49f;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--cream); }
+
+    /* ── Hero ──────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: var(--forest);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 7rem 2.5rem 4.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* decorative grid lines */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* latitude/longitude arc decoration */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 90vw;
+      height: 90vw;
+      border: 1px solid rgba(74,124,66,0.18);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-kicker {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber-lt);
+      margin-bottom: 1.4rem;
+      position: relative;
+    }
+
+    .hero-kicker::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 2px;
+      background: var(--amber-lt);
+      vertical-align: middle;
+      margin-right: 0.7rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 6vw, 5.4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--cream);
+      max-width: 17ch;
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: #8aba82;
+    }
+
+    .hero-sub {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.15rem;
+      font-weight: 300;
+      font-style: italic;
+      color: #a5c49f;
+      max-width: 54ch;
+      line-height: 1.6;
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      position: relative;
+    }
+
+    .hero-byline {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #7aaa73;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-byline strong {
+      color: var(--cream);
+    }
+
+    .hero-scroll-hint {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(165,196,159,0.5);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-scroll-hint::after {
+      content: '↓';
+      font-size: 1rem;
+      animation: bounce 1.8s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+
+    .hero-rq {
+      position: relative;
+      border-left: 3px solid var(--amber);
+      padding-left: 1.2rem;
+      margin-bottom: 2.5rem;
+      max-width: 62ch;
+    }
+
+    .hero-rq p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #7aaa73;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-rq blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.55;
+    }
+
+    /* ── Layout helpers ────────────────────────────────────────────── */
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .container-wide {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section {
+      padding: 5rem 0;
+    }
+
+    section + section {
+      border-top: 1px solid var(--rule);
+    }
+
+    /* ── Section labels ────────────────────────────────────────────── */
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    /* ── Typography ────────────────────────────────────────────────── */
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.6rem;
+      color: var(--ink);
+    }
+
+    h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: var(--ink);
+    }
+
+    p { margin-bottom: 1.5rem; }
+    p:last-child { margin-bottom: 0; }
+
+    a { color: var(--forest-mid); }
+    a:hover { color: var(--amber); }
+
+    /* ── Pull quote ────────────────────────────────────────────────── */
+    .pull-quote {
+      background: var(--forest);
+      color: var(--cream);
+      padding: 3.5rem 2.5rem;
+      margin: 4rem 0;
+      position: relative;
+    }
+
+    .pull-quote::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif;
+      font-size: 8rem;
+      line-height: 0.6;
+      color: var(--forest-lt);
+      position: absolute;
+      top: 2rem;
+      left: 1.5rem;
+    }
+
+    .pull-quote blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.65rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.5;
+      max-width: 54ch;
+      position: relative;
+    }
+
+    .pull-quote cite {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-style: normal;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: #7aaa73;
+      margin-top: 1.2rem;
+      text-transform: uppercase;
+    }
+
+    /* ── Intro dropcap ─────────────────────────────────────────────── */
+    .dropcap::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.2em;
+      font-weight: 900;
+      float: left;
+      line-height: 0.8;
+      margin-right: 0.1em;
+      margin-top: 0.12em;
+      color: var(--forest-mid);
+    }
+
+    /* ── Stat boxes ────────────────────────────────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5px;
+      background: var(--rule);
+      border: 1.5px solid var(--rule);
+      margin: 3rem 0;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--forest-mid);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* ── Timeline ──────────────────────────────────────────────────── */
+    .timeline {
+      border-left: 2px solid var(--forest-lt);
+      padding-left: 2rem;
+      margin: 2rem 0;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.45rem;
+      top: 0.45rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--amber);
+      border: 2px solid var(--warm-bg);
+    }
+
+    .timeline-year {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.2rem;
+    }
+
+    .timeline-item p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+
+    /* ── Interactive: Carbon Deal Explorer ─────────────────────────── */
+    #explorer {
+      background: var(--forest);
+      padding: 5rem 0;
+    }
+
+    #explorer .section-label { color: #8aba82; }
+    #explorer .section-label::after { background: rgba(255,255,255,0.1); }
+    #explorer h2 { color: var(--cream); }
+
+    .explorer-intro {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: #a5c49f;
+      margin-bottom: 2.5rem;
+      max-width: 60ch;
+    }
+
+    .explorer-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tab-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 1rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #a5c49f;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 2px;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: #fff;
+    }
+
+    .deal-card {
+      display: none;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--amber);
+    }
+
+    .deal-card.visible { display: grid; grid-template-columns: 1fr 1fr; }
+
+    .deal-card-main {
+      padding: 2rem;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .deal-card-metrics {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .deal-country {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber-lt);
+      margin-bottom: 0.4rem;
+    }
+
+    .deal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+
+    .deal-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: #b8d4b3;
+    }
+
+    .deal-body p { margin-bottom: 0.8rem; }
+
+    .deal-outcome {
+      margin-top: 1.2rem;
+      padding: 0.8rem 1rem;
+      background: rgba(184,98,10,0.15);
+      border-left: 3px solid var(--amber);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      color: #e8c99a;
+      line-height: 1.5;
+    }
+
+    .deal-outcome strong {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      color: var(--amber-lt);
+    }
+
+    .metric {
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding-bottom: 1.2rem;
+    }
+
+    .metric:last-child { border-bottom: none; }
+
+    .metric-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7aaa73;
+      margin-bottom: 0.4rem;
+    }
+
+    .metric-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+
+    .metric-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: #7aaa73;
+    }
+
+    .asymmetry-bar {
+      margin-top: 0.6rem;
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .asymmetry-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--amber), var(--amber-lt));
+    }
+
+    .asymmetry-fill.community {
+      background: linear-gradient(90deg, var(--forest-lt), #6aa060);
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      margin-top: 0.4rem;
+    }
+
+    .status-active { background: rgba(74,124,66,0.3); color: #8aba82; }
+    .status-suspended { background: rgba(184,98,10,0.3); color: #e8c99a; }
+    .status-disputed { background: rgba(150,50,50,0.3); color: #e8a0a0; }
+
+    .explorer-note {
+      margin-top: 1.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: rgba(165,196,159,0.5);
+      font-style: italic;
+    }
+
+    /* ── Value flow diagram ────────────────────────────────────────── */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 3rem 0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: auto;
+    }
+
+    .flow-node {
+      text-align: center;
+      flex: 1;
+      min-width: 110px;
+    }
+
+    .flow-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .flow-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .flow-arrow {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0.5rem;
+    }
+
+    .flow-arrow-line {
+      font-size: 1.3rem;
+      color: var(--forest-lt);
+    }
+
+    .flow-arrow-price {
+      font-size: 0.68rem;
+      color: var(--amber);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* ── Comparison table ──────────────────────────────────────────── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      margin: 2rem 0;
+    }
+
+    .compare-table th {
+      text-align: left;
+      padding: 0.7rem 1rem;
+      border-bottom: 2px solid var(--ink);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .compare-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--rule);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    .compare-table .col-era { color: var(--amber); font-weight: 600; }
+
+    /* ── Progress lens box ─────────────────────────────────────────── */
+    .lens-box {
+      background: #f0ede6;
+      border-left: 4px solid var(--forest-mid);
+      padding: 2rem 2rem 2rem 2.2rem;
+      margin: 3rem 0;
+    }
+
+    .lens-box h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--forest-mid);
+      margin-bottom: 0.6rem;
+    }
+
+    .lens-box p {
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ── Sources ───────────────────────────────────────────────────── */
+    #sources {
+      background: var(--ink);
+      color: #a09a93;
+      padding: 4rem 0;
+    }
+
+    #sources .section-label { color: #6b6560; }
+    #sources .section-label::after { background: #333; }
+    #sources h2 { color: var(--cream); font-size: 1.2rem; }
+
+    .sources-grid {
+      columns: 2;
+      column-gap: 2.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .source-item {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      line-height: 1.5;
+      margin-bottom: 0.7rem;
+      break-inside: avoid;
+      color: #7a7470;
+    }
+
+    .source-item a {
+      color: #7aaa73;
+      text-decoration: none;
+    }
+
+    .source-item a:hover { color: #a5c49f; }
+
+    /* ── Footer ────────────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid #2a2a28;
+      padding: 1.8rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: #504d49;
+      margin: 0;
+    }
+
+    /* ── Responsive ────────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      nav { padding: 0 1.2rem; }
+      .nav-links { display: none; }
+      .hero { padding: 6rem 1.2rem 3rem; }
+      .container, .container-wide { padding: 0 1.2rem; }
+      section { padding: 3.5rem 0; }
+
+      .deal-card.visible {
+        grid-template-columns: 1fr;
+      }
+
+      .deal-card-main { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .sources-grid { columns: 1; }
+
+      .compare-table { font-size: 0.75rem; }
+      .compare-table th, .compare-table td { padding: 0.6rem 0.6rem; }
+
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────────────── -->
+<nav>
+  <span class="nav-brand">Green Grab</span>
+  <ul class="nav-links">
+    <li><a href="#the-credit">The Credit</a></li>
+    <li><a href="#the-land">The Land</a></li>
+    <li><a href="#explorer">Deal Explorer</a></li>
+    <li><a href="#the-pattern">The Pattern</a></li>
+    <li><a href="#progress">Progress?</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────── -->
+<header class="hero">
+  <span class="hero-kicker">ECON 30 · Progress and Inequality · Sara</span>
+  <h1>Green <em>Grab</em></h1>
+
+  <div class="hero-rq">
+    <p>Research Question</p>
+    <blockquote>When a corporation buys a carbon credit from an African forest, who actually pays the price?</blockquote>
+  </div>
+
+  <p class="hero-sub">
+    The voluntary carbon market is one of the fastest-growing corners of climate finance. It is also, in large parts of Sub-Saharan Africa, built on the same logic that dispossessed communities of land a century ago — except now the paperwork is green.
+  </p>
+
+  <div class="hero-meta">
+    <span class="hero-byline">By <strong>Sara</strong> &nbsp;·&nbsp; ECON 30: Progress and Inequality &nbsp;·&nbsp; Spring 2026</span>
+    <span class="hero-scroll-hint">Scroll to read</span>
+  </div>
+</header>
+
+<!-- ── Section 1: The Credit ─────────────────────────────────────────── -->
+<section id="the-credit">
+  <div class="container">
+    <p class="section-label">Part I</p>
+    <h2>What Is a Carbon Credit, and What Does It Buy?</h2>
+
+    <p class="dropcap">A carbon credit is, on paper, a certificate representing one metric tonne of carbon dioxide prevented from entering the atmosphere. A corporation with a net-zero pledge — an airline, an oil company, a luxury goods brand — buys these credits to "offset" its own emissions. The market is voluntary: no government requires it. The prices are set by private registries.</p>
+
+    <p>The two dominant registries are Verra (which issues Verified Carbon Units, or VCUs) and Gold Standard. Together they have certified hundreds of millions of credits. A large share of the most actively traded projects involve forests in Africa — REDD+ schemes (Reducing Emissions from Deforestation and Degradation), blue carbon mangroves, and grassland conservation credits. What these projects have in common is that they require control over large parcels of land.</p>
+
+    <p>And that is where the story changes. Because in much of Sub-Saharan Africa, the land being enrolled in these projects is not empty. It is lived on, farmed, grazed, and governed by communities whose tenure rights — often customary, often informal, rarely registered — are invisible to the registries that certify the credits.</p>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-number">$2B+</div>
+        <div class="stat-label">Voluntary carbon market value, 2023</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">165M</div>
+        <div class="stat-label">Credits issued from Africa under Verra (est.)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">~10%</div>
+        <div class="stat-label">Of Liberia's land locked into one carbon deal</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number">$3–$15</div>
+        <div class="stat-label">Price range per tonne on voluntary markets</div>
+      </div>
+    </div>
+
+    <h3>How the pipeline works</h3>
+
+    <div class="flow-diagram">
+      <div class="flow-node">
+        <div class="flow-icon">🌍</div>
+        <div class="flow-label">African forest / grassland</div>
+      </div>
+      <div class="flow-arrow">
+        <span class="flow-arrow-line">→</span>
+        <span class="flow-arrow-price">project developer acquires land rights</span>
+      </div>
+      <div class="flow-node">
+        <div class="flow-icon">📋</div>
+        <div class="flow-label">Verra / Gold Standard certification</div>
+      </div>
+      <div class="flow-arrow">
+        <span class="flow-arrow-line">→</span>
+        <span class="flow-arrow-price">carbon credits issued</span>
+      </div>
+      <div class="flow-node">
+        <div class="flow-icon">🏢</div>
+        <div class="flow-label">Corporate buyer claims net-zero</div>
+      </div>
+      <div class="flow-arrow">
+        <span class="flow-arrow-line">→</span>
+        <span class="flow-arrow-price">≈ $0 to community</span>
+      </div>
+      <div class="flow-node">
+        <div class="flow-icon">🚪</div>
+        <div class="flow-label">Community loses land access</div>
+      </div>
+    </div>
+
+    <p>The key insight is in that last arrow. Credits worth millions on global markets are generated from land whose communities receive little or nothing in return — and often lose access to the forests they have managed for generations. A 2023 Oakland Institute report on projects in Uganda found communities "evicted for carbon credits" with no compensation, no legal recourse, and no say in how the land would be used. Their land had become an accounting instrument for someone else's emissions.</p>
+  </div>
+</section>
+
+<!-- ── Pull Quote 1 ───────────────────────────────────────────────────── -->
+<div class="pull-quote">
+  <div class="container">
+    <blockquote>
+      The mechanism is different, but the structure is not: distant powers are once again financializing African land for their own benefit, while local communities absorb the cost.
+    </blockquote>
+    <cite>— Sara, synthesis of Oakland Institute (2023), ROAPE (2024), and Fern (2023)</cite>
+  </div>
+</div>
+
+<!-- ── Section 2: The Land ───────────────────────────────────────────── -->
+<section id="the-land">
+  <div class="container">
+    <p class="section-label">Part II</p>
+    <h2>The Land: Three Cases in Detail</h2>
+
+    <p>The carbon land grab is not an abstraction. It has specific geography, specific corporate actors, and specific communities affected. Three cases illuminate the pattern.</p>
+
+    <h3>Zimbabwe: The Kariba REDD+ Project</h3>
+    <p>Kariba was, for years, held up as the gold standard of African carbon credits — a massive forest conservation project in Zimbabwe generating credits that companies like Shell, Volkswagen, and Delta Air Lines purchased to claim carbon neutrality. An investigation by <em>The Guardian</em> in 2023 found that up to 94% of the Kariba credits may have been "phantom credits" — generated against an exaggerated baseline of deforestation that was never going to happen. The communities in the buffer zone around the project gained almost nothing from the multi-million-dollar credit sales. What they lost was the right to farm, graze, and gather in the forest as they had for generations.</p>
+
+    <h3>Liberia: Blue Carbon and the UAE Deal</h3>
+    <p>In 2022, the government of Liberia signed a deal with Blue Carbon LLC, a company registered in Dubai, granting it rights over approximately 10% of Liberia's total land area to generate carbon credits. The deal was signed in secret; affected communities were not consulted. Investigative reporting by <em>Vice</em> and the <em>Financial Times</em> found that the contracts gave Blue Carbon extraordinary control over land use and forest access, with revenue sharing terms heavily weighted toward the company. Over forty civil society organizations issued a public statement calling it a new scramble for Africa's forests.</p>
+
+    <h3>Kenya: Maasai Pastoralists and the Kajiado Projects</h3>
+    <p>In Kenya's Kajiado County, Maasai communities have faced growing pressure from carbon credit projects that restrict seasonal grazing on land their families have used for centuries. A 2024 Greenpeace Africa investigation documented how "community consent" was obtained through procedures that sidelined women and young people — a majority of the community — while presenting the project as locally endorsed. Community members who objected were told the contracts were already signed.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2007</div>
+        <p>REDD+ framework established under UNFCCC. Sub-Saharan Africa identified as primary target region for forest carbon projects.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2015</div>
+        <p>Voluntary carbon market expands rapidly as corporate net-zero pledges multiply. Verra and Gold Standard certify projects across Zimbabwe, Tanzania, Uganda, Mozambique.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2022</div>
+        <p>Liberia–Blue Carbon deal signed, covering 10% of national land. Africa Carbon Markets Initiative (ACMI) launched at COP27, aiming to make Africa "the world's leading carbon credit supplier."</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2023</div>
+        <p><em>The Guardian</em> reveals Verra's Kariba project relied on fabricated baselines. Oakland Institute publishes <em>Evicted for Carbon Credits</em>. 40+ organizations demand halt to Blue Carbon deal.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2024</div>
+        <p>UN agrees new "safeguards" for carbon markets under Article 6 — but rights groups note enforcement mechanisms remain weak. Earthsight investigation uncovers "phantom credits" across multiple African projects.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 3: Interactive Explorer ──────────────────────────────── -->
+<section id="explorer">
+  <div class="container-wide">
+    <p class="section-label">Interactive</p>
+    <h2>Carbon Deal Explorer</h2>
+    <p class="explorer-intro">
+      Select a project to see the corporate buyer, the credit market value, what reached the community, and what happened. The asymmetry between the top two rows and the bottom row is the argument made visible.
+    </p>
+
+    <div class="explorer-tabs">
+      <button class="tab-btn active" onclick="showDeal('kariba')">Zimbabwe · Kariba REDD+</button>
+      <button class="tab-btn" onclick="showDeal('liberia')">Liberia · Blue Carbon</button>
+      <button class="tab-btn" onclick="showDeal('kajiado')">Kenya · Kajiado</button>
+      <button class="tab-btn" onclick="showDeal('madagascar')">Madagascar · Forests</button>
+      <button class="tab-btn" onclick="showDeal('kilosa')">Tanzania · Kilosa</button>
+    </div>
+
+    <!-- Kariba -->
+    <div class="deal-card visible" id="deal-kariba">
+      <div class="deal-card-main">
+        <div class="deal-country">Zimbabwe</div>
+        <div class="deal-title">Kariba REDD+ Forest Protection Project</div>
+        <div class="deal-body">
+          <p>Certified under Verra's VCS standard, Kariba was one of the world's largest REDD+ projects, covering 785,000 hectares of miombo woodland in Zimbabwe. Credits were sold to Shell, Volkswagen, Delta Air Lines, and dozens of other multinational corporations as part of their net-zero strategies.</p>
+          <p>A 2023 <em>Guardian</em> investigation, using independent analysis by Carbon Plan, found that the project's baseline — the counterfactual deforestation rate against which "savings" are measured — was grossly overstated. Up to 94% of the 2.4 million credits Kariba issued may represent emissions reductions that never happened.</p>
+          <div class="deal-outcome">
+            <strong>Community Outcome</strong>
+            Communities in the buffer zone lost access to forest resources they had used for subsistence farming, charcoal production, and traditional land management. No community member held a seat on the project's governance board. Revenue sharing provisions promised in project documents were largely unfulfilled.
+          </div>
+        </div>
+      </div>
+      <div class="deal-card-metrics">
+        <div class="metric">
+          <div class="metric-label">Credits Issued (est.)</div>
+          <div class="metric-value">2.4M</div>
+          <div class="metric-sub">tonnes CO₂e, Verra VCS certified</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Estimated Market Value</div>
+          <div class="metric-value">~$36M</div>
+          <div class="metric-sub">at $15/tonne avg. voluntary market price</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill" style="width:100%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Verified Community Revenue Share</div>
+          <div class="metric-value">&lt;5%</div>
+          <div class="metric-sub">per independent review; revenue sharing disputed</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill community" style="width:5%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Corporate Buyers</div>
+          <div class="metric-value" style="font-size:1rem; line-height:1.4">Shell, Volkswagen,<br>Delta Air Lines, +others</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Status</div>
+          <span class="status-badge status-suspended">Credits under review</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Liberia -->
+    <div class="deal-card" id="deal-liberia">
+      <div class="deal-card-main">
+        <div class="deal-country">Liberia</div>
+        <div class="deal-title">Blue Carbon LLC Forest Rights Deal</div>
+        <div class="deal-body">
+          <p>In late 2022, the government of Liberia signed agreements with Blue Carbon LLC, a UAE-registered company, granting it rights to manage approximately 1 million hectares of Liberian forest — roughly 10% of the country's total land area — for carbon credit generation over 30 years.</p>
+          <p>The agreements were signed without public disclosure or meaningful community consultation. Reporting by <em>Vice</em>, the <em>Financial Times</em>, and CorpWatch revealed contract terms that gave Blue Carbon broad authority to restrict community land use, cut timber for project development, and claim carbon revenues with minimal accountability to the Liberian state.</p>
+          <div class="deal-outcome">
+            <strong>Community Outcome</strong>
+            Affected communities — many of whom have lived in and managed these forests for generations under customary tenure — were not informed of the deal before it was signed. A coalition of 40+ civil society organizations issued a statement calling the deal a "new scramble for Africa's forests" and demanding its cancellation.
+          </div>
+        </div>
+      </div>
+      <div class="deal-card-metrics">
+        <div class="metric">
+          <div class="metric-label">Land Area Covered</div>
+          <div class="metric-value">~1M ha</div>
+          <div class="metric-sub">≈ 10% of Liberia's total national territory</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Potential Credit Value (30yr)</div>
+          <div class="metric-value">$1.5B+</div>
+          <div class="metric-sub">projected by Blue Carbon; based on forest carbon stocks</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill" style="width:100%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Community Consultation</div>
+          <div class="metric-value">None</div>
+          <div class="metric-sub">deal signed before affected communities were informed</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill community" style="width:0%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Corporate Buyer</div>
+          <div class="metric-value" style="font-size:1rem">Blue Carbon LLC (UAE)</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Status</div>
+          <span class="status-badge status-disputed">Actively contested</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kajiado -->
+    <div class="deal-card" id="deal-kajiado">
+      <div class="deal-card-main">
+        <div class="deal-country">Kenya</div>
+        <div class="deal-title">Kajiado County Grassland Carbon Projects</div>
+        <div class="deal-body">
+          <p>Maasai pastoralists in Kenya's Kajiado County have been enrolled in grassland carbon credit schemes that place restrictions on seasonal grazing — the core of their traditional land management practice. Carbon project developers obtained what they described as community consent, but investigations by Greenpeace Africa (2024) found the process was deeply flawed.</p>
+          <p>Consent meetings excluded women and young herders — the people most affected by grazing restrictions. Contracts were signed by male community elders who, under Maasai customary law, do not have unilateral authority to alienate grazing rights from the community. Legal challenges have since been filed in Kenyan courts.</p>
+          <div class="deal-outcome">
+            <strong>Community Outcome</strong>
+            Restricted grazing has reduced livestock productivity for affected families. Community members report being threatened with trespass proceedings for grazing on land their families have used for centuries. Women and youth who objected to the project have been excluded from the nominal compensation payments.
+          </div>
+        </div>
+      </div>
+      <div class="deal-card-metrics">
+        <div class="metric">
+          <div class="metric-label">Affected Area</div>
+          <div class="metric-value">~500K ha</div>
+          <div class="metric-sub">multiple overlapping project areas, Kajiado County</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Annual Credit Revenue (est.)</div>
+          <div class="metric-value">$2–5M</div>
+          <div class="metric-sub">to project developer; community share unverified</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill" style="width:100%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Women & Youth Included in Consent</div>
+          <div class="metric-value">No</div>
+          <div class="metric-sub">per Greenpeace Africa investigation (2024)</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill community" style="width:8%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Legal Status</div>
+          <div class="metric-value" style="font-size:1rem">Active court challenge</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Status</div>
+          <span class="status-badge status-disputed">Legally contested</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Madagascar -->
+    <div class="deal-card" id="deal-madagascar">
+      <div class="deal-card-main">
+        <div class="deal-country">Madagascar</div>
+        <div class="deal-title">Makira Natural Park Carbon Project</div>
+        <div class="deal-body">
+          <p>The Makira Natural Park in northeastern Madagascar hosts one of the continent's oldest REDD+ projects. Certified by Verra and marketed as a conservation success story, the project has been the subject of extensive critical reporting, including a 2024 investigation by <em>New Lines Magazine</em>.</p>
+          <p>The investigation found that communities living inside and adjacent to the park — many of them reliant on forest-edge agriculture — have faced intensified enforcement of park boundaries since the carbon project began, restricting the slash-and-burn farming that is central to their food security. Park rangers, funded in part by carbon revenue, have destroyed crops and confiscated land.</p>
+          <div class="deal-outcome">
+            <strong>Community Outcome</strong>
+            Families who have farmed in the forest for generations have been criminalized. Crop destruction by park rangers has contributed to food insecurity. The revenue from credit sales — marketed as community benefit — has largely flowed to the Wildlife Conservation Society and the Malagasy government, with minimal direct benefit to affected households.
+          </div>
+        </div>
+      </div>
+      <div class="deal-card-metrics">
+        <div class="metric">
+          <div class="metric-label">Park Area</div>
+          <div class="metric-value">372K ha</div>
+          <div class="metric-sub">Makira Natural Park, northeastern Madagascar</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Credits Sold (est. cumulative)</div>
+          <div class="metric-value">$18M+</div>
+          <div class="metric-sub">based on publicly available Verra registry data</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill" style="width:100%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Revenue to Affected Households</div>
+          <div class="metric-value">&lt;3%</div>
+          <div class="metric-sub">per New Lines Magazine, 2024 investigation</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill community" style="width:3%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Project Developer</div>
+          <div class="metric-value" style="font-size:1rem">Wildlife Conservation Society</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Status</div>
+          <span class="status-badge status-active">Certified, active</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tanzania -->
+    <div class="deal-card" id="deal-kilosa">
+      <div class="deal-card-main">
+        <div class="deal-country">Tanzania</div>
+        <div class="deal-title">Kilosa District REDD+ Projects</div>
+        <div class="deal-body">
+          <p>Multiple overlapping REDD+ and afforestation projects in Tanzania's Kilosa district have been studied extensively in academic literature. A 2023 article in <em>World Development</em> (ScienceDirect) found that village forest reserves enrolled in REDD+ schemes showed declining food security among smallholder households compared to non-enrolled villages, driven primarily by new restrictions on agricultural land clearing.</p>
+          <p>The Kilosa case is particularly important because it provides quasi-experimental evidence. Enrolled and non-enrolled villages in the same district can be compared directly. The enrolled villages received some carbon payments, but these did not compensate for the lost value of agricultural expansion — the growth path that non-enrolled villages continued to use.</p>
+          <div class="deal-outcome">
+            <strong>Community Outcome</strong>
+            Households in REDD+-enrolled villages showed statistically significant declines in caloric sufficiency and agricultural income compared to control villages. Carbon payments averaged less than $10 per household per year — far below the opportunity cost of constrained agricultural expansion.
+          </div>
+        </div>
+      </div>
+      <div class="deal-card-metrics">
+        <div class="metric">
+          <div class="metric-label">Study Coverage</div>
+          <div class="metric-value">48 villages</div>
+          <div class="metric-sub">enrolled vs. non-enrolled, Kilosa District</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Annual Carbon Payment / Household</div>
+          <div class="metric-value">&lt;$10</div>
+          <div class="metric-sub">average; highly unequal distribution within villages</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill community" style="width:4%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Food Security Impact</div>
+          <div class="metric-value">−14%</div>
+          <div class="metric-sub">caloric sufficiency, enrolled vs. control, per World Development (2023)</div>
+          <div class="asymmetry-bar"><div class="asymmetry-fill" style="width:14%; background: #8b2020"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Evidence Type</div>
+          <div class="metric-value" style="font-size:1rem">Quasi-experimental</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Status</div>
+          <span class="status-badge status-active">Active; ongoing monitoring</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="explorer-note">Sources: Oakland Institute (2023); The Guardian / Carbon Plan (2023); Vice / FT (2023); Greenpeace Africa (2024); New Lines Magazine (2024); Asiyanbi &amp; Lund, <em>World Development</em> (2023). All figures are drawn from published investigations and registry data; some estimates are approximate.</p>
+  </div>
+</section>
+
+<!-- ── Section 4: The Pattern ────────────────────────────────────────── -->
+<section id="the-pattern">
+  <div class="container">
+    <p class="section-label">Part III</p>
+    <h2>The Pattern Is Not New</h2>
+
+    <p>The cases above are not coincidences or bad actors in an otherwise sound system. They are expressions of a structural pattern — one with a long historical precedent.</p>
+
+    <p>Colonial land alienation in Africa rested on a set of legal and ideological assumptions: that African land tenure was informal and therefore not "real" property; that African communities were failing to use the land "productively" by the colonizer's lights; and that external actors had both the right and the duty to "improve" the land's use. Under these assumptions, British, French, Belgian, and Portuguese administrations transferred vast tracts of Africa to European settlers, companies, and the colonial state. The communities whose livelihoods depended on this land had no standing in the law that governed the transfer.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Mechanism</th>
+          <th class="col-era">Colonial Era (1880s–1960s)</th>
+          <th class="col-era">Carbon Market Era (2010s–present)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Legal basis for transfer</strong></td>
+          <td>Crown land doctrine; terra nullius; "unimproved" land statutes</td>
+          <td>Customary tenure not recognized in carbon registries; informal rights invisible to VCS standards</td>
+        </tr>
+        <tr>
+          <td><strong>Justifying ideology</strong></td>
+          <td>Civilization; agricultural improvement; development</td>
+          <td>Climate action; conservation; sustainability</td>
+        </tr>
+        <tr>
+          <td><strong>Who benefits</strong></td>
+          <td>European settlers, mining and plantation companies, colonial states</td>
+          <td>Carbon project developers, multinational corporations buying credits, global carbon finance</td>
+        </tr>
+        <tr>
+          <td><strong>Who absorbs the cost</strong></td>
+          <td>African farming, pastoralist, and forest-dependent communities</td>
+          <td>Same communities, still on the same land</td>
+        </tr>
+        <tr>
+          <td><strong>Consent procedure</strong></td>
+          <td>None required; colonial law recognized no such right</td>
+          <td>FPIC (Free, Prior, and Informed Consent) required on paper; routinely bypassed in practice</td>
+        </tr>
+        <tr>
+          <td><strong>Who certifies the taking</strong></td>
+          <td>Colonial administration</td>
+          <td>Verra, Gold Standard, and third-party auditors paid by project developers</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The parallel is not merely rhetorical. Scholars at Makerere University, SOAS, and in the pages of the <em>Review of African Political Economy</em> have traced the legal lineage directly: the land tenure systems that make communities vulnerable to carbon grabs today are, in many cases, the exact systems installed by colonial administrations to enable land alienation then. The 2011 analysis in <em>Perspectives on Education and Economics in the Real World</em> (SAFLII) documented how customary tenure, stripped of formal legal recognition under colonial law, remains legally precarious in dozens of post-independence African states — and that precarity is exactly what carbon project developers exploit.</p>
+
+    <p>This does not mean carbon markets cannot work. It means that a carbon market built on institutions and land tenure frameworks inherited from colonial dispossession will reproduce that dispossession unless it is deliberately and structurally reformed.</p>
+  </div>
+</section>
+
+<!-- ── Pull Quote 2 ───────────────────────────────────────────────────── -->
+<div class="pull-quote">
+  <div class="container">
+    <blockquote>
+      "Green colonialism" is not a metaphor. It is a description of how the legal infrastructure of colonial land alienation is being reactivated — with carbon registries playing the role that colonial land courts once did.
+    </blockquote>
+    <cite>— Sara, synthesis of Olanya (ECAS4), Laltaika &amp; Askew (UN, 2018), and Fern REDD+ Briefing (2023)</cite>
+  </div>
+</div>
+
+<!-- ── Section 5: Progress Lens ──────────────────────────────────────── -->
+<section id="progress">
+  <div class="container">
+    <p class="section-label">Part IV — The ECON 30 Question</p>
+    <h2>Progress for Whom? The Political Economy of Green Finance</h2>
+
+    <p>The central question of this course is about progress and inequality: who gains from growth, who is left behind, and what institutional arrangements determine the answer. The voluntary carbon market is, on one level, a success story of institutional innovation — a market mechanism designed to price an externality that had been priced at zero. That is genuine progress by one measure.</p>
+
+    <p>But "progress" is not evenly distributed across this story.</p>
+
+    <div class="lens-box">
+      <h3>Who gains</h3>
+      <p>Multinational corporations gain the right to continue emitting while claiming carbon neutrality. Carbon project developers — often foreign companies — capture the majority of credit revenue. The global carbon accounting system gains "offsets" that allow the fiction of net-zero without structural decarbonization. Wealthy-country governments gain flexibility in their Paris Agreement commitments.</p>
+    </div>
+
+    <div class="lens-box">
+      <h3>What bottleneck is illuminated</h3>
+      <p>The bottleneck is property rights — specifically, the failure of global financial institutions to recognize and protect informal and customary land tenure. Carbon markets require legal clarity about who owns the carbon sequestration rights in a forest. In the absence of strong community tenure, that clarity defaults to whoever holds the formal legal title — usually the state, the project developer, or an investor. Communities with robust customary rights but no formal title are structurally excluded from the gains and structurally exposed to the losses.</p>
+      <p>This is not a new observation. Hernando de Soto's thesis about informal property and development — whatever its limits — correctly identified that absent formalization, assets cannot function as capital for those who hold them. The carbon market has inverted this: it has formalized the asset (carbon sequestration) for investors without formalizing the underlying land rights for communities. The result is a transfer, not a market.</p>
+    </div>
+
+    <div class="lens-box">
+      <h3>What this means for the future</h3>
+      <p>The Africa Carbon Markets Initiative (ACMI), launched at COP27, aims to make Africa the world's dominant carbon credit supplier. If the institutional conditions described in this project remain unchanged, scaling up ACMI means scaling up dispossession. The question is not whether Africa should participate in carbon markets — it is whether carbon markets can be redesigned so that participation means wealth creation rather than wealth extraction for African communities. That requires mandatory community land titling before any carbon project can be certified; genuine revenue-sharing floors; and certifying bodies that are independent of the project developers who pay their fees.</p>
+    </div>
+
+    <p>The Tanzania Kilosa data points toward what is really at stake. Households in REDD+-enrolled villages are measurably poorer and less food-secure than comparable households in non-enrolled villages, even after receiving carbon payments. The carbon market, in this case, has not delivered progress. It has re-routed the growth path of smallholder communities through a financial instrument that captures the value for someone else, and delivers the costs home.</p>
+
+    <p>That is the political economy of the green grab. It is the colonial resource extraction model wearing a sustainability certificate.</p>
+  </div>
+</section>
+
+<!-- ── Conclusion ─────────────────────────────────────────────────────── -->
+<section id="conclusion" style="background: #f0ede6;">
+  <div class="container">
+    <p class="section-label">Conclusion</p>
+    <h2>The Takeaway</h2>
+
+    <p class="dropcap">When a corporation buys a carbon credit from an African forest, the price it pays goes mostly to a project developer, a certification body, and a government — and almost none of it reaches the community whose land and labor is the foundation of the entire transaction. The community, meanwhile, loses access to the forest it has managed for generations. This is not a bug in the voluntary carbon market. Given the land tenure institutions it operates within — institutions inherited from colonial legal systems — it is the expected outcome.</p>
+
+    <p>The voluntary carbon market is not necessarily a false solution to climate change. But in its current form, it is a precise mechanism for converting African communities' most valuable asset — their relationship to the land — into a financial instrument that pays everyone except them. To call this "climate action" while ignoring the dispossession it produces is to use the language of progress to do the work of extraction.</p>
+
+    <p>Reforming this requires more than tightening registry standards. It requires a prior commitment: that no carbon right can be created from land where the underlying human rights — the rights of communities to their land, their forests, and their livelihoods — have not been formally recognized and protected. Without that commitment, the scramble for African land in the name of carbon will continue, and the communities paying the price will keep paying it.</p>
+
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.9rem; font-style: italic; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 1.5rem; margin-top: 2.5rem;">
+      <strong>One takeaway line:</strong> The carbon credit is a certificate of emissions reduction for the buyer, and a certificate of land alienation for the community.
+    </p>
+  </div>
+</section>
+
+<!-- ── Sources ────────────────────────────────────────────────────────── -->
+<section id="sources">
+  <div class="container">
+    <p class="section-label">Sources</p>
+    <h2>Key Sources and Further Reading</h2>
+    <div class="sources-grid">
+      <div class="source-item"><a href="https://www.oaklandinstitute.org/report/evicted-carbon-credits" target="_blank">Oakland Institute. <em>Evicted for Carbon Credits</em> (2023)</a></div>
+      <div class="source-item"><a href="https://www.theguardian.com/environment/2023/jan/18/revealed-forest-carbon-offsets-could-be-largely-worthless" target="_blank">The Guardian. "Forest carbon offsets could be largely worthless" (2023)</a></div>
+      <div class="source-item"><a href="https://www.vice.com/en/article/blue-carbon-uae-carbon-credits-land-grab-africa-liberia/" target="_blank">Vice. "Blue Carbon: UAE Carbon Credits Land Grab, Africa, Liberia" (2023)</a></div>
+      <div class="source-item"><a href="https://www.ft.com/content/8cd4c0c8-57e4-4e1d-99b5-99959bbde3b9" target="_blank">Financial Times. Blue Carbon and Liberia (2023)</a></div>
+      <div class="source-item"><a href="https://roape.net/2024/10/30/carbon-markets-and-the-new-scramble-for-african-land/" target="_blank">Review of African Political Economy. "Carbon Markets and the New Scramble for African Land" (2024)</a></div>
+      <div class="source-item"><a href="https://www.greenpeace.org/africa/en/press/57470/kajiado-communities-resist-carbon-offset-land-grabs-disguised-as-climate-action/" target="_blank">Greenpeace Africa. Kajiado Communities Investigation (2024)</a></div>
+      <div class="source-item"><a href="https://newlinesmag.com/reportage/the-case-against-a-carbon-credit-farm-in-madagascar/" target="_blank">New Lines Magazine. Madagascar Carbon Project (2024)</a></div>
+      <div class="source-item"><a href="https://www.sciencedirect.com/science/article/abs/pii/S0305750X23002504" target="_blank">Asiyanbi &amp; Lund. <em>World Development</em> — REDD+ Tanzania (2023)</a></div>
+      <div class="source-item"><a href="https://www.fern.org/publications-insight/rights-based-approach-to-carbon-markets-brief-4858/" target="_blank">Fern. "Rights-Based Approach to Carbon Markets" (2023)</a></div>
+      <div class="source-item"><a href="https://meer.com/en/103302-green-colonialism-and-the-new-scramble-for-african-land" target="_blank">Meer.com. "Green Colonialism and the New Scramble for African Land"</a></div>
+      <div class="source-item"><a href="https://grassrootsonline.org/learning_hub/resisting-redd-africas-struggles-against-false-climate-solutions/" target="_blank">Grassroots International. "Resisting REDD: Africa's Struggles Against False Climate Solutions"</a></div>
+      <div class="source-item"><a href="https://earthsight.org.uk/news-blog-item/investigation-phantom-carbon-credits" target="_blank">Earthsight. "Investigation: Phantom Carbon Credits" (2024)</a></div>
+      <div class="source-item"><a href="https://www.corpwatch.org/article/blue-carbon-buys-rights-control-forest-lands-across-africa" target="_blank">CorpWatch. "Blue Carbon Buys Rights to Control Forest Lands Across Africa"</a></div>
+      <div class="source-item"><a href="https://www.un.org/development/desa/indigenouspeoples/wp-content/uploads/sites/19/2018/01/Laltaika-and-Askew_UN-paper_rev3.pdf" target="_blank">Laltaika &amp; Askew. "Land Rights of Indigenous Peoples in Africa" — UN (2018)</a></div>
+      <div class="source-item"><a href="https://www.aegis-eu.org/archive/ecas4/ecas-4/panels/121-140/panel-139/David-Olanya-full-paper.pdf" target="_blank">Olanya, D. "Colonial Land Laws and African Societies" — ECAS4</a></div>
+      <div class="source-item"><a href="https://afripoli.org/beyond-the-export-reflex-building-sovereign-carbon-markets-for-an-ndc-first-future" target="_blank">AfriPoli. "Beyond the Export Reflex: Sovereign Carbon Markets for an NDC-First Future"</a></div>
+      <div class="source-item"><a href="https://progressive.international/wire/2025-01-02-carbon-markets-and-the-new-scramble-for-african-land/en/" target="_blank">Progressive International. "Carbon Markets and the New Scramble for African Land" (2025)</a></div>
+      <div class="source-item"><a href="https://www.context.news/net-zero/opinion/carbon-credits-are-pollution-permits-for-the-rich" target="_blank">Context News. "Carbon Credits Are Pollution Permits for the Rich"</a></div>
+      <div class="source-item"><a href="https://nation.africa/kenya/health/green-grabbing-lack-of-land-rights-promotes-unjust-climate-action-5067628" target="_blank">Nation Africa. "Green Grabbing: Lack of Land Rights Promotes Unjust Climate Action"</a></div>
+      <div class="source-item"><a href="https://www.oaklandinstitute.org/report/green-colonialism-20" target="_blank">Oakland Institute. <em>Green Colonialism 2.0</em></a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Green Grab &nbsp;·&nbsp; ECON 30: Progress and Inequality &nbsp;·&nbsp; Sara &nbsp;·&nbsp; Spring 2026</p>
+  <p>Built with HTML/CSS/JS and hosted on Vercel</p>
+</footer>
+
+<script>
+  function showDeal(id) {
+    // hide all cards
+    document.querySelectorAll('.deal-card').forEach(c => c.classList.remove('visible'));
+    // deactivate all buttons
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+    // show selected card
+    document.getElementById('deal-' + id).classList.add('visible');
+
+    // activate clicked button
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
