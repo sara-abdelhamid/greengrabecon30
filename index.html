@@ -548,10 +548,11 @@
   </a>
   <ul class="nav-links">
     <li><a href="#the-promise">The Promise</a></li>
+    <li><a href="#the-first-scramble">First Scramble</a></li>
     <li><a href="#the-fraud">The Fraud</a></li>
     <li><a href="#map-section">The Map</a></li>
-    <li><a href="#the-pattern">Legal Infrastructure</a></li>
-    <li><a href="#the-numbers">Follow the Money</a></li>
+    <li><a href="#the-pattern">Legal Infra</a></li>
+    <li><a href="#the-numbers">Money</a></li>
     <li><a href="#progress">Progress?</a></li>
   </ul>
   <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleNav(this)">
@@ -560,12 +561,13 @@
 </nav>
 
 <div class="mobile-nav" id="mobile-nav">
-  <a href="#the-promise" onclick="closeMobileNav()">The Promise</a>
-  <a href="#the-fraud" onclick="closeMobileNav()">The Fraud</a>
-  <a href="#map-section" onclick="closeMobileNav()">The Map</a>
-  <a href="#the-pattern" onclick="closeMobileNav()">Legal Infrastructure</a>
-  <a href="#the-numbers" onclick="closeMobileNav()">Follow the Money</a>
-  <a href="#progress" onclick="closeMobileNav()">Progress?</a>
+  <a href="#the-promise" onclick="closeMobileNav()">Part I: The Promise</a>
+  <a href="#the-first-scramble" onclick="closeMobileNav()">Part II: The First Scramble</a>
+  <a href="#the-fraud" onclick="closeMobileNav()">Part III: The Fraud</a>
+  <a href="#map-section" onclick="closeMobileNav()">Part IV: The Map</a>
+  <a href="#the-pattern" onclick="closeMobileNav()">Part V: Legal Infrastructure</a>
+  <a href="#the-numbers" onclick="closeMobileNav()">Part VI: Follow the Money</a>
+  <a href="#progress" onclick="closeMobileNav()">Part VII: Progress?</a>
 </div>
 
 <!-- HERO -->
@@ -764,20 +766,81 @@
   </div>
 </section>
 
-<!-- PULL QUOTE 1 -->
+<!-- PART II: THE FIRST SCRAMBLE -->
+<section id="the-first-scramble">
+  <div class="container">
+    <p class="eyebrow reveal">Part II</p>
+    <h2 class="reveal">The First Scramble — Colonial Land Alienation and Its Legacy</h2>
+
+    <p class="lede reveal">Between 1880 and 1914, European control of Africa expanded from 10% to 90% of the continent—an annexation of unprecedented speed and scale (Pakenham, 1991). The most intense period, 1884–1905, saw the legal and administrative transformation of African land tenure systems across nearly an entire continent in just two decades.</p>
+
+    <p class="reveal">The legal mechanism was remarkably consistent across British, French, German, Belgian, and Portuguese territories. The Berlin Conference's doctrine of "effective occupation" (General Act, Article 35) required colonial powers to demonstrate administrative presence to claim territory—a standard that privileged European state structures and dismissed existing African governance systems (Craven, 2015). Colonial administrations then classified African communal lands as "waste lands," "crown lands," or terra nullius—land belonging to no one. The logic was straightforward: if land wasn't privately owned and enclosed in the European style, it was available for the state to allocate.</p>
+
+    <p class="reveal">Colonial land law systematically reclassified customary tenure as mere "usufruct"—use rights—while vesting ownership in the colonial state, a legal transformation that made African communities tenants on their own land (Chanock, 1991). Kenya's Crown Lands Ordinance of 1915 classified all untitled land as state property, enabling the colonial administration to allocate approximately 20% of the colony's most fertile land to European settlers (Okoth-Ogendo, 1991). The pattern repeated across the continent.</p>
+
+    <!-- Colonization speed chart -->
+    <div class="chart-card reveal" style="margin: 2.5rem 0;">
+      <div class="chart-title">The Speed of the Scramble: European Control of Africa, 1880–1914</div>
+      <div class="chart-sub">Percentage of Africa under European colonial control. From 10% to 90% in 34 years. The Berlin Conference (1884–85) marks the inflection point.</div>
+      <canvas id="chartScramble" height="90" aria-label="Chart showing European colonization of Africa from 10% in 1880 to 90% in 1914" role="img"></canvas>
+      <p class="chart-source">Source: Pakenham, T. (1991). <em>The Scramble for Africa</em>. Random House; Craven, M. (2015). <em>London Review of International Law</em>, 3(1).</p>
+    </div>
+
+    <p class="reveal">This wasn't incidental. It was the foundation of the colonial economy. In the Congo Free State, Leopold II granted rubber concessions covering approximately 1.5 million square kilometers to private companies—an area larger than Western Europe—with no legal obligation to the Congolese communities whose land and labor sustained the extraction (Hochschild, 1998). These concessions operated through the same legal structure repeated everywhere: the state owned the land, private companies leased extraction rights, and communities had no legal standing to object.</p>
+
+    <p class="reveal">The infrastructure built during this period reveals the underlying logic. Jedwab and Moradi's (2016) analysis of African railway construction found that 90% of colonial-era lines ran from extraction sites to ports rather than connecting population centers—a pattern associated with 15–20% lower long-term GDP and urbanization outcomes compared to countries with more internally-connected rail networks. Railways ran from mines to ports, not between African towns. Wealth flowed to Europe; the costs—displacement, forced labor, environmental degradation, and the dismantling of existing economic systems—remained in Africa.</p>
+
+    <!-- Railway infographic -->
+    <div class="reveal" style="margin: 2rem 0;">
+      <p class="sankey-label">Colonial Railways: Built for Extraction, Not Connection</p>
+      <svg viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:480px; display:block;" role="img" aria-label="90% of colonial railways ran from mines to ports; only 10% connected population centers">
+        <!-- Extraction bar (90%) -->
+        <rect x="0" y="8" width="360" height="28" fill="#b85c00" rx="2"/>
+        <text x="8" y="27" font-family="'Inter',sans-serif" font-size="9" font-weight="700" fill="white">MINE → PORT (Extraction Routes)</text>
+        <text x="365" y="27" font-family="'Inter',sans-serif" font-size="10" font-weight="700" fill="#b85c00">90%</text>
+        <!-- Connection bar (10%) -->
+        <rect x="0" y="48" width="40" height="22" fill="#2d5a27" rx="2"/>
+        <text x="46" y="63" font-family="'Inter',sans-serif" font-size="9" font-weight="700" fill="#2d5a27">TOWN → TOWN (Internal Connection)</text>
+        <text x="380" y="63" font-family="'Inter',sans-serif" font-size="10" font-weight="700" fill="#2d5a27">10%</text>
+        <!-- scale note -->
+        <line x1="0" y1="76" x2="400" y2="76" stroke="#d4cfc6" stroke-width="0.5"/>
+        <text x="0" y="80" font-family="'Inter',sans-serif" font-size="7" fill="#6b6560">bar width proportional to share of total colonial railway km</text>
+      </svg>
+      <p style="font-family:'Inter',sans-serif; font-size:0.62rem; color:var(--muted); margin-top:0.5rem; font-style:italic;">Source: Jedwab, R., &amp; Moradi, A. (2016). <em>Review of Economics and Statistics</em>, 98(2), 268–284.</p>
+    </div>
+
+    <p class="reveal">When African nations gained independence in the 1950s–70s, they inherited this legal architecture largely intact. Kenya's land titling system still operates under legislation derived from the 1959 colonial ordinance; Tanzania's 1999 Land Acts preserve the colonial distinction between "native reserves" and state land (Manji, 2006). Liberia's Public Lands Law derives from its 1956 codification and has never been substantially reformed. The result: World Bank analysis found that only 10% of rural land in Sub-Saharan Africa is formally documented, with 90% held under customary systems that lack legal recognition in national registries—a direct legacy of colonial land law that classified customary tenure as informal "use rights" rather than ownership (Byamugisha, 2013).</p>
+
+    <!-- Land documentation stat -->
+    <div class="text-stats reveal">
+      <span><strong>10%</strong> of SSA rural land formally documented</span>
+      <span><strong>90%</strong> held under customary tenure with no legal title</span>
+      <span><strong>&lt;5%</strong> women's land formally documented in 15 surveyed countries</span>
+      <span><strong>70%</strong> lower long-run GDP in extraction vs. settlement colonies (Acemoglu et al., 2001)</span>
+    </div>
+
+    <p class="reveal">Development economists have documented how this matters. De Soto (2000) estimated that informal property rights trap trillions in "dead capital"—assets that can't function in formal capital markets because they lack legal documentation. Acemoglu, Johnson, and Robinson's (2001) cross-country analysis found that former colonies designed for resource extraction rather than settlement developed institutions associated with 70% lower GDP per capita over the long term. The infrastructure deficit, educational gaps, and institutional fragility that shape African development today trace directly to the extractive model established during the Scramble.</p>
+
+    <p class="reveal">This history isn't distant. It is the foundation on which carbon markets are now operating. The same tenure precarity that enabled colonial concessions enables carbon concessions. The same state control over "public" land allows governments to sign away forest rights without community consultation. The same legal invisibility of customary rights means communities have no standing to challenge certifications. The language has shifted from civilization and progress to sustainability and climate action. The structure endures.</p>
+
+    <p class="reveal">African civil society organizations and researchers have explicitly termed the expansion of carbon markets a "new scramble"—the Oakland Institute's 2023 report titled the phenomenon "Green Colonialism 2.0," documenting how carbon projects repeat historical patterns of land alienation under the banner of climate action (Oakland Institute, 2023). The parallel is not rhetorical. It is structural and legal.</p>
+  </div>
+</section>
+
+<!-- PULL QUOTE between Part II and Part III -->
 <div class="pull-quote">
   <div class="pq-bg" style="background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1400&q=60');" aria-hidden="true"></div>
   <div class="pq-overlay" aria-hidden="true"></div>
   <div class="container pq-inner">
-    <blockquote>The mechanism is different, but the structure is not: distant powers are again financializing African land for their own benefit, while the communities on that land absorb the cost.</blockquote>
-    <cite>Sara, synthesis of Oakland Institute (2023), ROAPE (2024), and Fern (2023)</cite>
+    <blockquote>When African nations gained independence, they inherited this legal architecture largely intact. Across Sub-Saharan Africa, customary land rights—the way most rural communities actually hold and use land—remain informal and legally unrecognized. Carbon markets are operating on that foundation.</blockquote>
+    <cite>Sara, synthesis of Manji (2006), Byamugisha (2013), and Olanya (ECAS4)</cite>
   </div>
 </div>
 
-<!-- PART II -->
+<!-- PART III (was Part II) -->
 <section id="the-fraud">
   <div class="container">
-    <p class="eyebrow reveal">Part II</p>
+    <p class="eyebrow reveal">Part III</p>
     <h2 class="reveal">The Fraud — Phantom Credits and Inflated Baselines</h2>
 
     <p class="lede reveal">In January 2023, The Guardian and Carbon Plan published an investigation that broke the voluntary carbon market's core claim: that the credits were real.</p>
@@ -832,8 +895,8 @@
 <!-- MAP -->
 <section id="map-section">
   <div class="container-wide">
-    <p class="eyebrow reveal">Part III</p>
-    <h2 class="reveal">Ten Countries, Same Story — A Map of Extraction</h2>
+    <p class="eyebrow reveal">Part IV</p>
+    <h2 class="reveal">The Second Scramble — Ten Countries, Same Story</h2>
     <p class="map-intro reveal">Click any marker to see the corporate buyer, estimated market value, what the community received, and what happened. The gap between the second and third figures is the argument made visible.</p>
 
     <div class="map-wrapper reveal">
@@ -861,7 +924,7 @@
 <!-- PART IV -->
 <section id="the-pattern">
   <div class="container">
-    <p class="eyebrow reveal">Part IV</p>
+    <p class="eyebrow reveal">Part V</p>
     <h2 class="reveal">The Legal Infrastructure — How Colonial Land Law Makes This Possible</h2>
 
     <p class="lede reveal">These cases aren't the product of bad actors exploiting an otherwise sound system. They're what the system reliably produces when it operates on top of colonial land tenure infrastructure.</p>
@@ -952,7 +1015,7 @@
 <!-- PART V -->
 <section id="the-numbers">
   <div class="container-wide">
-    <p class="eyebrow reveal">Part V</p>
+    <p class="eyebrow reveal">Part VI</p>
     <h2 class="reveal">Follow the Money</h2>
     <p class="reveal" style="max-width:62ch; font-family:'Lora',serif; font-size:0.95rem; color:var(--muted); line-height:1.7; margin-bottom:0;">Three charts built from registry data, peer-reviewed studies, and investigative reporting. Together they show where a $15 carbon credit actually goes—and why the community at the bottom of the supply chain ends up with almost none of it.</p>
 
@@ -984,7 +1047,7 @@
 <!-- PART VI -->
 <section id="progress">
   <div class="container">
-    <p class="eyebrow reveal">Part VI</p>
+    <p class="eyebrow reveal">Part VII</p>
     <h2 class="reveal">Progress on Climate, Regression on Everything Else</h2>
 
     <p class="lede reveal dropcap">Carbon credits were supposed to correct a market failure: rich countries externalizing climate costs onto everyone else. Instead, they built a new one. The communities whose forests generate the credits bear the costs of conservation. The corporations whose emissions created the demand capture the benefits. The mechanism looks like a market; the structure is a transfer.</p>
@@ -1025,11 +1088,16 @@
     <p class="eyebrow">Sources</p>
     <h2>Bibliography</h2>
     <div class="sources-grid">
+      <div class="source-item">Acemoglu, D., Johnson, S., &amp; Robinson, J.A. (2001). "The Colonial Origins of Comparative Development: An Empirical Investigation." <em>American Economic Review</em>, 91(5), 1369–1401.</div>
       <div class="source-item">ACMI (Africa Carbon Markets Initiative). (2022). <em>Roadmap Report</em>. COP27, Sharm el-Sheikh.</div>
       <div class="source-item"><a href="https://afripoli.org/beyond-the-export-reflex-building-sovereign-carbon-markets-for-an-ndc-first-future" target="_blank" rel="noopener">AfriPoli. "Beyond the Export Reflex: Sovereign Carbon Markets."</a></div>
       <div class="source-item">Asiyanbi, A., &amp; Lund, J. (2023). "REDD+ and Household Welfare in Tanzania." <em>World Development</em>, 168. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0305750X23002504" target="_blank" rel="noopener">[link]</a></div>
       <div class="source-item">Badgley, G., et al. (2024). "Systematic Overestimation of Forest Carbon Offset Effectiveness." <em>Science</em>.</div>
       <div class="source-item">Benjaminsen, T., &amp; Bryceson, I. (2023). "Carbon Markets and Extractive Political Economy." <em>World Development</em>, 168.</div>
+      <div class="source-item">Byamugisha, F.F.K. (2013). <em>Securing Africa's Land for Shared Prosperity</em>. World Bank.</div>
+      <div class="source-item">Chanock, M. (1991). "Paradigms, Policies and Property: A Review of the Customary Law of Land Tenure." In Mann, K. &amp; Roberts, R. (Eds.), <em>Law in Colonial Africa</em>. Heinemann.</div>
+      <div class="source-item">Craven, M. (2015). "Between Law and History: The Berlin Conference of 1884–1885 and the Logic of Free Trade." <em>London Review of International Law</em>, 3(1), 31–59.</div>
+      <div class="source-item">De Soto, H. (2000). <em>The Mystery of Capital: Why Capitalism Triumphs in the West and Fails Everywhere Else</em>. Basic Books.</div>
       <div class="source-item"><a href="https://www.corpwatch.org/article/blue-carbon-buys-rights-control-forest-lands-across-africa" target="_blank" rel="noopener">CorpWatch. "Blue Carbon Buys Rights to Control Forest Lands Across Africa." (2023)</a></div>
       <div class="source-item">Ecosystem Marketplace. (2023). <em>State of Voluntary Carbon Markets 2023</em>.</div>
       <div class="source-item"><a href="https://earthsight.org.uk/news-blog-item/investigation-phantom-carbon-credits" target="_blank" rel="noopener">Earthsight. "Phantom Carbon Credits." (2024)</a></div>
@@ -1038,15 +1106,20 @@
       <div class="source-item"><a href="https://www.fern.org/publications-insight/rights-based-approach-to-carbon-markets-brief-4858/" target="_blank" rel="noopener">Fern. "Rights-Based Approach to Carbon Markets." (2023)</a></div>
       <div class="source-item"><a href="https://www.ft.com/content/8cd4c0c8-57e4-4e1d-99b5-99959bbde3b9" target="_blank" rel="noopener">Financial Times. Blue Carbon and Liberia. (2023)</a></div>
       <div class="source-item">Forest Peoples Programme. (2023). <em>Comparative Analysis of REDD+ Benefit Distribution Across Regions</em>.</div>
+      <div class="source-item">Hochschild, A. (1998). <em>King Leopold's Ghost: A Story of Greed, Terror, and Heroism in Colonial Africa</em>. Houghton Mifflin.</div>
       <div class="source-item"><a href="https://www.greenpeace.org/africa/en/press/57470/kajiado-communities-resist-carbon-offset-land-grabs-disguised-as-climate-action/" target="_blank" rel="noopener">Greenpeace Africa. Kajiado Communities Investigation. (2024)</a></div>
       <div class="source-item">Greenpeace International. (2023). <em>Carbon Offsetting Exposed: The Certification Industry's Conflicts of Interest</em>.</div>
       <div class="source-item"><a href="https://grassrootsonline.org/learning_hub/resisting-redd-africas-struggles-against-false-climate-solutions/" target="_blank" rel="noopener">Grassroots International. "Resisting REDD: Africa's Struggles."</a></div>
+      <div class="source-item">Jedwab, R., &amp; Moradi, A. (2016). "The Permanent Effects of Transportation Revolutions in Poor Countries: Evidence from Africa." <em>Review of Economics and Statistics</em>, 98(2), 268–284.</div>
       <div class="source-item">Katila, P., et al. (2019). "Customary Rights and Formal Land Law in Kenya." <em>World Development</em>, 124.</div>
       <div class="source-item"><a href="https://www.un.org/development/desa/indigenouspeoples/wp-content/uploads/sites/19/2018/01/Laltaika-and-Askew_UN-paper_rev3.pdf" target="_blank" rel="noopener">Laltaika, E., &amp; Askew, K. (2018). "Land Rights of Indigenous Peoples in Africa." UN DESA.</a></div>
+      <div class="source-item">Manji, A. (2006). <em>The Politics of Land Reform in Africa: From Communal Tenure to Free Markets</em>. Zed Books.</div>
       <div class="source-item"><a href="https://newlinesmag.com/reportage/the-case-against-a-carbon-credit-farm-in-madagascar/" target="_blank" rel="noopener">New Lines Magazine. "The Case Against a Carbon Credit Farm in Madagascar." (2024)</a></div>
       <div class="source-item"><a href="https://www.oaklandinstitute.org/report/evicted-carbon-credits" target="_blank" rel="noopener">Oakland Institute. <em>Evicted for Carbon Credits</em>. (2023)</a></div>
       <div class="source-item"><a href="https://www.oaklandinstitute.org/report/green-colonialism-20" target="_blank" rel="noopener">Oakland Institute. <em>Green Colonialism 2.0</em>.</a></div>
+      <div class="source-item">Okoth-Ogendo, H.W.O. (1991). "Tenants of the Crown: Evolution of Agrarian Law and Institutions in Kenya." African Centre for Technology Studies.</div>
       <div class="source-item"><a href="https://www.aegis-eu.org/archive/ecas4/ecas-4/panels/121-140/panel-139/David-Olanya-full-paper.pdf" target="_blank" rel="noopener">Olanya, D. "Colonial Land Laws and African Societies." ECAS4.</a></div>
+      <div class="source-item">Pakenham, T. (1991). <em>The Scramble for Africa: White Man's Conquest of the Dark Continent from 1876 to 1912</em>. Random House.</div>
       <div class="source-item">PACJA (Pan-African Climate Justice Alliance). (2023). <em>African Civil Society Position on Carbon Markets</em>. November 2023.</div>
       <div class="source-item"><a href="https://progressive.international/wire/2025-01-02-carbon-markets-and-the-new-scramble-for-african-land/en/" target="_blank" rel="noopener">Progressive International. "Carbon Markets and the New Scramble for African Land." (2025)</a></div>
       <div class="source-item"><a href="https://roape.net/2024/10/30/carbon-markets-and-the-new-scramble-for-african-land/" target="_blank" rel="noopener">Review of African Political Economy. "Carbon Markets and the New Scramble." (2024)</a></div>
@@ -1187,6 +1260,40 @@ projects.forEach(p => {
 const F = { family:"'Lora', Georgia, serif", size:11 };
 const FI = { family:"'Inter', sans-serif", size:10 };
 const MUT = '#6b6560';
+
+new Chart(document.getElementById('chartScramble'), {
+  type: 'bar',
+  data: {
+    labels: ['1880', '1884\nBerlin', '1890', '1895', '1900', '1905', '1910', '1914'],
+    datasets: [{
+      label: '% of Africa under European control',
+      data: [10, 15, 35, 55, 75, 85, 88, 90],
+      backgroundColor: ctx => {
+        const v = ctx.parsed.y;
+        if (v <= 15) return '#4a7c42';
+        if (v <= 55) return '#b85c00';
+        return '#8b1a1a';
+      },
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y}% of Africa colonized` } },
+      annotation: {}
+    },
+    scales: {
+      x: { ticks: { font: FI, color: MUT }, grid: { display: false } },
+      y: {
+        min: 0, max: 100,
+        ticks: { font: FI, color: MUT, callback: v => v + '%' },
+        grid: { color: 'rgba(0,0,0,0.04)' }
+      }
+    }
+  }
+});
 
 new Chart(document.getElementById('chartDonut'), {
   type:'doughnut',
