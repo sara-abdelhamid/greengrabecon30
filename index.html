@@ -495,6 +495,37 @@
   .chart-sub { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.5; }
   .chart-source { font-family: 'Inter', sans-serif; font-size: 0.62rem; color: var(--muted); margin-top: 1rem; font-style: italic; border-top: 1px solid var(--rule); padding-top: 0.6rem; line-height: 1.4; }
 
+  /* ── SCRAMBLE MAP ────────────────────────────────────────────────── */
+  .scramble-map-wrap { margin: 2.5rem 0; border: 1px solid var(--rule); overflow: hidden; background: var(--white); }
+  .scramble-header { padding: 0.85rem 1.4rem; background: var(--forest); display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
+  .scramble-year { font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700; color: var(--amber-lt); min-width: 60px; line-height: 1; }
+  .scramble-stat { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: rgba(165,200,155,0.85); line-height: 1.5; flex: 1; }
+  #scramble-map { height: 430px; background: #1a2a1a; }
+  .scramble-controls { padding: 0.9rem 1.4rem; background: var(--white); border-top: 1px solid var(--rule); }
+  .scramble-slider-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.3rem; }
+  .scramble-slider-row span { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+  #timeSlider { flex: 1; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 2px; background: linear-gradient(to right, var(--forest-mid) 0%, var(--rule) 0%); outline: none; cursor: pointer; }
+  #timeSlider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--forest-mid); cursor: pointer; border: 2px solid white; box-shadow: 0 1px 4px rgba(0,0,0,0.25); }
+  #timeSlider::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--forest-mid); cursor: pointer; border: 2px solid white; }
+  .scramble-ticks { display: flex; justify-content: space-between; font-family: 'Inter', sans-serif; font-size: 0.6rem; color: var(--muted); margin-bottom: 0.8rem; padding: 0 2px; }
+  .scramble-ticks .tick-active { color: var(--forest-mid); font-weight: 700; }
+  .scramble-layer-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.1rem; }
+  .scramble-layer-btn { font-family: 'Inter', sans-serif; font-size: 0.63rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.3rem 0.75rem; border: 1px solid var(--rule); background: var(--white); color: var(--muted); cursor: pointer; transition: all 0.2s; }
+  .scramble-layer-btn.slb-active { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .scramble-layer-btn:focus { outline: 2px solid var(--amber); outline-offset: 2px; }
+  .scramble-legend { padding: 0.65rem 1.4rem; background: var(--bg-alt); border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; min-height: 34px; align-items: center; }
+  .sl-entry { display: flex; align-items: center; gap: 0.35rem; font-family: 'Inter', sans-serif; font-size: 0.62rem; color: var(--muted); }
+  .sl-swatch { width: 11px; height: 11px; border-radius: 1px; flex-shrink: 0; }
+  .sl-line { display: inline-block; width: 20px; height: 3px; border-radius: 1px; flex-shrink: 0; margin-right: 2px; }
+  @media (max-width: 680px) {
+    #scramble-map { height: 300px; }
+    .scramble-header { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+    .scramble-year { font-size: 1.4rem; }
+    .scramble-ticks { font-size: 0.52rem; }
+    .scramble-layer-btns { flex-direction: column; }
+    .scramble-layer-btn { width: 100%; text-align: left; }
+  }
+
   /* ── SOURCES ─────────────────────────────────────────────────────── */
   #sources { background: var(--ink); padding: 4.5rem 0; }
   #sources .eyebrow { color: #3a3832; }
@@ -807,6 +838,50 @@
         <text x="0" y="80" font-family="'Inter',sans-serif" font-size="7" fill="#6b6560">bar width proportional to share of total colonial railway km</text>
       </svg>
       <p style="font-family:'Inter',sans-serif; font-size:0.62rem; color:var(--muted); margin-top:0.5rem; font-style:italic;">Source: Jedwab, R., &amp; Moradi, A. (2016). <em>Review of Economics and Statistics</em>, 98(2), 268–284.</p>
+    </div>
+
+    <!-- Interactive Time-Slider Map -->
+    <div class="scramble-map-wrap reveal" role="region" aria-label="Interactive map showing colonial expansion of Africa from 1880 to 2020">
+      <!-- Screen reader description -->
+      <p class="sr-only">This interactive map shows European colonial control of Africa expanding from 10% in 1880 to 90% by 1914, the transition to independence in the 1960s, and the emergence of carbon offset projects in the 2000s–2020s. Use the time slider to move through history and the layer buttons to toggle between political control, infrastructure, and carbon project data.</p>
+
+      <div class="scramble-header">
+        <div class="scramble-year" id="scrambleYear" aria-live="polite">1880</div>
+        <div class="scramble-stat" id="scrambleStat">European control: ~10% — coastal footholds only</div>
+      </div>
+
+      <div id="scramble-map"></div>
+
+      <div class="scramble-controls">
+        <div class="scramble-slider-row">
+          <span>1880</span>
+          <input type="range" id="timeSlider" min="0" max="7" step="1" value="0"
+                 aria-label="Time slider: drag to move through history from 1880 to 2020"
+                 aria-valuetext="Year 1880">
+          <span>2020</span>
+        </div>
+        <div class="scramble-ticks" aria-hidden="true">
+          <span id="tick-0" class="tick-active">1880</span>
+          <span id="tick-1">1884</span>
+          <span id="tick-2">1890</span>
+          <span id="tick-3">1900</span>
+          <span id="tick-4">1914</span>
+          <span id="tick-5">1960</span>
+          <span id="tick-6">2000</span>
+          <span id="tick-7">2020</span>
+        </div>
+        <div class="scramble-layer-btns" role="group" aria-label="Map data layers">
+          <button class="scramble-layer-btn slb-active" data-slayer="political" id="slbPolitical" aria-pressed="true">Political Control</button>
+          <button class="scramble-layer-btn" data-slayer="infrastructure" id="slbInfra" aria-pressed="false">Infrastructure</button>
+          <button class="scramble-layer-btn" data-slayer="carbon" id="slbCarbon" aria-pressed="false">Carbon Projects</button>
+        </div>
+      </div>
+
+      <div class="scramble-legend" id="scrambleLegend" aria-label="Map legend"></div>
+
+      <p class="chart-source" style="margin: 0; padding: 0.6rem 1.4rem; border-top: none;">
+        Boundaries simplified for educational purposes. Sources: Pakenham (1991); Herbst, J. (2000). <em>States and Power in Africa</em>; ETH Zurich Colonial Borders Dataset; Jedwab &amp; Moradi (2016); Hansen et al. (2013) / Global Forest Watch; Verra public registry; Oakland Institute (2023).
+      </p>
     </div>
 
     <p class="reveal">When African nations gained independence in the 1950s–70s, they inherited this legal architecture largely intact. Kenya's land titling system still operates under legislation derived from the 1959 colonial ordinance; Tanzania's 1999 Land Acts preserve the colonial distinction between "native reserves" and state land (Manji, 2006). Liberia's Public Lands Law derives from its 1956 codification and has never been substantially reformed. The result: World Bank analysis found that only 10% of rural land in Sub-Saharan Africa is formally documented, with 90% held under customary systems that lack legal recognition in national registries—a direct legacy of colonial land law that classified customary tenure as informal "use rights" rather than ownership (Byamugisha, 2013).</p>
@@ -1370,6 +1445,296 @@ new Chart(document.getElementById('chartLine'), {
     }
   }
 });
+
+/* ── SCRAMBLE TIME-SLIDER MAP ────────────────────────────────────── */
+(function() {
+  const scrambleMap = L.map('scramble-map', {
+    center: [4, 22],
+    zoom: 3,
+    zoomControl: true,
+    scrollWheelZoom: false,
+    attributionControl: false,
+    tap: true,
+    dragging: true
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 9, minZoom: 2
+  }).addTo(scrambleMap);
+
+  // ── Colonial territory polygons (simplified, educational approximations) ──
+  const colonialTerrs = [
+    // British
+    { power:'British',  color:'#c0392b', coords:[[-35,17],[-35,33],[-22,36],[-10,37],[-8,26],[-8,16],[-20,15]] },
+    { power:'British',  color:'#c0392b', coords:[[-2,29],[5,30],[5,42],[-2,41]] },
+    { power:'British',  color:'#c0392b', coords:[[4,3],[14,3],[14,15],[4,15]] },
+    { power:'British',  color:'#c0392b', coords:[[5,-3],[11,-3],[11,1],[5,1]] },
+    { power:'British',  color:'#c0392b', coords:[[10,22],[22,22],[22,38],[10,38]] },
+    // French
+    { power:'French',   color:'#2471a3', coords:[[20,-6],[33,-6],[33,13],[20,13]] },
+    { power:'French',   color:'#2471a3', coords:[[4,-18],[4,3],[15,3],[15,-6],[20,-6],[20,-18]] },
+    { power:'French',   color:'#2471a3', coords:[[-5,8],[15,8],[15,24],[-5,24]] },
+    { power:'French',   color:'#2471a3', coords:[[-26,43],[-12,43],[-12,51],[-26,51]] },
+    // Belgian
+    { power:'Belgian',  color:'#d35400', coords:[[-12,12],[5,12],[5,31],[-5,31],[-12,24]] },
+    // German
+    { power:'German',   color:'#7f8c8d', coords:[[-12,29],[-1,29],[-1,40],[-12,40]] },
+    { power:'German',   color:'#7f8c8d', coords:[[1,8],[12,8],[12,16],[1,16]] },
+    { power:'German',   color:'#7f8c8d', coords:[[-29,11],[-17,11],[-17,22],[-29,22]] },
+    // Portuguese
+    { power:'Portuguese', color:'#4a235a', coords:[[-18,10],[-4,10],[-4,25],[-18,25]] },
+    { power:'Portuguese', color:'#4a235a', coords:[[-26,32],[-10,32],[-10,40],[-26,40]] },
+    // Italian
+    { power:'Italian',  color:'#7d6608', coords:[[20,9],[33,9],[33,26],[20,26]] },
+    { power:'Italian',  color:'#7d6608', coords:[[-2,40],[12,52],[2,44]] },
+    // Independent
+    { power:'Ethiopia', color:'#1e8449', coords:[[3,33],[15,33],[15,43],[3,43]] },
+    { power:'Liberia',  color:'#1e8449', coords:[[4,-12],[8,-12],[8,-7],[4,-7]] },
+  ];
+
+  // ── Railway lines (extraction routes red, connective blue) ──
+  const railways = [
+    { label:'Uganda Railway (1896–1901) | Mombasa → Kampala | Built to secure British East Africa', type:'extraction',
+      color:'#c0392b', coords:[[-4.05,39.66],[-1.28,36.82],[0.32,32.58]] },
+    { label:'Cape–Bulawayo Line (1890s) | Cape Town → Zimbabwe | Cecil Rhodes\'s Cape-to-Cairo dream', type:'extraction',
+      color:'#c0392b', coords:[[-33.9,18.4],[-28,24],[-22,28],[-18.5,27]] },
+    { label:'Central Line (1905–1914) | Dar es Salaam → Lake Tanganyika | German colonial resource route', type:'extraction',
+      color:'#7f8c8d', coords:[[-6.8,39.3],[-6.8,35],[-6.5,30]] },
+    { label:'Benguela Railway (1902–1929) | Lobito → DRC border | Copper and mineral extraction', type:'extraction',
+      color:'#4a235a', coords:[[-12.4,13.5],[-12,18],[-11,23]] },
+    { label:'Dakar–Niger Railway (1885–1923) | Dakar → Bamako | French West Africa groundnut export route', type:'extraction',
+      color:'#2471a3', coords:[[14.7,-17.4],[12.6,-8.0]] },
+    { label:'Delagoa Bay Line (1895) | Maputo → Johannesburg mines | Built for Witwatersrand gold', type:'extraction',
+      color:'#4a235a', coords:[[-25.97,32.59],[-26.2,28.0]] },
+    { label:'Congo–Ocean Railway (1921–1934) | Brazzaville → Pointe-Noire | Built by forced labor; ~17,000 deaths', type:'extraction',
+      color:'#d35400', coords:[[-4.3,15.3],[-4.6,11.8]] },
+  ];
+
+  // ── Carbon project data ──
+  const carbonProjects = [
+    { lat:-16.5, lng:28.8, name:'Kariba REDD+', country:'Zimbabwe', area:'785,000 ha', year:2011, buyers:'Shell, VW, Delta' },
+    { lat:-2.1,  lng:36.8, name:'Kajiado Carbon', country:'Kenya',   area:'multiple zones', year:2012, buyers:'Various corporations' },
+    { lat:-6.8,  lng:36.9, name:'Kilosa REDD+',  country:'Tanzania', area:'multiple projects', year:2013, buyers:'VCS certified' },
+    { lat:0.9,   lng:31.6, name:'NFC Plantations', country:'Uganda', area:'~50,000 ha', year:2008, buyers:'New Forests Company' },
+    { lat:6.3,   lng:-9.4, name:'Blue Carbon Liberia', country:'Liberia', area:'1,000,000 ha', year:2013, buyers:'Blue Carbon LLC' },
+    { lat:-15.3, lng:49.9, name:'Makira Natural Park', country:'Madagascar', area:'372,470 ha', year:2008, buyers:'WCS' },
+    { lat:-2.3,  lng:18.1, name:'Mai Ndombe REDD+', country:'DRC',  area:'~3,000,000 ha', year:2012, buyers:'Disney, BP, others' },
+    { lat:-13.8, lng:39.4, name:'Lurio Forest',   country:'Mozambique', area:'undisclosed', year:2014, buyers:'VCS certified' },
+    { lat:-13.5, lng:31.5, name:'Luangwa Valley', country:'Zambia', area:'multiple', year:2010, buyers:'VCS certified' },
+    { lat:-11.5, lng:34.0, name:'Ntupanyama Hills', country:'Malawi', area:'undisclosed', year:2015, buyers:'VCS certified' },
+  ];
+
+  // ── Time step definitions ──
+  const timeSteps = [
+    { year:'1880', idx:0, colonialOpacity:0,    phase:'coastal',
+      stat:'European control: ~10% — coastal footholds only' },
+    { year:'1884', idx:1, colonialOpacity:0.18, phase:'berlin',
+      stat:'Berlin Conference: powers carve up Africa by negotiation, not presence' },
+    { year:'1890', idx:2, colonialOpacity:0.28, phase:'expansion',
+      stat:'European control: ~35% — interior penetration accelerating' },
+    { year:'1900', idx:3, colonialOpacity:0.38, phase:'late',
+      stat:'European control: ~75% — most African governance systems dismantled' },
+    { year:'1914', idx:4, colonialOpacity:0.48, phase:'complete',
+      stat:'European control: ~90% — colonial land laws in effect across the continent' },
+    { year:'1960', idx:5, colonialOpacity:0.12, phase:'independence',
+      stat:'Independence era — colonial land laws largely retained by new governments' },
+    { year:'2000', idx:6, colonialOpacity:0,    phase:'carbon_early',
+      stat:'Voluntary carbon market emerges — same tenure precarity, new buyers' },
+    { year:'2020', idx:7, colonialOpacity:0,    phase:'carbon_full',
+      stat:'Active carbon projects: 10 shown | Community land documented: ~10% of SSA' },
+  ];
+
+  // ── Coastal footholds (1880 starting dots) ──
+  const coastalDots = [
+    [36.8,3.0],[33.6,-7.6],[30.1,31.3],[-33.9,18.4],[6.5,3.4],
+    [14.7,-17.4],[-25.9,32.6],[-8.8,13.2],[-4.3,15.3],[-4.0,39.7],
+    [32.9,13.2],[2.4,9.7],[6.1,1.2],[-4.0,39.7]
+  ];
+
+  // ── Layer groups ──
+  const politicalLG   = L.layerGroup();
+  const coastalLG     = L.layerGroup();
+  const infraLG       = L.layerGroup();
+  const carbonLG      = L.layerGroup();
+  const forestLG      = L.layerGroup();
+
+  // Build polygon layers
+  colonialTerrs.forEach(t => {
+    t.poly = L.polygon(t.coords, {
+      fillColor: t.color, fillOpacity: 0,
+      color: 'rgba(0,0,0,0.15)', weight: 0.5, interactive: true
+    }).bindTooltip(t.power + ' colonial territory (simplified)', { direction:'top', sticky:true });
+    politicalLG.addLayer(t.poly);
+  });
+
+  // Coastal dots
+  coastalDots.forEach(([lat,lng]) => {
+    L.circleMarker([lat,lng], {
+      radius:5, fillColor:'#aaa', fillOpacity:0.75, color:'#fff', weight:1.5
+    }).addTo(coastalLG);
+  });
+
+  // Railway polylines
+  railways.forEach(r => {
+    L.polyline(r.coords, {
+      color: r.color, weight:2.5, opacity:0.85, dashArray:'7,4'
+    }).bindTooltip(r.label, { direction:'top', sticky:true }).addTo(infraLG);
+  });
+
+  // Forest cover rectangles (approximate dense forest zones, educational)
+  const forestZones = [
+    { bounds:[[-5,10],[5,32]],   label:'Congo Basin — dense tropical forest (losing ~1% annually)' },
+    { bounds:[[-2,-8],[8,-2]],   label:'West African coastal forests — severely fragmented since 1900' },
+    { bounds:[[-20,28],[-8,36]], label:'Miombo woodlands — mixed forest/savanna, ~90M ha at risk' },
+    { bounds:[[0,34],[10,42]],   label:'East African highland forests — Kenya/Ethiopia' },
+  ];
+  forestZones.forEach(z => {
+    L.rectangle(z.bounds, {
+      fillColor:'#2d5a27', fillOpacity:0.35,
+      color:'#1a3320', weight:0.5
+    }).bindTooltip(z.label, { direction:'top' }).addTo(forestLG);
+  });
+
+  // Carbon project circles
+  carbonProjects.forEach(p => {
+    L.circleMarker([p.lat,p.lng], {
+      radius:9, fillColor:'#2d5016', fillOpacity:0.88,
+      color:'#7fc47a', weight:2
+    }).bindTooltip(
+      `<strong>${p.name}</strong> | ${p.country}<br>${p.area} | Certified ${p.year}<br>Buyers: ${p.buyers}`,
+      { direction:'top' }
+    ).addTo(carbonLG);
+  });
+
+  // ── State ──
+  let activeSlayers = { political:true, infrastructure:false, carbon:false, forest:false };
+  let currentStep = 0;
+
+  function updateSliderTrack(val) {
+    const pct = (val / 7) * 100;
+    document.getElementById('timeSlider').style.background =
+      `linear-gradient(to right, #2d5a27 ${pct}%, #d4cfc6 ${pct}%)`;
+  }
+
+  function setMapLayers(step) {
+    // Remove all
+    scrambleMap.removeLayer(politicalLG);
+    scrambleMap.removeLayer(coastalLG);
+    scrambleMap.removeLayer(infraLG);
+    scrambleMap.removeLayer(carbonLG);
+    scrambleMap.removeLayer(forestLG);
+
+    // Political layer
+    if (activeSlayers.political) {
+      if (step.phase === 'coastal') {
+        coastalLG.addTo(scrambleMap);
+      } else if (step.colonialOpacity > 0) {
+        const isIndependence = step.phase === 'independence';
+        colonialTerrs.forEach(t => {
+          t.poly.setStyle({
+            fillColor: isIndependence ? '#888888' : t.color,
+            fillOpacity: step.colonialOpacity
+          });
+        });
+        politicalLG.addTo(scrambleMap);
+      }
+    }
+
+    // Infrastructure
+    if (activeSlayers.infrastructure && step.idx >= 2) {
+      infraLG.addTo(scrambleMap);
+    }
+
+    // Forest
+    if (activeSlayers.forest) {
+      forestLG.addTo(scrambleMap);
+    }
+
+    // Carbon
+    if (activeSlayers.carbon && (step.phase === 'carbon_early' || step.phase === 'carbon_full')) {
+      carbonLG.addTo(scrambleMap);
+    }
+
+    updateLegend(step);
+  }
+
+  function updateLegend(step) {
+    const el = document.getElementById('scrambleLegend');
+    let html = '';
+
+    if (activeSlayers.political) {
+      if (step.phase === 'coastal') {
+        html += `<div class="sl-entry"><span class="sl-swatch" style="background:#aaa;border-radius:50%"></span>European coastal footholds</div>`;
+      } else if (step.phase === 'independence') {
+        html += `<div class="sl-entry"><span class="sl-swatch" style="background:#888"></span>Colonial boundaries (inherited)</div>`;
+      } else if (step.colonialOpacity > 0) {
+        [
+          ['#c0392b','British'],['#2471a3','French'],['#d35400','Belgian'],
+          ['#7f8c8d','German'],['#4a235a','Portuguese'],['#7d6608','Italian'],
+          ['#1e8449','Independent']
+        ].forEach(([c,n]) => {
+          html += `<div class="sl-entry"><span class="sl-swatch" style="background:${c}"></span>${n}</div>`;
+        });
+      }
+    }
+
+    if (activeSlayers.infrastructure && step.idx >= 2) {
+      html += `<div class="sl-entry"><span class="sl-line" style="background:#c0392b"></span>Extraction railway (mine→port)</div>`;
+      html += `<div class="sl-entry"><span class="sl-line" style="background:#2471a3"></span>Connective railway</div>`;
+    }
+
+    if (activeSlayers.forest) {
+      html += `<div class="sl-entry"><span class="sl-swatch" style="background:#2d5a27"></span>Major forest zone</div>`;
+    }
+
+    if (activeSlayers.carbon && (step.phase === 'carbon_early' || step.phase === 'carbon_full')) {
+      html += `<div class="sl-entry"><span class="sl-swatch" style="background:#2d5016;border-radius:50%;border:2px solid #7fc47a"></span>Carbon offset project</div>`;
+    }
+
+    el.innerHTML = html || `<span style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--muted);">Drag the slider or toggle layers above to explore</span>`;
+  }
+
+  function goToStep(idx) {
+    currentStep = idx;
+    const step = timeSteps[idx];
+
+    document.getElementById('scrambleYear').textContent = step.year;
+    document.getElementById('scrambleStat').textContent = step.stat;
+
+    const slider = document.getElementById('timeSlider');
+    slider.value = idx;
+    slider.setAttribute('aria-valuetext', 'Year ' + step.year);
+    updateSliderTrack(idx);
+
+    // Update tick highlights
+    for (let i = 0; i <= 7; i++) {
+      const el = document.getElementById('tick-' + i);
+      if (el) el.classList.toggle('tick-active', i === idx);
+    }
+
+    setMapLayers(step);
+  }
+
+  // ── Slider input ──
+  document.getElementById('timeSlider').addEventListener('input', function() {
+    goToStep(parseInt(this.value));
+  });
+
+  // ── Layer toggle buttons ──
+  document.querySelectorAll('.scramble-layer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const layer = btn.dataset.slayer;
+      if (!layer) return;
+      activeSlayers[layer] = !activeSlayers[layer];
+      btn.classList.toggle('slb-active', activeSlayers[layer]);
+      btn.setAttribute('aria-pressed', activeSlayers[layer] ? 'true' : 'false');
+      setMapLayers(timeSteps[currentStep]);
+    });
+  });
+
+  // ── Initialize ──
+  goToStep(0);
+})();
 </script>
 </body>
 </html>
