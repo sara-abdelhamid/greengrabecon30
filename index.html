@@ -128,13 +128,7 @@
       linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
     background-size: 64px 64px; pointer-events: none;
   }
-  .hero-africa {
-    position: absolute; right: 0; top: 0; bottom: 0;
-    width: 50vw; max-width: 600px;
-    display: flex; align-items: center; justify-content: flex-end;
-    padding-right: 4vw; pointer-events: none; opacity: 0.06;
-  }
-  .hero-africa svg { width: 100%; height: auto; }
+  .hero-africa { display: none; }
 
   .hero-eyebrow {
     font-family: 'Inter', sans-serif;
@@ -592,11 +586,6 @@
 
 <!-- HERO -->
 <header class="hero" id="top">
-  <div class="hero-africa" aria-hidden="true">
-    <svg viewBox="0 0 200 280" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M95,8 C110,5 124,10 136,20 C150,32 157,48 160,65 C164,82 160,98 163,112 C167,124 174,132 172,142 C169,152 161,158 157,167 C153,177 152,190 147,201 C141,213 132,220 125,231 C117,242 113,255 105,264 C101,270 96,275 92,265 C86,253 80,241 74,230 C66,217 57,206 52,193 C47,180 48,167 46,154 C44,141 39,129 41,117 C43,104 50,93 50,80 C50,67 45,54 49,42 C53,30 62,20 73,14 C81,10 88,9 95,8 Z"/>
-    </svg>
-  </div>
   <span class="hero-eyebrow">ECON 30 · Progress and Inequality · Sara · Spring 2026</span>
   <h1>Who Pays When Corporations Buy Carbon Credits from <em>African Forests?</em></h1>
   <div class="hero-rq">
