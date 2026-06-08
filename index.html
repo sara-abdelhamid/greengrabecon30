@@ -517,6 +517,50 @@
   .sl-entry { display: flex; align-items: center; gap: 0.35rem; font-family: 'Inter', sans-serif; font-size: 0.62rem; color: var(--muted); }
   .sl-swatch { width: 11px; height: 11px; border-radius: 1px; flex-shrink: 0; }
   .sl-line { display: inline-block; width: 20px; height: 3px; border-radius: 1px; flex-shrink: 0; margin-right: 2px; }
+  .scramble-mode-note { font-family: 'Inter', sans-serif; font-size: 0.6rem; color: var(--muted); margin: 0 0 0.6rem; line-height: 1.45; }
+  #timeSlider { transition: background 0.25s ease; }
+
+  /* ── CREDIT FLOWCHART ───────────────────────────────────────────── */
+  .credit-flowchart { margin: 2rem 0; padding: 1.4rem; background: var(--white); border: 1px solid var(--rule); }
+  .credit-flowchart-label { font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 1rem; }
+  .flow-steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; align-items: stretch; }
+  .flow-step { background: var(--bg-alt); border: 1px solid var(--rule); padding: 0.75rem 0.6rem; position: relative; }
+  .flow-step-num { font-family: 'Space Grotesk', sans-serif; font-size: 0.55rem; font-weight: 700; color: var(--amber); letter-spacing: 0.08em; margin-bottom: 0.35rem; }
+  .flow-step-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--forest); line-height: 1.25; margin-bottom: 0.35rem; }
+  .flow-step-desc { font-family: 'Inter', sans-serif; font-size: 0.58rem; color: var(--muted); line-height: 1.4; }
+  .flow-step:not(:last-child)::after { content: '→'; position: absolute; right: -0.42rem; top: 50%; transform: translateY(-50%); font-size: 0.7rem; color: var(--amber); z-index: 1; }
+  @media (max-width: 900px) {
+    .flow-steps { grid-template-columns: repeat(3, 1fr); }
+    .flow-step:nth-child(3)::after, .flow-step:nth-child(6)::after { content: none; }
+  }
+  @media (max-width: 540px) {
+    .flow-steps { grid-template-columns: 1fr; }
+    .flow-step::after { content: '↓' !important; right: auto; left: 50%; top: auto; bottom: -0.55rem; transform: translateX(-50%); }
+    .flow-step:last-child::after { content: none !important; }
+  }
+
+  /* ── LAW TIMELINE ───────────────────────────────────────────────── */
+  .law-timeline { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 2.5rem 0; border: 1px solid var(--rule); background: var(--white); }
+  .law-timeline-col { padding: 1.2rem 1.4rem; }
+  .law-timeline-col:first-child { border-right: 1px solid var(--rule); background: rgba(184,92,0,0.04); }
+  .law-timeline-col:last-child { background: rgba(45,90,39,0.04); }
+  .law-timeline-head { font-family: 'Space Grotesk', sans-serif; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--rule); }
+  .law-timeline-col:first-child .law-timeline-head { color: var(--amber); border-color: var(--amber); }
+  .law-timeline-col:last-child .law-timeline-head { color: var(--forest-mid); border-color: var(--forest-mid); }
+  .law-timeline-item { margin-bottom: 1.1rem; padding-left: 0.75rem; border-left: 2px solid var(--rule); }
+  .law-timeline-item:last-child { margin-bottom: 0; }
+  .law-timeline-year { font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; }
+  .law-timeline-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem; font-weight: 600; color: var(--ink); margin: 0.15rem 0; line-height: 1.3; }
+  .law-timeline-desc { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: var(--muted); line-height: 1.45; margin: 0; }
+  @media (max-width: 680px) {
+    .law-timeline { grid-template-columns: 1fr; }
+    .law-timeline-col:first-child { border-right: none; border-bottom: 1px solid var(--rule); }
+  }
+
+  /* ── MECHANISM CALLOUT ──────────────────────────────────────────── */
+  .mechanism-callout { margin: 1.8rem 0; padding: 1.2rem 1.4rem; background: var(--forest); color: var(--cream); border-left: 4px solid var(--amber); }
+  .mechanism-callout p { font-family: 'Lora', serif; font-size: 1.15rem; font-style: italic; margin: 0; line-height: 1.4; color: var(--cream); }
+
   @media (max-width: 680px) {
     #scramble-map { height: 300px; }
     .scramble-header { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
@@ -661,13 +705,15 @@
 
     <p class="reveal">The voluntary carbon market is the private, unregulated system where corporations buy forest offsets to meet net-zero pledges. It was designed to solve a problem: wealthy countries externalizing climate costs onto everyone else. The market would channel capital to climate-vulnerable regions, funding both conservation and local development. Two decades in, that promise looks more like extraction.</p>
 
-    <p class="reveal">Sub-Saharan Africa now supplies more forest carbon credits than any other region. Across ten countries, a consistent pattern has emerged: contracts signed by governments without community consultation, certified by auditors paid by developers, justified by the language of climate action. Communities lose access to land. Developers capture 55 to 65% of credit revenue. Certification fees take another 20 to 30%. What reaches communities often amounts to less than 5%. Sometimes nothing at all.</p>
+    <p class="reveal">Sub-Saharan Africa now supplies more forest carbon credits than any other region. Across ten countries, a consistent pattern has emerged: contracts signed by governments without community consultation, certified by auditors paid by developers, justified by the language of climate action. Communities lose access to land. Developers capture 55 to 65% of credit revenue (Oakland Institute, 2023). Certification fees take another 20 to 30% (Fern, 2023). What reaches communities often amounts to less than 5% (World Bank, 2023). Sometimes nothing at all.</p>
 
     <p class="reveal">The legal mechanism enabling this is not new. It is the same infrastructure that governed colonial land alienation: state control over lands classified as "public" or "unimproved," the legal invisibility of customary tenure, external certification of contracts that bypass those who live on the land. The justification has shifted from civilization and development to sustainability and conservation. The structure endures.</p>
 
     <p class="reveal">African civil society organizations and scholars have a term for this: green colonialism. Not as metaphor, but as description of a legal and financial system reactivating colonial land law to financialize African forests (Olanya, ECAS4; Laltaika &amp; Askew, 2018; ROAPE, 2024). The carbon registries certifying these projects are playing the role that colonial land courts once did. They legitimize transfers that disconnect people from land that sustains them, with no legal standing to refuse.</p>
 
-    <p class="reveal">This project examines what happens when a market designed to correct an inequality builds a new one. Who captures the value when a forest becomes a carbon asset? Who bears the cost? And what does it mean that the legal architecture making this possible was designed during the Scramble for Africa and never dismantled?</p>
+    <p class="reveal">This project argues three things together. First, phantom credits are not the work of rogue developers. They follow from certification incentives: auditors paid by developers, baselines set by developers, communities excluded from the process. Second, the land rights precarity that makes dispossession possible is not accidental. It is inherited colonial land law, still operating under post-independence statutes. Third, the money confirms the transfer: developers and intermediaries capture 75 to 90% of credit value while communities lose access to land and receive single-digit shares, if anything. Connecting fraud, tenure, and revenue in one frame is what this project adds.</p>
+
+    <p class="reveal">A carbon credit is a certificate for one metric ton of CO₂ either kept out of the atmosphere or removed from it. Corporations buy them to count toward net-zero pledges without cutting their own emissions. Forest projects dominate because trees store carbon: if a forest stays standing, that storage counts as an avoided emission. That is the logic. The question is who pays when the certificate gets sold.</p>
 
     <div class="how-to-read reveal">
       <strong>Research Question</strong>
@@ -801,6 +847,42 @@
         </div>
       </div>
     </details>
+
+    <div class="credit-flowchart reveal" aria-label="Six-step flowchart: how carbon credits are generated and sold">
+      <p class="credit-flowchart-label">How a credit gets made and sold</p>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-num">Step 1</div>
+          <div class="flow-step-title">Secure land rights</div>
+          <p class="flow-step-desc">Developer negotiates carbon rights via purchase, lease, or government deal.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 2</div>
+          <div class="flow-step-title">Set the baseline</div>
+          <p class="flow-step-desc">Project predicts deforestation without intervention. Not measured. Predicted.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 3</div>
+          <div class="flow-step-title">Get certified</div>
+          <p class="flow-step-desc">Auditor hired by developer verifies design against Verra or Gold Standard rules.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 4</div>
+          <div class="flow-step-title">Issue credits</div>
+          <p class="flow-step-desc">One credit per ton of claimed avoided emissions. Registered and listed for sale.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 5</div>
+          <div class="flow-step-title">Corporate purchase</div>
+          <p class="flow-step-desc">Buyer counts credit against its emissions. Neutrality claim enters public reporting.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">Step 6</div>
+          <div class="flow-step-title">Revenue split</div>
+          <p class="flow-step-desc">Developer and certifiers take most. Community share, if any, comes last.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -854,7 +936,7 @@
 
       <div class="scramble-header">
         <div class="scramble-year" id="scrambleYear" aria-live="polite">1880</div>
-        <div class="scramble-stat" id="scrambleStat">European control: ~10% — coastal footholds only</div>
+        <div class="scramble-stat" id="scrambleStat">European control: ~10% (snapshot) | coastal footholds only</div>
       </div>
 
       <div id="scramble-map"></div>
@@ -862,26 +944,26 @@
       <div class="scramble-controls">
         <div class="scramble-slider-row">
           <span>1880</span>
-          <input type="range" id="timeSlider" min="0" max="7" step="1" value="0"
-                 aria-label="Time slider: drag to move through history from 1880 to 2020"
-                 aria-valuetext="Year 1880">
+          <input type="range" id="timeSlider" min="1880" max="2020" step="10" value="1880"
+                 aria-label="Time slider: drag through time from 1880 to 2020 (map shows nearest historical snapshot)"
+                 aria-valuetext="Year 1880, shown as 1880 snapshot">
           <span>2020</span>
         </div>
         <div class="scramble-ticks" aria-hidden="true">
-          <span id="tick-0" class="tick-active">1880</span>
-          <span id="tick-1">1884</span>
-          <span id="tick-2">1890</span>
-          <span id="tick-3">1900</span>
-          <span id="tick-4">1914</span>
-          <span id="tick-5">1960</span>
-          <span id="tick-6">2000</span>
-          <span id="tick-7">2020</span>
+          <span id="tick-1880" class="tick-active">1880</span>
+          <span id="tick-1900">1900</span>
+          <span id="tick-1914">1914</span>
+          <span id="tick-1960">1960</span>
+          <span id="tick-1980">1980</span>
+          <span id="tick-2000">2000</span>
+          <span id="tick-2020">2020</span>
         </div>
         <div class="scramble-layer-btns" role="group" aria-label="Map data layers">
-          <button class="scramble-layer-btn slb-active" data-slayer="political" id="slbPolitical" aria-pressed="true">Political Control</button>
-          <button class="scramble-layer-btn" data-slayer="infrastructure" id="slbInfra" aria-pressed="false">Infrastructure</button>
-          <button class="scramble-layer-btn" data-slayer="carbon" id="slbCarbon" aria-pressed="false">Carbon Projects</button>
+          <button class="scramble-layer-btn slb-active" data-slayer="political" id="slbPolitical" aria-pressed="true" title="Colonial powers and independence snapshots">Political Control</button>
+          <button class="scramble-layer-btn" data-slayer="infrastructure" id="slbInfra" aria-pressed="false" title="Colonial railways appear by build year">Infrastructure (railways)</button>
+          <button class="scramble-layer-btn" data-slayer="carbon" id="slbCarbon" aria-pressed="false" title="Carbon offset projects, 2000–2020">Carbon Projects</button>
         </div>
+        <p class="scramble-mode-note">Slider moves by decade. Map displays the nearest historical snapshot (1880, 1900, 1914, 1960, 1980, 2000, 2020). Boundaries are approximate.</p>
       </div>
 
       <div class="scramble-legend" id="scrambleLegend" aria-label="Map legend"></div>
@@ -892,6 +974,45 @@
     </div>
 
     <p class="reveal">When African nations gained independence in the 1950s–70s, they inherited this legal architecture largely intact. Kenya's land titling system still operates under legislation derived from the 1959 colonial ordinance; Tanzania's 1999 Land Acts preserve the colonial distinction between "native reserves" and state land (Manji, 2006). Liberia's Public Lands Law derives from its 1956 codification and has never been substantially reformed. The result: World Bank analysis found that only 10% of rural land in Sub-Saharan Africa is formally documented, with 90% held under customary systems that lack legal recognition in national registries, a direct legacy of colonial land law that classified customary tenure as informal "use rights" rather than ownership (Byamugisha, 2013).</p>
+
+    <div class="law-timeline reveal" role="img" aria-label="Side-by-side timeline comparing colonial land laws and post-independence laws that inherited them">
+      <div class="law-timeline-col">
+        <div class="law-timeline-head">Colonial land law</div>
+        <div class="law-timeline-item">
+          <div class="law-timeline-year">1884–85</div>
+          <div class="law-timeline-title">Berlin Conference</div>
+          <p class="law-timeline-desc">"Effective occupation" doctrine. European powers claim territory by administrative presence, not consent.</p>
+        </div>
+        <div class="law-timeline-item">
+          <div class="law-timeline-year">1890s</div>
+          <div class="law-timeline-title">Congo Free State concessions</div>
+          <p class="law-timeline-desc">Leopold II grants rubber concessions covering 1.5 million km². Communities have no legal standing.</p>
+        </div>
+        <div class="law-timeline-item">
+          <div class="law-timeline-year">1915</div>
+          <div class="law-timeline-title">Kenya Crown Lands Ordinance</div>
+          <p class="law-timeline-desc">All untitled land classified as state property. ~20% of fertile land allocated to European settlers.</p>
+        </div>
+      </div>
+      <div class="law-timeline-col">
+        <div class="law-timeline-head">Post-independence inheritance</div>
+        <div class="law-timeline-item">
+          <div class="law-timeline-year">1956</div>
+          <div class="law-timeline-title">Liberia Public Lands Law</div>
+          <p class="law-timeline-desc">Codified under colonial-era framework. Never substantially reformed. State retains control over "public" forest.</p>
+        </div>
+        <div class="law-timeline-item">
+          <div class="law-timeline-year">1999</div>
+          <div class="law-timeline-title">Tanzania Land Acts</div>
+          <p class="law-timeline-desc">Preserves colonial distinction between village land and general land under state authority.</p>
+        </div>
+        <div class="law-timeline-item">
+          <div class="law-timeline-year">2016</div>
+          <div class="law-timeline-title">Kenya Forest Act</div>
+          <p class="law-timeline-desc">Partial reform. Customary rights recognition improved but not resolved (Katila et al., 2019).</p>
+        </div>
+      </div>
+    </div>
 
     <!-- Land documentation stat -->
     <div class="text-stats reveal">
@@ -1009,7 +1130,13 @@
     <p class="eyebrow reveal">Part V</p>
     <h2 class="reveal">The Legal Infrastructure: How Colonial Land Law Makes This Possible</h2>
 
-    <p class="lede reveal">These cases aren't the product of bad actors exploiting an otherwise sound system. They're what the system reliably produces when it operates on top of colonial land tenure infrastructure.</p>
+    <p class="lede reveal">The legal invisibility of customary tenure is the single mechanism connecting 1884 to today. Colonial administrations classified communal land as state property because communities held it without European-style title. Post-independence governments kept those classifications. Carbon developers operate on the same premise: if customary rights aren't in the registry, the state can lease the forest.</p>
+
+    <div class="mechanism-callout reveal">
+      <p>One mechanism. 140 years. Still running.</p>
+    </div>
+
+    <p class="reveal">These cases aren't the product of bad actors exploiting an otherwise sound system. They're what the system reliably produces when it operates on top of colonial land tenure infrastructure.</p>
 
     <p class="reveal">Colonial land alienation rested on interlocking assumptions: African tenure systems were informal and therefore not "real" property. African communities were failing to use land "productively." External actors had the right and duty to improve that land's use. Under these premises, colonial administrations transferred vast tracts to European settlers and companies. Communities whose livelihoods depended on that land had no standing in the courts governing the transfers.</p>
 
@@ -1162,8 +1289,9 @@
       <p>This doesn't mean carbon markets are irredeemable. It means a carbon market built on unrecognized land rights will reproduce dispossession. It means the certification architecture, funded by developers and audited by auditors hired by developers, cannot catch the fraud it has structural incentives to overlook. Progress on climate. Regression on everything else. That is not a win-win.</p>
     </div>
 
-    <h3 class="reveal">A note on sources and limits</h3>
-    <p class="reveal">The revenue-sharing figures cited throughout this project come from investigative reporting, NGO research, and peer-reviewed studies, not audited financial disclosures, which developers are not required to publish. Project developers dispute some of the community-share estimates, and Wildlife Works, Kariba's developer, has contested the West et al. baseline analysis. I have cited the peer-reviewed and independently verified version of each claim where one exists. This project synthesizes secondary sources rather than generating new primary data, and readers should treat the specific dollar figures as estimates rather than confirmed accounts. The structural argument, that unrecognized customary tenure systematically enables dispossession, is supported across sources that developers do not dispute.</p>
+    <h3 class="reveal">What this project contributes</h3>
+    <p class="reveal">This site builds three original syntheses from secondary sources. The revenue flow diagram in Part VI combines Oakland Institute, Fern, and World Bank estimates into a single $15 credit breakdown. The colonial vs. carbon market comparison table in Part V maps the same legal mechanisms across two eras side by side. The Africa credits growth chart annotates registry data with the policy events that accelerated issuance after 2020. None of these datasets existed in one place before this project assembled them.</p>
+    <p class="reveal">The limits are real. Revenue-sharing figures come from investigative reporting and NGO research, not audited developer disclosures. Project developers dispute some community-share estimates, and Wildlife Works has contested the West et al. baseline analysis. I cite the peer-reviewed version of each disputed claim where one exists. Specific dollar figures should be read as estimates. The structural argument, that unrecognized customary tenure enables dispossession, is supported across sources that developers do not dispute.</p>
   </div>
 </section>
 
@@ -1385,14 +1513,23 @@ new Chart(document.getElementById('chartScramble'), {
 new Chart(document.getElementById('chartDonut'), {
   type:'doughnut',
   data:{
-    labels:['Developer (55%)','Monitoring (12%)','Government (11%)','Broker (8%)','Certification (9%)','Community (3%)'],
-    datasets:[{ data:[55,12,11,8,9,3], backgroundColor:['#2d5a27','#4a7c42','#6a9c62','#8aba82','#aad4a0','#b85c00'], borderWidth:0 }]
+    labels:['Developer','Monitoring & audit','Government share','Broker / exchange','Certification fees','Community'],
+    datasets:[{ data:[55,12,11,8,9,3], backgroundColor:['#2d5a27','#4a7c42','#6a9c62','#8aba82','#aad4a0','#b85c00'], borderWidth:0, hoverOffset:6 }]
   },
   options:{
     cutout:'60%',
+    interaction:{ mode:'nearest', intersect:true },
     plugins:{
       legend:{ position:'right', labels:{ font:FI, color:MUT, boxWidth:11, padding:9 } },
-      tooltip:{ callbacks:{ label: ctx => ` ${ctx.label}: $${((ctx.parsed/100)*15).toFixed(2)} of $15` } }
+      tooltip:{
+        callbacks:{
+          label: ctx => {
+            const pct = ctx.parsed;
+            const dollars = ((pct / 100) * 15).toFixed(2);
+            return ` ${ctx.label}: $${dollars} (${pct}% of $15.00)`;
+          }
+        }
+      }
     }
   }
 });
@@ -1438,15 +1575,28 @@ new Chart(document.getElementById('chartLine'), {
       backgroundColor:'rgba(45,90,39,0.08)',
       borderWidth:2.5,
       pointBackgroundColor: ctx => lineEvents[ctx.chart.data.labels[ctx.dataIndex]] ? '#b85c00' : '#2d5a27',
-      pointRadius: ctx => lineEvents[ctx.chart.data.labels[ctx.dataIndex]] ? 6 : 4,
+      pointRadius: ctx => lineEvents[ctx.chart.data.labels[ctx.dataIndex]] ? 7 : 4,
+      pointHoverRadius: 9,
       fill:true, tension:0.35
     }]
   },
   options:{
     responsive:true,
+    interaction:{ mode:'nearest', intersect:false },
     plugins:{
       legend:{ labels:{ font:FI, color:MUT } },
-      tooltip:{ callbacks:{ afterLabel: ctx => { const yr=ctx.chart.data.labels[ctx.dataIndex]; return lineEvents[yr] ? '\n▸ '+lineEvents[yr] : ''; } } }
+      tooltip:{
+        callbacks:{
+          title: ctx => ctx[0].label,
+          label: ctx => {
+            const yr = ctx.chart.data.labels[ctx.dataIndex];
+            const vol = ctx.parsed.y;
+            const event = lineEvents[yr];
+            if (event) return [`${vol} million credits issued`, event];
+            return `${vol} million credits issued`;
+          }
+        }
+      }
     },
     scales:{
       x:{ ticks:{ font:FI, color:MUT }, grid:{ display:false } },
@@ -1548,41 +1698,44 @@ new Chart(document.getElementById('chartLine'), {
     768,788,800,732,894,716
   ]);
 
-  // ── Time steps ───────────────────────────────────────────────────
-  const timeSteps = [
-    { year:'1880', idx:0, opacity:0,    phase:'coastal',
-      stat:'European control: ~10% — coastal footholds only' },
-    { year:'1884', idx:1, opacity:0.22, phase:'berlin',
-      stat:'Berlin Conference: European powers divide Africa by negotiation, not presence' },
-    { year:'1890', idx:2, opacity:0.34, phase:'expansion',
-      stat:'European control: ~35% — interior penetration accelerating' },
-    { year:'1900', idx:3, opacity:0.46, phase:'late',
-      stat:'European control: ~75% — most African governance systems dismantled' },
-    { year:'1914', idx:4, opacity:0.60, phase:'complete',
-      stat:'European control: ~90% — colonial land laws now in effect across the continent' },
-    { year:'1960', idx:5, opacity:0,    phase:'independence',
-      stat:'Independence era — colonial land laws largely retained by new governments' },
-    { year:'2000', idx:6, opacity:0,    phase:'carbon_early',
-      stat:'Voluntary carbon market emerges — same tenure precarity, new buyers' },
-    { year:'2020', idx:7, opacity:0,    phase:'carbon_full',
-      stat:'Active carbon projects: 10 shown | Community land documented: ~10% of SSA' },
-  ];
+  // ── Time snapshots (map snaps to these; slider can move by decade) ──
+  const SNAP_YEARS = [1880, 1900, 1914, 1960, 1980, 2000, 2020];
+  const SNAP_BY_YEAR = {
+    1880: { snap:1880, opacity:0,    phase:'coastal',      stat:"European control: ~10% (snapshot) | coastal footholds only" },
+    1900: { snap:1900, opacity:0.46, phase:'late',        stat:"European control: ~75% (snapshot) | interior control consolidating" },
+    1914: { snap:1914, opacity:0.60, phase:'complete',    stat:"European control: ~90% (snapshot) | colonial land laws in force across most of the continent" },
+    1960: { snap:1960, opacity:0,    phase:'independence',stat:"Independence era (snapshot) | colonial land laws largely retained by new governments" },
+    1980: { snap:1980, opacity:0,    phase:'independence',stat:"Post-independence (snapshot) | borders remain, tenure systems still unequal" },
+    2000: { snap:2000, opacity:0,    phase:'carbon_early',stat:"Carbon market era (snapshot) | voluntary offsets scale up in the 2000s" },
+    2020: { snap:2020, opacity:0,    phase:'carbon_full', stat:"2020s (snapshot) | active carbon projects overlay modern borders" },
+  };
+
+  function nearestSnapshotYear(y) {
+    let best = SNAP_YEARS[0];
+    let bestD = Math.abs(y - best);
+    for (let i = 1; i < SNAP_YEARS.length; i++) {
+      const s = SNAP_YEARS[i];
+      const d = Math.abs(y - s);
+      if (d < bestD) { best = s; bestD = d; }
+    }
+    return best;
+  }
 
   // ── Railway lines ─────────────────────────────────────────────────
   const railways = [
-    { label:'Uganda Railway (1896–1901) | Mombasa → Kampala | Secured British East Africa',
+    { builtStart:1896, label:'Uganda Railway (1896–1901) | Mombasa → Kampala | Secured British East Africa',
       color:'#c0392b', coords:[[-4.05,39.66],[-1.28,36.82],[0.32,32.58]] },
-    { label:"Cape–Bulawayo Line (1890s) | Cape Town → Zimbabwe | Cecil Rhodes's Cape-to-Cairo project",
+    { builtStart:1890, label:"Cape–Bulawayo Line (1890s) | Cape Town → Zimbabwe | Cecil Rhodes's Cape-to-Cairo project",
       color:'#c0392b', coords:[[-33.9,18.4],[-28,24],[-22,28],[-18.5,27]] },
-    { label:'Central Line (1905–1914) | Dar es Salaam → Lake Tanganyika | German extraction route',
+    { builtStart:1905, label:'Central Line (1905–1914) | Dar es Salaam → Lake Tanganyika | German extraction route',
       color:'#7f8c8d', coords:[[-6.8,39.3],[-6.8,35],[-6.5,30]] },
-    { label:'Benguela Railway (1902–1929) | Lobito → DRC border | Copper and mineral extraction',
+    { builtStart:1902, label:'Benguela Railway (1902–1929) | Lobito → DRC border | Copper and mineral extraction',
       color:'#6c3483', coords:[[-12.4,13.5],[-12,18],[-11,23]] },
-    { label:'Dakar–Niger Railway (1885–1923) | Dakar → Bamako | French West Africa groundnut export route',
+    { builtStart:1885, label:'Dakar–Niger Railway (1885–1923) | Dakar → Bamako | French West Africa groundnut export route',
       color:'#2471a3', coords:[[14.7,-17.4],[12.6,-8.0]] },
-    { label:'Delagoa Bay Line (1895) | Maputo → Johannesburg | Built for Witwatersrand gold',
+    { builtStart:1895, label:'Delagoa Bay Line (1895) | Maputo → Johannesburg | Built for Witwatersrand gold',
       color:'#6c3483', coords:[[-25.97,32.59],[-26.2,28.0]] },
-    { label:'Congo–Ocean Railway (1921–34) | Brazzaville → Pointe-Noire | ~17,000 deaths in construction',
+    { builtStart:1921, label:'Congo–Ocean Railway (1921–34) | Brazzaville → Pointe-Noire | ~17,000 deaths in construction',
       color:'#d35400', coords:[[-4.3,15.3],[-4.6,11.8]] },
   ];
 
@@ -1624,10 +1777,18 @@ new Chart(document.getElementById('chartLine'), {
     }).addTo(coastalLG);
   });
 
+  // Railways are time-gated; we create the lines once and add/remove them by year.
   railways.forEach(r => {
-    L.polyline(r.coords, { color:r.color, weight:2.5, opacity:0.85, dashArray:'7,4' })
-      .bindTooltip(r.label, { direction:'top', sticky:true }).addTo(infraLG);
+    r.line = L.polyline(r.coords, { color:r.color, weight:2.5, opacity:0.85, dashArray:'7,4' })
+      .bindTooltip(r.label, { direction:'top', sticky:true });
   });
+
+  function setInfrastructureForYear(yearShown) {
+    infraLG.clearLayers();
+    railways.forEach(r => {
+      if ((r.builtStart || 0) <= yearShown) infraLG.addLayer(r.line);
+    });
+  }
 
   forestZones.forEach(z => {
     L.rectangle(z.bounds, { fillColor:'#2d5a27', fillOpacity:0.35, color:'#1a3320', weight:0.5 })
@@ -1646,7 +1807,8 @@ new Chart(document.getElementById('chartLine'), {
   let geoLayer    = null;
   let geoFeatures = null;
   let activeSlayers = { political:true, infrastructure:false, carbon:false, forest:false };
-  let currentStep = 0;
+  let currentYearSelected = 1880;
+  let currentYearShown = 1880;
 
   function countryStyle(f, step) {
     const id   = +f.id;
@@ -1706,7 +1868,10 @@ new Chart(document.getElementById('chartLine'), {
     scrambleMap.removeLayer(coastalLG);
 
     if (activeSlayers.political && step.phase === 'coastal') coastalLG.addTo(scrambleMap);
-    if (activeSlayers.infrastructure && step.idx >= 2) infraLG.addTo(scrambleMap);
+    if (activeSlayers.infrastructure) {
+      setInfrastructureForYear(step.snap);
+      infraLG.addTo(scrambleMap);
+    }
     if (activeSlayers.forest) forestLG.addTo(scrambleMap);
     if (activeSlayers.carbon && (step.phase === 'carbon_early' || step.phase === 'carbon_full')) carbonLG.addTo(scrambleMap);
     renderCountries(step);
@@ -1732,7 +1897,7 @@ new Chart(document.getElementById('chartLine'), {
         });
       }
     }
-    if (activeSlayers.infrastructure && step.idx >= 2) {
+    if (activeSlayers.infrastructure) {
       html += `<div class="sl-entry"><span class="sl-line" style="background:#c0392b"></span>Extraction railway (mine→port, 90%)</div>`;
     }
     if (activeSlayers.forest) {
@@ -1744,31 +1909,40 @@ new Chart(document.getElementById('chartLine'), {
     el.innerHTML = html || `<span style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--muted);">Drag the slider or toggle layers above to explore</span>`;
   }
 
-  function updateSliderTrack(val) {
-    const pct = (val / 7) * 100;
+  function updateSliderTrack(yearSelected) {
+    const pct = ((yearSelected - 1880) / (2020 - 1880)) * 100;
     document.getElementById('timeSlider').style.background =
       `linear-gradient(to right, #2d5a27 ${pct}%, #d4cfc6 ${pct}%)`;
   }
 
-  function goToStep(idx) {
-    currentStep = idx;
-    const step = timeSteps[idx];
-    document.getElementById('scrambleYear').textContent = step.year;
+  function goToYear(yearSelected) {
+    currentYearSelected = yearSelected;
+    const snapYear = nearestSnapshotYear(yearSelected);
+    currentYearShown = snapYear;
+    const step = SNAP_BY_YEAR[snapYear];
+
+    // Year label makes the snap explicit (no fake precision).
+    const yearLabel = (snapYear === yearSelected) ? String(yearSelected) : `${yearSelected} (shown as ${snapYear})`;
+    document.getElementById('scrambleYear').textContent = yearLabel;
     document.getElementById('scrambleStat').textContent = step.stat;
+
     const slider = document.getElementById('timeSlider');
-    slider.value = idx;
-    slider.setAttribute('aria-valuetext', 'Year ' + step.year);
-    updateSliderTrack(idx);
-    for (let i = 0; i <= 7; i++) {
-      const el = document.getElementById('tick-' + i);
-      if (el) el.classList.toggle('tick-active', i === idx);
-    }
+    slider.value = yearSelected;
+    slider.setAttribute('aria-valuetext', `Year ${yearSelected}, shown as ${snapYear} snapshot`);
+    updateSliderTrack(yearSelected);
+
+    // Tick highlights follow the snapshot year being shown.
+    SNAP_YEARS.forEach(y => {
+      const el = document.getElementById('tick-' + y);
+      if (el) el.classList.toggle('tick-active', y === snapYear);
+    });
+
     setMapLayers(step);
   }
 
   // ── Events ────────────────────────────────────────────────────────
   document.getElementById('timeSlider').addEventListener('input', function() {
-    goToStep(parseInt(this.value));
+    goToYear(parseInt(this.value));
   });
 
   document.querySelectorAll('.scramble-layer-btn').forEach(btn => {
@@ -1778,7 +1952,7 @@ new Chart(document.getElementById('chartLine'), {
       activeSlayers[layer] = !activeSlayers[layer];
       btn.classList.toggle('slb-active', activeSlayers[layer]);
       btn.setAttribute('aria-pressed', String(activeSlayers[layer]));
-      setMapLayers(timeSteps[currentStep]);
+      setMapLayers(SNAP_BY_YEAR[currentYearShown]);
     });
   });
 
@@ -1788,11 +1962,11 @@ new Chart(document.getElementById('chartLine'), {
     .then(world => {
       const all = topojson.feature(world, world.objects.countries).features;
       geoFeatures = all.filter(f => africanIDs.has(+f.id));
-      goToStep(0);
+      goToYear(1880);
     })
     .catch(() => {
       // Fallback: initialize without GeoJSON, static layers still work
-      goToStep(0);
+      goToYear(1880);
     });
 })();
 </script>
