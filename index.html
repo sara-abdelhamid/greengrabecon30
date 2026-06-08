@@ -417,8 +417,9 @@
     display: grid; grid-template-columns: 1fr 400px;
     min-height: 520px;
     border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
   }
-  #africa-map { height: 520px; background: #0d1a0f; }
+  #africa-map { height: 520px; background: #0d1a0f; position: relative; }
   .map-panel {
     background: rgba(255,255,255,0.04);
     border-left: 1px solid rgba(255,255,255,0.08);
@@ -465,6 +466,14 @@
   }
   .panel-outcome .out-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--amber-lt); margin-bottom: 0.28rem; }
   .panel-outcome p { font-size: 0.73rem; color: #e8c99a; line-height: 1.55; margin: 0; }
+  .panel-key-finding {
+    margin: 0.8rem 0; padding: 0.8rem 1rem;
+    background: rgba(45,90,39,0.18);
+    border-left: 3px solid #4a9e44;
+  }
+  .panel-key-finding .out-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #8aba82; margin-bottom: 0.28rem; }
+  .panel-key-finding p { font-family: 'Inter', sans-serif; font-size: 0.73rem; color: rgba(165,200,155,0.85); line-height: 1.55; margin: 0; }
+  .panel-source { font-family: 'Inter', sans-serif; font-size: 0.58rem; color: rgba(165,200,155,0.4); font-style: italic; margin: 0.9rem 0 0; line-height: 1.45; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.65rem; }
   .status-badge {
     display: inline-block; font-family: 'Inter', sans-serif;
     font-size: 0.58rem; font-weight: 700;
@@ -501,6 +510,7 @@
   .scramble-year { font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700; color: var(--amber-lt); min-width: 60px; line-height: 1; }
   .scramble-stat { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: rgba(165,200,155,0.85); line-height: 1.5; flex: 1; }
   #scramble-map { height: 430px; background: #1a2a1a; }
+  #scramble-map .leaflet-interactive { cursor: pointer; }
   .scramble-controls { padding: 0.9rem 1.4rem; background: var(--white); border-top: 1px solid var(--rule); }
   .scramble-slider-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.3rem; }
   .scramble-slider-row span { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
@@ -512,6 +522,8 @@
   .scramble-layer-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.1rem; }
   .scramble-layer-btn { font-family: 'Inter', sans-serif; font-size: 0.63rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.3rem 0.75rem; border: 1px solid var(--rule); background: var(--white); color: var(--muted); cursor: pointer; transition: all 0.2s; }
   .scramble-layer-btn.slb-active { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .scramble-layer-btn:disabled,
+  .scramble-layer-btn.slb-disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
   .scramble-layer-btn:focus { outline: 2px solid var(--amber); outline-offset: 2px; }
   .scramble-legend { padding: 0.65rem 1.4rem; background: var(--bg-alt); border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; min-height: 34px; align-items: center; }
   .sl-entry { display: flex; align-items: center; gap: 0.35rem; font-family: 'Inter', sans-serif; font-size: 0.62rem; color: var(--muted); }
@@ -584,11 +596,243 @@
   footer { background: var(--ink); border-top: 1px solid #1a1a18; padding: 1.6rem 2.5rem; display: flex; justify-content: space-between; align-items: center; }
   footer p { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: #2e2c2a; margin: 0; }
 
+  /* ── SCROLL PROGRESS ─────────────────────────────────────────────── */
+  #scroll-progress {
+    position: fixed; top: 0; left: 0; right: 0; height: 3px;
+    z-index: 300; pointer-events: none;
+    background: rgba(26,51,32,0.15);
+  }
+  #scroll-progress-bar {
+    height: 100%; width: 0%;
+    background: var(--forest-mid);
+    transition: width 0.08s linear;
+  }
+
+  /* ── INTERACTIVE WIDGETS (shared) ────────────────────────────────── */
+  .ix-block {
+    margin: 2rem 0; padding: 1.4rem;
+    background: var(--white); border: 1px solid var(--rule);
+  }
+  .ix-label {
+    font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber);
+    margin-bottom: 1rem;
+  }
+  .ix-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 2rem 0; }
+  @media (max-width: 720px) { .ix-grid-2 { grid-template-columns: 1fr; } }
+
+  /* Follow a Credit */
+  .buyer-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .buyer-btn {
+    font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.4rem 0.85rem; border: 1px solid var(--rule);
+    background: var(--bg-alt); color: var(--muted); cursor: pointer; transition: all 0.2s;
+  }
+  .buyer-btn:hover { border-color: var(--forest-mid); color: var(--forest); }
+  .buyer-btn.active { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .flow-chain { display: flex; flex-direction: column; gap: 0.35rem; }
+  .flow-node {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.55rem 0.85rem; border: 1px solid var(--rule);
+    background: var(--bg-alt); opacity: 0.35; transition: opacity 0.35s ease, background 0.35s ease, border-color 0.35s ease;
+  }
+  .flow-node.lit { opacity: 1; background: var(--white); border-color: var(--forest-mid); }
+  .flow-node.lit-community { opacity: 1; background: rgba(184,92,0,0.08); border-color: var(--amber); }
+  .flow-node-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--ink); }
+  .flow-node-amt { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--forest-mid); }
+  .flow-node.lit-community .flow-node-amt { color: var(--amber); }
+  .flow-community-note {
+    font-family: 'Lora', serif; font-size: 0.88rem; font-style: italic;
+    color: var(--amber); margin-top: 0.85rem; min-height: 1.4em;
+  }
+
+  /* Credit Calculator */
+  .calc-input-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .calc-input-row label { font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--muted); }
+  .calc-input-row input {
+    font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700;
+    width: 120px; padding: 0.4rem 0.6rem; border: 1px solid var(--rule);
+    background: var(--bg-alt); color: var(--ink);
+  }
+  .calc-results { display: grid; gap: 0.35rem; }
+  .calc-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.45rem 0; border-bottom: 1px solid var(--rule);
+    font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--ink);
+  }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-row span:last-child { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+  .calc-row.calc-community span:last-child { color: var(--amber); }
+  .calc-context {
+    font-family: 'Lora', serif; font-size: 0.82rem; font-style: italic;
+    color: var(--muted); margin-top: 0.75rem; line-height: 1.5;
+  }
+
+  /* Scramble law panel */
+  .scramble-law-panel {
+    margin-top: 0; padding: 1.2rem 1.4rem;
+    background: var(--white); border: 1px solid var(--rule);
+    border-top: none; display: none;
+  }
+  .scramble-law-panel.open { display: block; }
+  .scramble-law-panel.empty-msg { font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--muted); font-style: italic; }
+  .law-split { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.75rem; align-items: stretch; }
+  @media (max-width: 680px) { .law-split { grid-template-columns: 1fr; } .law-bridge { display: none; } }
+  .law-col { padding: 0.85rem 1rem; background: var(--bg-alt); border: 1px solid var(--rule); }
+  .law-col-head { font-family: 'Inter', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .law-col-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; line-height: 1.3; }
+  .law-col-year { font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; color: var(--amber); margin-bottom: 0.35rem; }
+  .law-col-desc { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin: 0; }
+  .law-bridge { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; min-width: 72px; }
+  .law-bridge-arrow { font-size: 1.2rem; color: var(--forest-mid); line-height: 1; }
+  .law-bridge-label { font-family: 'Inter', sans-serif; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); text-align: center; line-height: 1.3; }
+  .law-panel-country { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--forest); margin-bottom: 0.85rem; }
+
+  /* Baseline simulator */
+  .baseline-panel { margin: 2rem 0; }
+  .baseline-slider-wrap { margin: 1.2rem 0; }
+  .baseline-slider-wrap label { font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--ink); display: block; margin-bottom: 0.5rem; }
+  .baseline-slider-wrap input[type=range] { width: 100%; accent-color: var(--forest-mid); }
+  .baseline-markers { display: flex; justify-content: space-between; margin-top: 0.35rem; font-family: 'Inter', sans-serif; font-size: 0.58rem; color: var(--muted); }
+  .baseline-markers span.marker-real { color: var(--forest-mid); font-weight: 700; }
+  .baseline-markers span.marker-kariba { color: var(--amber); font-weight: 700; }
+  .baseline-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin: 1rem 0; }
+  @media (max-width: 540px) { .baseline-stats { grid-template-columns: 1fr; } }
+  .baseline-stat { padding: 0.75rem; background: var(--bg-alt); border: 1px solid var(--rule); text-align: center; }
+  .baseline-stat-label { font-family: 'Inter', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; line-height: 1.35; }
+  .baseline-stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--forest-mid); }
+  .baseline-stat-val.amber { color: var(--amber); }
+  .baseline-stat-val.red { color: #b83030; }
+  .baseline-status { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.5rem; }
+  .baseline-note { font-family: 'Lora', serif; font-size: 0.9rem; font-style: italic; color: var(--muted); margin-top: 1rem; line-height: 1.55; }
+
+  /* Kariba timeline */
+  .kariba-timeline-wrap { margin: 2rem 0; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0.5rem; }
+  .kariba-timeline { display: flex; gap: 0; min-width: 900px; position: relative; padding: 1rem 0 0.5rem; }
+  .kariba-timeline::before {
+    content: ''; position: absolute; top: 1.55rem; left: 0; right: 0; height: 2px; background: var(--rule);
+  }
+  .kt-node { flex: 1; min-width: 120px; padding: 0 0.5rem; position: relative; cursor: pointer; }
+  .kt-dot {
+    width: 12px; height: 12px; border-radius: 50%; background: var(--forest-mid);
+    border: 2px solid var(--white); box-shadow: 0 0 0 1px var(--rule);
+    margin: 0 auto 0.65rem; position: relative; z-index: 1; transition: transform 0.2s;
+  }
+  .kt-node:hover .kt-dot, .kt-node.open .kt-dot { transform: scale(1.25); }
+  .kt-node.kt-unresolved .kt-dot { background: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+  .kt-year { font-family: 'Inter', sans-serif; font-size: 0.58rem; font-weight: 700; color: var(--amber); text-align: center; margin-bottom: 0.25rem; }
+  .kt-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.62rem; font-weight: 600; color: var(--ink); text-align: center; line-height: 1.3; }
+  .kt-desc {
+    display: none; margin-top: 0.65rem; padding: 0.65rem;
+    background: var(--bg-alt); border: 1px solid var(--rule);
+    font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--muted); line-height: 1.5;
+  }
+  .kt-node.open .kt-desc { display: block; }
+
+  /* Map hectare counter */
+  .hectare-counter {
+    position: absolute; top: 0.75rem; right: 0.75rem; z-index: 500;
+    background: rgba(13,26,15,0.92); border: 1px solid rgba(255,255,255,0.12);
+    padding: 0.55rem 0.85rem; pointer-events: none;
+    font-family: 'Inter', sans-serif; font-size: 0.62rem; color: rgba(165,200,155,0.65);
+    line-height: 1.45; max-width: 200px;
+  }
+  .hectare-counter strong { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; color: var(--cream); display: block; }
+  .hectare-counter .hc-uk { display: none; margin-top: 0.35rem; font-style: italic; color: var(--amber-lt); font-size: 0.58rem; }
+  .hectare-counter.all-clicked .hc-uk { display: block; }
+
+  /* Interactive compare table (Part V) */
+  .compare-reveal-wrap { margin: 1.2rem 0; }
+  .compare-reveal-table { width: 100%; border-collapse: collapse; font-family: 'Inter', sans-serif; font-size: 0.78rem; }
+  .compare-reveal-table th {
+    text-align: left; padding: 0.65rem 0.85rem; border-bottom: 2px solid var(--ink);
+    font-size: 0.63rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  }
+  .compare-reveal-table td { padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.5; }
+  .compare-reveal-table .col-carbon {
+    opacity: 0; transform: translateX(12px);
+    filter: blur(4px); transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+  }
+  .compare-reveal-table.revealed .col-carbon { opacity: 1; transform: none; filter: none; }
+  .compare-reveal-table.revealed tr[data-delay="0"] .col-carbon { transition-delay: 0ms; }
+  .compare-reveal-table.revealed tr[data-delay="1"] .col-carbon { transition-delay: 500ms; }
+  .compare-reveal-table.revealed tr[data-delay="2"] .col-carbon { transition-delay: 1000ms; }
+  .compare-reveal-table.revealed tr[data-delay="3"] .col-carbon { transition-delay: 1500ms; }
+  .compare-reveal-table.revealed tr[data-delay="4"] .col-carbon { transition-delay: 2000ms; }
+  .compare-reveal-table.revealed tr[data-delay="5"] .col-carbon { transition-delay: 2500ms; }
+  .compare-reveal-table tr.row-identical td { transition: background 0.4s ease; }
+  .compare-reveal-table.revealed tr.row-identical td { background: rgba(184,92,0,0.08); }
+  .compare-reveal-actions { margin: 1rem 0; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .compare-reveal-btn {
+    font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.06em; padding: 0.55rem 1.1rem;
+    background: var(--forest); color: var(--cream); border: none; cursor: pointer; transition: background 0.2s;
+  }
+  .compare-reveal-btn:hover { background: var(--forest-mid); }
+  .compare-reveal-btn:disabled { opacity: 0.5; cursor: default; }
+  .compare-reset { font-family: 'Inter', sans-serif; font-size: 0.62rem; color: var(--muted); cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0; }
+  .compare-reveal-conclusion { display: none; font-family: 'Lora', serif; font-size: 0.92rem; font-style: italic; color: var(--amber); margin-top: 0.85rem; line-height: 1.5; }
+  .compare-reveal-conclusion.show { display: block; }
+
+  /* Country comparison tool */
+  .country-compare-selects { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .country-compare-selects label { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; color: var(--muted); display: flex; flex-direction: column; gap: 0.3rem; }
+  .country-compare-selects select {
+    font-family: 'Inter', sans-serif; font-size: 0.78rem; padding: 0.4rem 0.6rem;
+    border: 1px solid var(--rule); background: var(--white); color: var(--ink); min-width: 160px;
+  }
+  .country-compare-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .country-compare-cards { grid-template-columns: 1fr; } }
+  .cc-card { padding: 1rem; background: var(--bg-alt); border: 1px solid var(--rule); }
+  .cc-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--forest); margin-bottom: 0.75rem; }
+  .cc-row { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.35rem 0; border-bottom: 1px solid var(--rule); font-family: 'Inter', sans-serif; font-size: 0.72rem; }
+  .cc-row:last-child { border-bottom: none; }
+  .cc-row span:first-child { color: var(--muted); }
+  .cc-row span:last-child { font-weight: 600; text-align: right; }
+
+  /* $0.45 contextualizer */
+  .buys-context {
+    margin-top: 0.75rem; padding: 0.75rem 0.85rem;
+    background: var(--bg-alt); border-left: 3px solid var(--amber);
+    font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--muted); line-height: 1.55;
+  }
+  .buys-context p { margin: 0 0 0.35rem; font-size: 0.68rem; }
+  .buys-context p:last-child { margin-bottom: 0; }
+
+  /* Reform checklist */
+  .reform-checklist { margin: 2rem 0; position: relative; }
+  .reform-score {
+    position: absolute; top: 0; right: 0;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--forest-mid);
+  }
+  .reform-item { margin-bottom: 0.65rem; border: 1px solid var(--rule); background: var(--white); }
+  .reform-item label {
+    display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.85rem 1rem;
+    cursor: pointer; font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem; font-weight: 600; color: var(--ink); line-height: 1.35;
+  }
+  .reform-item input { margin-top: 0.15rem; accent-color: var(--forest-mid); flex-shrink: 0; }
+  .reform-item.checked { border-color: var(--forest-mid); background: rgba(45,90,39,0.04); }
+  .reform-item.checked label { color: var(--forest); }
+  .reform-detail {
+    display: none; padding: 0 1rem 0.85rem 2.35rem;
+    font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--muted); line-height: 1.6;
+  }
+  .reform-item.checked .reform-detail { display: block; }
+  .reform-final { display: none; margin-top: 1.2rem; padding: 1rem 1.2rem; background: var(--forest); color: var(--cream); }
+  .reform-final.show { display: block; }
+  .reform-final p { font-family: 'Lora', serif; font-size: 0.95rem; font-style: italic; margin: 0; line-height: 1.5; color: var(--cream); }
+
   /* ── RESPONSIVE ──────────────────────────────────────────────────── */
   @media (max-width: 900px) {
-    .map-wrapper { grid-template-columns: 1fr; }
-    .map-panel { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); min-height: 280px; }
-    #africa-map { height: 400px; }
+    .map-wrapper { grid-template-columns: 1fr; min-height: auto; }
+    .map-panel { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); min-height: 280px; max-height: none; overflow-y: visible; }
+    #africa-map { height: 400px; min-height: 320px; }
+    .panel-metrics { grid-template-columns: 1fr; }
+    .panel-body { padding: 1rem 1.2rem 1.2rem; }
+    .panel-body p { font-size: 0.8rem; }
+    .pm-val { font-size: 0.95rem; word-break: break-word; }
+  }
     .charts-grid { grid-template-columns: 1fr; }
     .chart-card.full { grid-column: 1; }
     .nav-links { display: none; }
@@ -634,6 +878,8 @@
     <span></span><span></span><span></span>
   </button>
 </nav>
+
+<div id="scroll-progress" aria-hidden="true"><div id="scroll-progress-bar"></div></div>
 
 <div class="mobile-nav" id="mobile-nav">
   <a href="#the-promise" onclick="closeMobileNav()">Part I: The Promise</a>
@@ -830,6 +1076,43 @@
       </svg>
     </div>
 
+    <div class="ix-grid-2 reveal">
+      <div class="ix-block" id="followCredit" aria-label="Follow a credit through the revenue chain">
+        <p class="ix-label">Follow a credit</p>
+        <div class="buyer-btns" role="group" aria-label="Select corporate buyer">
+          <button type="button" class="buyer-btn" data-buyer="Shell">Shell</button>
+          <button type="button" class="buyer-btn" data-buyer="Volkswagen">Volkswagen</button>
+          <button type="button" class="buyer-btn" data-buyer="Delta Airlines">Delta Airlines</button>
+        </div>
+        <div class="flow-chain" id="flowChain">
+          <div class="flow-node" data-stage="0"><span class="flow-node-name">Corporate buyer pays</span><span class="flow-node-amt">$15.00</span></div>
+          <div class="flow-node" data-stage="1"><span class="flow-node-name">Developer</span><span class="flow-node-amt">$8.25 (55%)</span></div>
+          <div class="flow-node" data-stage="2"><span class="flow-node-name">Monitoring &amp; audit</span><span class="flow-node-amt">$1.80 (12%)</span></div>
+          <div class="flow-node" data-stage="3"><span class="flow-node-name">Government share</span><span class="flow-node-amt">$1.65 (11%)</span></div>
+          <div class="flow-node" data-stage="4"><span class="flow-node-name">Broker / exchange</span><span class="flow-node-amt">$1.20 (8%)</span></div>
+          <div class="flow-node" data-stage="5"><span class="flow-node-name">Certification fees</span><span class="flow-node-amt">$1.35 (9%)</span></div>
+          <div class="flow-node" data-stage="6"><span class="flow-node-name">Community receives</span><span class="flow-node-amt">$0.45 (3%)</span></div>
+        </div>
+        <p class="flow-community-note" id="flowCommunityNote"></p>
+      </div>
+
+      <div class="ix-block" id="creditCalculator" aria-label="Carbon credit revenue calculator">
+        <p class="ix-label">Carbon credit calculator</p>
+        <div class="calc-input-row">
+          <label for="calcCredits">Number of credits</label>
+          <input type="number" id="calcCredits" min="1" max="10000000" value="1000" aria-describedby="calcResults">
+        </div>
+        <div class="calc-results" id="calcResults">
+          <div class="calc-row"><span>Total revenue at $15/credit</span><span id="calcTotal">$15,000</span></div>
+          <div class="calc-row"><span>Developer share (55%)</span><span id="calcDev">$8,250</span></div>
+          <div class="calc-row"><span>Certification + audit (21%)</span><span id="calcCert">$3,150</span></div>
+          <div class="calc-row"><span>Government share (11%)</span><span id="calcGov">$1,650</span></div>
+          <div class="calc-row calc-community"><span>Community share (3%)</span><span id="calcComm">$450</span></div>
+        </div>
+        <p class="calc-context" id="calcContext">The community received $450. The developer received $8,250.</p>
+      </div>
+    </div>
+
     <details>
       <summary>
         <svg class="details-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 2l6 6-6 6"/></svg>
@@ -968,6 +1251,8 @@
 
       <div class="scramble-legend" id="scrambleLegend" aria-label="Map legend"></div>
 
+      <div class="scramble-law-panel" id="scrambleLawPanel" aria-live="polite" aria-label="Colonial to modern land law comparison"></div>
+
       <p class="chart-source" style="margin: 0; padding: 0.6rem 1.4rem; border-top: none;">
         Boundaries simplified for educational purposes. Sources: Pakenham (1991); Herbst, J. (2000). <em>States and Power in Africa</em>; ETH Zurich Colonial Borders Dataset; Jedwab &amp; Moradi (2016); Hansen et al. (2013) / Global Forest Watch; Verra public registry; Oakland Institute (2023).
       </p>
@@ -1079,6 +1364,39 @@
       </div>
     </details>
 
+    <div class="baseline-panel ix-block reveal" aria-label="Baseline manipulation simulator for Kariba REDD+">
+      <p class="ix-label">Baseline manipulation simulator</p>
+      <p style="font-family:'Inter',sans-serif;font-size:0.78rem;color:var(--muted);margin-bottom:0.85rem;line-height:1.5;">Adjust the projected deforestation rate for Kariba REDD+ (785,000 ha) and watch how the baseline choice changes credits and revenue. Historical pre-project rate: 0.5%/year. Kariba's claimed baseline: ~2%/year.</p>
+      <div class="baseline-slider-wrap">
+        <label for="baselineRate">Projected deforestation rate (%/year): <strong id="baselineRateVal">0.5</strong>%</label>
+        <input type="range" id="baselineRate" min="0.5" max="4" step="0.1" value="0.5">
+        <div class="baseline-markers">
+          <span class="marker-real">▲ Real rate (0.5%)</span>
+          <span class="marker-kariba">▲ Kariba baseline (~2%)</span>
+        </div>
+      </div>
+      <p class="baseline-status" id="baselineStatus" style="color:var(--forest-mid);">Accurate baseline</p>
+      <div class="baseline-stats">
+        <div class="baseline-stat"><div class="baseline-stat-label">Hectares "at risk" over 30 years</div><div class="baseline-stat-val" id="baselineHa">117,750</div></div>
+        <div class="baseline-stat"><div class="baseline-stat-label">Credits generated</div><div class="baseline-stat-val" id="baselineCredits">17.7M</div></div>
+        <div class="baseline-stat"><div class="baseline-stat-label">Revenue at $15/credit</div><div class="baseline-stat-val" id="baselineRevenue">$264.9M</div></div>
+      </div>
+      <p class="baseline-note">Same forest. Same trees. The number changes because the threat level changed. That number is not measured. It is chosen.</p>
+    </div>
+
+    <div class="kariba-timeline-wrap reveal" aria-label="Kariba REDD+ timeline">
+      <p class="ix-label">Kariba timeline</p>
+      <div class="kariba-timeline" id="karibaTimeline">
+        <div class="kt-node" data-kt="0"><div class="kt-year">2003</div><div class="kt-dot"></div><div class="kt-title">Project launches</div><div class="kt-desc">Kariba REDD+ project launches in Zimbabwe's miombo woodland, covering 785,000 hectares.</div></div>
+        <div class="kt-node" data-kt="1"><div class="kt-year">2005–2022</div><div class="kt-dot"></div><div class="kt-title">Credits sold</div><div class="kt-desc">Credits sold to Shell, Volkswagen, and Delta Airlines, certified by Verra for nearly two decades.</div></div>
+        <div class="kt-node" data-kt="2"><div class="kt-year">2021</div><div class="kt-dot"></div><div class="kt-title">Academic scrutiny</div><div class="kt-desc">First academic scrutiny of REDD+ baseline methodologies (Guizar-Coutiño et al.) raises questions about reference region selection.</div></div>
+        <div class="kt-node" data-kt="3"><div class="kt-year">Jan 2023</div><div class="kt-dot"></div><div class="kt-title">Guardian investigation</div><div class="kt-desc">The Guardian / Carbon Plan investigation published: baseline inflated ~400%, up to 94% of credits phantom (West et al., 2023).</div></div>
+        <div class="kt-node" data-kt="4"><div class="kt-year">Feb 2023</div><div class="kt-dot"></div><div class="kt-title">Verra review</div><div class="kt-desc">Verra announces review of Kariba credits and methodology under public scrutiny.</div></div>
+        <div class="kt-node" data-kt="5"><div class="kt-year">2024</div><div class="kt-dot"></div><div class="kt-title">Science corroboration</div><div class="kt-desc">Badgley et al. published in <em>Science</em>, corroborating systematic overestimation across African forest carbon projects.</div></div>
+        <div class="kt-node kt-unresolved" data-kt="6"><div class="kt-year">Present</div><div class="kt-dot"></div><div class="kt-title">Unresolved</div><div class="kt-desc">Credits still listed on Verra registry. Shell's climate-neutral claims remain on its website.</div></div>
+      </div>
+    </div>
+
     <details>
       <summary>
         <svg class="details-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 2l6 6-6 6"/></svg>
@@ -1103,7 +1421,13 @@
     <p class="map-intro reveal">Click any marker to see the corporate buyer, estimated market value, what the community received, and what happened.</p>
 
     <div class="map-wrapper reveal">
-      <div id="africa-map" role="application" aria-label="Interactive map of carbon credit projects in Africa"></div>
+      <div id="africa-map" role="application" aria-label="Interactive map of carbon credit projects in Africa">
+        <div class="hectare-counter" id="hectareCounter" aria-live="polite">
+          <strong><span id="hcValue">0</span> million hectares</strong>
+          explored so far.
+          <span class="hc-uk" id="hcUk">That's larger than the United Kingdom.</span>
+        </div>
+      </div>
       <div class="map-panel" id="map-panel" aria-live="polite">
         <div class="panel-empty" id="panel-empty">
           <svg width="36" height="46" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -1149,47 +1473,54 @@
       </summary>
       <div class="details-body">
         <div class="details-inner">
-          <table class="compare-table">
-            <thead>
-              <tr>
-                <th>Mechanism</th>
-                <th class="col-era">Colonial Era (1880s–1960s)</th>
-                <th class="col-era">Carbon Market Era (2010s–present)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Legal basis</strong></td>
-                <td>Crown land doctrine; terra nullius; "unimproved" land statutes</td>
-                <td>Customary tenure invisible in carbon registries; informal rights not recognized by VCS standards</td>
-              </tr>
-              <tr>
-                <td><strong>Justifying ideology</strong></td>
-                <td>Civilization; agricultural improvement; development</td>
-                <td>Climate action; conservation; sustainability</td>
-              </tr>
-              <tr>
-                <td><strong>Who benefits</strong></td>
-                <td>European settlers, plantation and mining companies, colonial states</td>
-                <td>Carbon project developers, multinationals buying credits, global carbon finance</td>
-              </tr>
-              <tr>
-                <td><strong>Who bears the cost</strong></td>
-                <td>African farming, pastoralist, and forest-dependent communities</td>
-                <td>Same communities, still on the same land</td>
-              </tr>
-              <tr>
-                <td><strong>Consent requirement</strong></td>
-                <td>None recognized in colonial law</td>
-                <td>FPIC required on paper; routinely bypassed in practice</td>
-              </tr>
-              <tr>
-                <td><strong>Who certifies the taking</strong></td>
-                <td>Colonial administration and its courts</td>
-                <td>Verra, Gold Standard, auditors paid by project developers</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="compare-reveal-wrap" id="compareRevealWrap">
+            <table class="compare-reveal-table" id="compareRevealTable">
+              <thead>
+                <tr>
+                  <th>Mechanism</th>
+                  <th class="col-era">Colonial Era (1880s–1960s)</th>
+                  <th class="col-era col-carbon">Carbon Market Era (2010s–present)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-identical" data-delay="0">
+                  <td><strong>Legal basis</strong></td>
+                  <td>Crown land doctrine; terra nullius; "unimproved" land statutes</td>
+                  <td class="col-carbon">Customary tenure invisible in carbon registries; informal rights not recognized by VCS standards</td>
+                </tr>
+                <tr data-delay="1">
+                  <td><strong>Justifying ideology</strong></td>
+                  <td>Civilization; agricultural improvement; development</td>
+                  <td class="col-carbon">Climate action; conservation; sustainability</td>
+                </tr>
+                <tr data-delay="2">
+                  <td><strong>Who benefits</strong></td>
+                  <td>European settlers, plantation and mining companies, colonial states</td>
+                  <td class="col-carbon">Carbon project developers, multinationals buying credits, global carbon finance</td>
+                </tr>
+                <tr class="row-identical" data-delay="3">
+                  <td><strong>Who bears the cost</strong></td>
+                  <td>African farming, pastoralist, and forest-dependent communities</td>
+                  <td class="col-carbon">Same communities, still on the same land</td>
+                </tr>
+                <tr class="row-identical" data-delay="4">
+                  <td><strong>Consent requirement</strong></td>
+                  <td>None recognized in colonial law</td>
+                  <td class="col-carbon">FPIC required on paper; routinely bypassed in practice</td>
+                </tr>
+                <tr class="row-identical" data-delay="5">
+                  <td><strong>Who certifies the taking</strong></td>
+                  <td>Colonial administration and its courts</td>
+                  <td class="col-carbon">Verra, Gold Standard, auditors paid by project developers</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="compare-reveal-actions">
+              <button type="button" class="compare-reveal-btn" id="compareRevealBtn">Fast forward to today →</button>
+              <button type="button" class="compare-reset" id="compareResetBtn" style="display:none;">reset</button>
+            </div>
+            <p class="compare-reveal-conclusion" id="compareConclusion">Four out of six mechanisms are functionally identical. The language changed. The structure didn't.</p>
+          </div>
           <p>The mechanism is different. The moral framing is different. The structure is similar: distant powers are again financializing African land for their own benefit, while the communities on that land absorb the cost and have limited legal standing to refuse it (Olanya, ECAS4; Laltaika &amp; Askew, 2018; ROAPE, 2024).</p>
         </div>
       </div>
@@ -1233,6 +1564,10 @@
         <div class="chart-title">Where Does $15 Go?</div>
         <div class="chart-sub">Estimated distribution of a typical $15 voluntary carbon credit from an African REDD+ project. Hover each segment for the dollar amount.</div>
         <canvas id="chartDonut" height="230" aria-label="Distribution of $15 carbon credit revenue" role="img"></canvas>
+        <div class="buys-context" id="buysContext" aria-live="polite">
+          <p id="buysTanzania">$0.45 = approximately 108 minutes of agricultural day labor in rural Tanzania (at ~$2/day)</p>
+          <p id="buysZimbabwe">$0.45 = 30% of the daily caloric cost for one person in rural Zimbabwe</p>
+        </div>
         <p class="chart-source">Source: Estimated distribution based on Oakland Institute (2023), Fern REDD+ Briefing (2023), World Development project-level data, and World Bank State and Trends of Carbon Pricing (2023)</p>
       </div>
 
@@ -1249,6 +1584,35 @@
         <canvas id="chartLine" height="110" aria-label="Growth of Africa carbon credits 2010 to 2024" role="img"></canvas>
         <p class="chart-source">Source: Ecosystem Marketplace Annual Reports (2010–2024), ACMI Roadmap Report (2022), Verra public registry data</p>
       </div>
+    </div>
+
+    <div class="ix-block reveal" id="countryCompareTool" aria-label="Country comparison tool">
+      <p class="ix-label">Country comparison</p>
+      <div class="country-compare-selects">
+        <label>Country A
+          <select id="compareCountryA">
+            <option value="Zimbabwe">Zimbabwe</option>
+            <option value="Liberia">Liberia</option>
+            <option value="Uganda">Uganda</option>
+            <option value="Madagascar">Madagascar</option>
+            <option value="Tanzania">Tanzania</option>
+            <option value="Kenya">Kenya</option>
+            <option value="DRC">DRC</option>
+          </select>
+        </label>
+        <label>Country B
+          <select id="compareCountryB">
+            <option value="Liberia">Liberia</option>
+            <option value="Zimbabwe">Zimbabwe</option>
+            <option value="Uganda">Uganda</option>
+            <option value="Madagascar">Madagascar</option>
+            <option value="Tanzania">Tanzania</option>
+            <option value="Kenya">Kenya</option>
+            <option value="DRC">DRC</option>
+          </select>
+        </label>
+      </div>
+      <div class="country-compare-cards" id="countryCompareCards"></div>
     </div>
   </div>
 </section>
@@ -1287,6 +1651,30 @@
     <div class="verdict-block reveal">
       <p>The carbon credit, as it currently operates in much of Africa, is a certificate of emissions reduction for the buyer and a certificate of land alienation for the community. The data shows a transfer: developers capture 55–65% of credit revenue (Oakland Institute, 2023), certification fees take another 20–30%, and communities receive single-digit percentages while losing access to land (Fern, 2023). The Tanzania study found enrolled communities measurably worse off in caloric sufficiency than control villages (Asiyanbi &amp; Lund, 2023). The pattern is consistent because the legal architecture of unrecognized customary tenure meeting state-to-developer agreements reliably produces it.</p>
       <p>This doesn't mean carbon markets are irredeemable. It means a carbon market built on unrecognized land rights will reproduce dispossession. It means the certification architecture, funded by developers and audited by auditors hired by developers, cannot catch the fraud it has structural incentives to overlook. Progress on climate. Regression on everything else. That is not a win-win.</p>
+    </div>
+
+    <div class="reform-checklist reveal" id="reformChecklist" aria-label="Reform conditions checklist">
+      <p class="ix-label">What would reform look like?</p>
+      <div class="reform-score">Reform Impact Score: <span id="reformScore">0</span>/4</div>
+      <div class="reform-item" data-reform="0">
+        <label><input type="checkbox" class="reform-cb"> Mandatory community land titling before any project can be certified</label>
+        <div class="reform-detail">Communities with formal tenure have legal standing to refuse or negotiate project terms. Without it, a government-to-developer agreement requires no community sign-off. Mandatory titling before certification would end the legal invisibility that makes dispossession structurally possible.</div>
+      </div>
+      <div class="reform-item" data-reform="1">
+        <label><input type="checkbox" class="reform-cb"> Revenue-sharing minimums enforced by statute rather than developer choice</label>
+        <div class="reform-detail">Voluntary benefit-sharing frameworks have produced community shares as low as 0–3%. A statutory minimum, say, 50% of net revenue, would fundamentally restructure who carbon markets work for. Developer profit margins would compress. Projects with genuinely low community benefit would become unviable.</div>
+      </div>
+      <div class="reform-item" data-reform="2">
+        <label><input type="checkbox" class="reform-cb"> Certification bodies funded publicly rather than by the developers being certified</label>
+        <div class="reform-detail">Verra and Gold Standard are funded by fees from the developers whose projects they certify. This is the same conflict of interest that characterized credit rating agencies before 2008. Public or independent funding would remove the structural incentive to approve inflated baselines and inadequate consent processes.</div>
+      </div>
+      <div class="reform-item" data-reform="3">
+        <label><input type="checkbox" class="reform-cb"> Meaningful legal standing for communities to challenge registrations covering their land</label>
+        <div class="reform-detail">Currently, communities have no formal right to challenge a Verra certification covering their land. Legal standing, the right to appear before a certifying body and contest a registration, would give communities a veto that FPIC on paper currently does not. It would also create a paper trail of contested certifications that markets could not ignore.</div>
+      </div>
+      <div class="reform-final" id="reformFinal">
+        <p>This is what a carbon market that doesn't reproduce colonial dispossession would require. None of these are currently mandatory under Verra or Gold Standard.</p>
+      </div>
     </div>
 
     <h3 class="reveal">What this project contributes</h3>
@@ -1405,18 +1793,265 @@ document.querySelectorAll('details').forEach(d => {
   });
 });
 
+/* ── SCROLL PROGRESS ───────────────────────────────────────────────── */
+(function() {
+  const bar = document.getElementById('scroll-progress-bar');
+  if (!bar) return;
+  function updateProgress() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+})();
+
+/* ── FOLLOW A CREDIT ───────────────────────────────────────────────── */
+(function() {
+  const nodes = document.querySelectorAll('#flowChain .flow-node');
+  const note = document.getElementById('flowCommunityNote');
+  const stage0Name = nodes[0] && nodes[0].querySelector('.flow-node-name');
+  let animTimers = [];
+
+  function resetFlow() {
+    animTimers.forEach(t => clearTimeout(t));
+    animTimers = [];
+    nodes.forEach(n => n.classList.remove('lit', 'lit-community'));
+    if (note) note.textContent = '';
+  }
+
+  function animateFlow(buyer) {
+    resetFlow();
+    if (stage0Name) stage0Name.textContent = buyer + ' pays';
+    const delays = [0, 430, 860, 1290, 1720, 2150, 2580];
+    nodes.forEach((node, i) => {
+      animTimers.push(setTimeout(() => {
+        if (i === 6) {
+          node.classList.add('lit-community');
+          if (note) note.textContent = 'This is what reached the community.';
+        } else {
+          node.classList.add('lit');
+        }
+      }, delays[i]));
+    });
+  }
+
+  document.querySelectorAll('.buyer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.buyer-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      animateFlow(btn.dataset.buyer);
+    });
+  });
+})();
+
+/* ── CREDIT CALCULATOR + $0.45 CONTEXT ─────────────────────────────── */
+window.creditCalcCredits = 1000;
+
+function fmtMoney(n) {
+  return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+}
+
+function updateBuysContext(credits) {
+  const commPerCredit = 0.45;
+  const totalComm = credits * commPerCredit;
+  const tanzania = document.getElementById('buysTanzania');
+  const zimbabwe = document.getElementById('buysZimbabwe');
+  if (tanzania) {
+    const mins = Math.round((totalComm / 2) * 480);
+    tanzania.textContent = fmtMoney(totalComm) + ' = approximately ' + mins.toLocaleString() + ' minutes of agricultural day labor in rural Tanzania (at ~$2/day)';
+  }
+  if (zimbabwe) {
+    const pct = Math.round((totalComm / 1.5) * 100);
+    zimbabwe.textContent = fmtMoney(totalComm) + ' = ' + pct + '% of the daily caloric cost for one person in rural Zimbabwe';
+  }
+}
+
+function updateCreditCalc() {
+  const input = document.getElementById('calcCredits');
+  if (!input) return;
+  const credits = Math.max(1, parseInt(input.value, 10) || 1);
+  window.creditCalcCredits = credits;
+  const total = credits * 15;
+  const dev = total * 0.55;
+  const cert = total * 0.21;
+  const gov = total * 0.11;
+  const comm = total * 0.03;
+  const el = id => document.getElementById(id);
+  if (el('calcTotal')) el('calcTotal').textContent = fmtMoney(total);
+  if (el('calcDev')) el('calcDev').textContent = fmtMoney(dev);
+  if (el('calcCert')) el('calcCert').textContent = fmtMoney(cert);
+  if (el('calcGov')) el('calcGov').textContent = fmtMoney(gov);
+  if (el('calcComm')) el('calcComm').textContent = fmtMoney(comm);
+  if (el('calcContext')) el('calcContext').textContent = 'The community received ' + fmtMoney(comm) + '. The developer received ' + fmtMoney(dev) + '.';
+  updateBuysContext(credits);
+}
+
+const calcInput = document.getElementById('calcCredits');
+if (calcInput) {
+  calcInput.addEventListener('input', updateCreditCalc);
+  updateCreditCalc();
+}
+
+/* ── BASELINE SIMULATOR ────────────────────────────────────────────── */
+(function() {
+  const slider = document.getElementById('baselineRate');
+  if (!slider) return;
+  const KARIBA_HA = 785000;
+  const CARBON_TONS_HA = 150;
+  const PRICE = 15;
+
+  function fmtNum(n) {
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(0) + 'K';
+    return Math.round(n).toLocaleString();
+  }
+
+  function fmtRev(n) {
+    if (n >= 1e9) return '$' + (n / 1e9).toFixed(1) + 'B';
+    if (n >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M';
+    return fmtMoney(n);
+  }
+
+  function updateBaseline() {
+    const rate = parseFloat(slider.value);
+    document.getElementById('baselineRateVal').textContent = rate.toFixed(1);
+    const haAtRisk = Math.round(KARIBA_HA * (rate / 100) * 30);
+    const credits = haAtRisk * CARBON_TONS_HA;
+    const revenue = credits * PRICE;
+    document.getElementById('baselineHa').textContent = haAtRisk.toLocaleString();
+    document.getElementById('baselineCredits').textContent = fmtNum(credits);
+    document.getElementById('baselineRevenue').textContent = fmtRev(revenue);
+
+    const status = document.getElementById('baselineStatus');
+    const vals = [document.getElementById('baselineHa'), document.getElementById('baselineCredits'), document.getElementById('baselineRevenue')];
+    vals.forEach(v => { if (v) v.classList.remove('amber', 'red'); });
+
+    if (rate <= 0.6) {
+      status.textContent = 'Accurate baseline';
+      status.style.color = 'var(--forest-mid)';
+    } else if (rate < 2) {
+      status.textContent = 'Inflated baseline territory';
+      status.style.color = 'var(--amber)';
+      vals.forEach(v => v.classList.add('amber'));
+    } else {
+      status.textContent = "Kariba's actual claimed baseline";
+      status.style.color = '#b83030';
+      vals.forEach(v => { v.classList.remove('amber'); v.classList.add('red'); });
+    }
+  }
+
+  slider.addEventListener('input', updateBaseline);
+  updateBaseline();
+})();
+
+/* ── KARIBA TIMELINE ───────────────────────────────────────────────── */
+document.querySelectorAll('#karibaTimeline .kt-node').forEach(node => {
+  node.addEventListener('click', () => {
+    const open = node.classList.contains('open');
+    document.querySelectorAll('#karibaTimeline .kt-node').forEach(n => n.classList.remove('open'));
+    if (!open) node.classList.add('open');
+  });
+});
+
+/* ── COMPARE TABLE REVEAL (Part V) ─────────────────────────────────── */
+(function() {
+  const table = document.getElementById('compareRevealTable');
+  const btn = document.getElementById('compareRevealBtn');
+  const reset = document.getElementById('compareResetBtn');
+  const conclusion = document.getElementById('compareConclusion');
+  if (!table || !btn) return;
+
+  btn.addEventListener('click', () => {
+    table.classList.add('revealed');
+    btn.disabled = true;
+    if (reset) reset.style.display = 'inline';
+    setTimeout(() => { if (conclusion) conclusion.classList.add('show'); }, 3000);
+  });
+
+  if (reset) {
+    reset.addEventListener('click', () => {
+      table.classList.remove('revealed');
+      btn.disabled = false;
+      reset.style.display = 'none';
+      if (conclusion) conclusion.classList.remove('show');
+    });
+  }
+})();
+
+/* ── COUNTRY COMPARISON TOOL ───────────────────────────────────────── */
+const countryCompareData = {
+  Zimbabwe: { docRate:'15%', projects:'3 major', communityShare:'<2%', colonial:'British', keyProject:'Kariba REDD+' },
+  Liberia: { docRate:'8%', projects:'2 major', communityShare:'0% documented', colonial:'American-influenced (unique case)', keyProject:'Blue Carbon LLC' },
+  Uganda: { docRate:'12%', projects:'4 major', communityShare:'Negligible', colonial:'British', keyProject:'New Forests Company' },
+  Madagascar: { docRate:'6%', projects:'3 major', communityShare:'<3%', colonial:'French', keyProject:'Makira Natural Park Carbon' },
+  Tanzania: { docRate:'10%', projects:'5 major', communityShare:'<5%', colonial:'British/German', keyProject:'Kilosa REDD+' },
+  Kenya: { docRate:'14%', projects:'4 major', communityShare:'Contested', colonial:'British', keyProject:'Kajiado Carbon Project' },
+  DRC: { docRate:'4%', projects:'6+ major', communityShare:'Undisclosed', colonial:'Belgian', keyProject:'Mai Ndombe REDD+' }
+};
+
+function renderCountryCompare() {
+  const a = document.getElementById('compareCountryA');
+  const b = document.getElementById('compareCountryB');
+  const out = document.getElementById('countryCompareCards');
+  if (!a || !b || !out) return;
+  function card(name) {
+    const d = countryCompareData[name];
+    if (!d) return '';
+    return `<div class="cc-card"><h4>${name}</h4>
+      <div class="cc-row"><span>Formal land documentation</span><span>${d.docRate}</span></div>
+      <div class="cc-row"><span>Active carbon projects</span><span>${d.projects}</span></div>
+      <div class="cc-row"><span>Community revenue share</span><span>${d.communityShare}</span></div>
+      <div class="cc-row"><span>Colonial power</span><span>${d.colonial}</span></div>
+      <div class="cc-row"><span>Key carbon project</span><span>${d.keyProject}</span></div>
+    </div>`;
+  }
+  out.innerHTML = card(a.value) + card(b.value);
+}
+
+const cA = document.getElementById('compareCountryA');
+const cB = document.getElementById('compareCountryB');
+if (cA && cB) {
+  cA.addEventListener('change', renderCountryCompare);
+  cB.addEventListener('change', renderCountryCompare);
+  renderCountryCompare();
+}
+
+/* ── REFORM CHECKLIST ──────────────────────────────────────────────── */
+(function() {
+  const items = document.querySelectorAll('.reform-item');
+  const scoreEl = document.getElementById('reformScore');
+  const finalEl = document.getElementById('reformFinal');
+  if (!items.length) return;
+
+  function updateReform() {
+    let score = 0;
+    items.forEach(item => {
+      const cb = item.querySelector('.reform-cb');
+      if (cb && cb.checked) { score++; item.classList.add('checked'); }
+      else item.classList.remove('checked');
+    });
+    if (scoreEl) scoreEl.textContent = score;
+    if (finalEl) finalEl.classList.toggle('show', score === 4);
+  }
+
+  items.forEach(item => {
+    const cb = item.querySelector('.reform-cb');
+    if (cb) cb.addEventListener('change', updateReform);
+  });
+})();
+
 /* ── MAP ────────────────────────────────────────────────────────────── */
 const projects = [
-  { country:"Zimbabwe", name:"Kariba REDD+ Forest Protection", lat:-16.5, lng:28.8, status:"suspended", buyer:"Shell, Volkswagen, Delta Airlines", marketValue:"$40M+", marketSub:"est. at avg. credit prices", communityShare:"<1%", communitySub:"disputed; revenue sharing unfulfilled", desc:"Once the world's largest REDD+ project, covering 785,000 ha of miombo woodland. Credits sold to Shell, Volkswagen, and Delta Airlines for nearly two decades. A 2023 Guardian / Carbon Plan investigation found up to 94% of credits may be phantom, built on deforestation baselines set 4x the actual comparable rate. Corroborated in Science (Badgley et al., 2024).", outcome:"Communities in the buffer zone lost access to forests used for subsistence and charcoal. Revenue sharing provisions were largely unfulfilled. Verra placed the methodology under review." },
-  { country:"Kenya", name:"Kajiado Grassland Carbon Projects", lat:-2.1, lng:36.8, status:"disputed", buyer:"Multiple project developers", marketValue:"$2–5M/yr", marketSub:"est. to developer", communityShare:"Unverified", communitySub:"FPIC violated: women and youth excluded", desc:"Multiple carbon projects restrict seasonal Maasai grazing. A 2024 Greenpeace Africa investigation found consent meetings excluded women and young herders. Contracts were signed by male elders without full community authority under Maasai customary law, yet the project was certified as community-consented.", outcome:"Restricted grazing reduced livestock productivity. Community members report threatened trespass proceedings on land used for centuries. Legal challenges filed in Kenyan courts." },
-  { country:"Tanzania", name:"Kilosa District REDD+ Projects", lat:-6.8, lng:36.9, status:"active", buyer:"Various corporate buyers (VCS)", marketValue:"Undisclosed", marketSub:"multiple overlapping projects", communityShare:"<$10/yr per household", communitySub:"Asiyanbi & Lund, World Development (2023)", desc:"A quasi-experimental 2023 study in World Development compared REDD+-enrolled and non-enrolled villages in the same district. Enrolled villages showed declining food security despite carbon payments, because payments did not offset the value of constrained agricultural expansion.", outcome:"14% decline in caloric sufficiency in enrolled vs. control villages. Carbon payments averaged under $10/household/year. The growth path foregone was worth far more than the transfer received." },
-  { country:"Uganda", name:"New Forests Company Plantations", lat:0.9, lng:31.6, status:"disputed", buyer:"New Forests Company (UK)", marketValue:"Undisclosed", marketSub:"carbon and timber credits", communityShare:"None reported", communitySub:"Oakland Institute (2023)", desc:"UK-based New Forests Company acquired land in Kiboga and Mubende for plantations generating carbon and timber credits. The Oakland Institute documented thousands of smallholder farmers evicted from land they had farmed for decades, with negligible compensation and no legal process.", outcome:"Thousands of households displaced. Crops destroyed. Communities returning to land reported threats. A reference case in global REDD+ safeguards debates." },
-  { country:"Liberia", name:"Blue Carbon LLC Forest Deal", lat:6.3, lng:-9.4, status:"disputed", buyer:"Blue Carbon LLC (UAE)", marketValue:"$1.5B+ projected", marketSub:"over 30-year deal term", communityShare:"None", communitySub:"deal signed before communities informed", desc:"In 2022, Liberia signed agreements covering ~1 million hectares (10% of national territory) to a Dubai-registered company. No public disclosure, no parliamentary approval, no community consultation. Contracts gave Blue Carbon sweeping authority over land use and revenue (Vice, FT, CorpWatch, 2023).", outcome:"40+ civil society organizations demanded cancellation. The Pan-African Climate Justice Alliance called for a moratorium. Legal challenges ongoing. The clearest example of state-enabled dispossession under carbon market architecture." },
-  { country:"Madagascar", name:"Makira Natural Park Carbon", lat:-15.3, lng:49.9, status:"active", buyer:"Wildlife Conservation Society", marketValue:"$18M+ cumulative", marketSub:"Verra registry data", communityShare:"<3%", communitySub:"New Lines Magazine investigation (2024)", desc:"One of Africa's oldest REDD+ projects. A 2024 New Lines Magazine investigation found communities relying on forest-edge agriculture facing intensified enforcement. Park rangers, partially funded by credit revenue, destroyed crops and confiscated land. $18M+ in credit sales went primarily to WCS and the Malagasy government.", outcome:"Household food insecurity increased. Families farming the forest for generations were effectively criminalized. Less than 3% of cumulative revenues reached affected households." },
-  { country:"DR Congo", name:"Mai Ndombe REDD+ (Wildlife Works)", lat:-2.3, lng:18.1, status:"active", buyer:"Disney, BP, others", marketValue:"$100M+ lifetime", marketSub:"one of the largest REDD+ projects globally", communityShare:"Disputed", communitySub:"Indigenous communities report exclusion", desc:"Covering nearly 3 million hectares in the DRC. Credits sold to Disney, BP, and others. Indigenous Pygmy and Bantu communities in the project area have reported exclusion from governance and revenue structures. FPIC documentation has been questioned (Fern, 2023).", outcome:"Community representatives report minimal consultation and negligible revenue sharing. Land use restrictions conflict with traditional forest practices." },
-  { country:"Mozambique", name:"Lurio Forest REDD+", lat:-13.8, lng:39.4, status:"active", buyer:"Carbon market buyers (VCS)", marketValue:"Undisclosed", marketSub:"Verra-certified project", communityShare:"Contested", communitySub:"land conflicts documented, Fern (2023)", desc:"The Lurio Forest REDD+ project has generated documented land conflicts between project administrators and communities whose agricultural practices overlap with the protected zone. Customary tenure holders report exclusion from project design and benefit sharing.", outcome:"Community members report restricted access to farmland and forest resources. Project governance has limited representation from affected communities." },
-  { country:"Zambia", name:"Luangwa Valley Community Forest", lat:-13.5, lng:31.5, status:"active", buyer:"Various VCS-certified buyers", marketValue:"Undisclosed", marketSub:"Community Forest Management credits", communityShare:"2–5%", communitySub:"benefit sharing disputes documented", desc:"Community Forest Management carbon projects in Zambia's Luangwa Valley have been certified under VCS standards. While framed as community-benefit projects, benefit sharing disputes and exclusionary governance structures have been documented by REDD Monitor and Fern researchers.", outcome:"Community members report that governance structures give external developers disproportionate control over revenue. Benefit sharing ratios remain below what is needed to compensate for restrictions on agricultural and resource use." },
-  { country:"Malawi", name:"Ntupanyama Hills REDD+", lat:-11.5, lng:34.0, status:"active", buyer:"Various voluntary market buyers", marketValue:"Undisclosed", marketSub:"VCS-certified project", communityShare:"Unverified", communitySub:"consultation process questioned", desc:"The Ntupanyama Hills REDD+ project in northern Malawi has faced questions about community consultation processes and benefit distribution. Researchers note that project governance structures do not adequately represent the diversity of communities in the project area.", outcome:"Community access to forest resources restricted. Questions remain about whether revenue sharing has reached the most affected households, particularly women and smallholder farmers." }
+  { country:"Zimbabwe", name:"Kariba REDD+", lat:-16.5, lng:28.8, status:"suspended", area:"785,000 ha", developer:"Wildlife Works", developerCountry:"USA", certification:"Verra", creditsIssued:"2.4M+ issued (methodology under review)", buyer:"Shell, Volkswagen, Delta Airlines", marketValue:"$100M+ cumulative", marketSub:"Verra registry data", communityShare:"<2%", communitySub:"revenue sharing largely unfulfilled", keyFinding:"Up to 94% of credits phantom, baseline inflated ~400% (West et al. 2023, corroborated in Science 2024)", desc:"Covers 785,000 ha of miombo woodland. Sold credits to Shell, Volkswagen, and Delta Airlines for nearly two decades.", outcome:"Communities lost access to forests used for generations for food, fuel, and materials. Compensation was negligible.", source:"West et al. (2023); Badgley et al. (2024); Verra public registry" },
+  { country:"Kenya", name:"Kajiado Carbon Project", lat:-2.1, lng:36.8, status:"active", area:"Multiple grazing zones", developer:"Undisclosed", developerCountry:"—", certification:"Verra", creditsIssued:"Undisclosed", buyer:"Multiple project developers", marketValue:"$2–5M/yr", marketSub:"est. to developer", communityShare:"Unverified", communitySub:"FPIC violated: women and youth excluded", keyFinding:"Consent obtained through meetings that excluded women and young herders, the people most dependent on restricted grazing land (Greenpeace Africa 2024)", desc:"Multiple carbon projects restrict seasonal Maasai grazing in Kajiado County.", outcome:"Contracts signed by male elders whose authority under Maasai customary law doesn't extend to alienating communal grazing rights. Project certified as community-consented.", source:"Greenpeace Africa (2024)" },
+  { country:"Tanzania", name:"Kilosa REDD+", lat:-6.8, lng:36.9, status:"active", area:"Kilosa District", developer:"Undisclosed", developerCountry:"—", certification:"Verra", creditsIssued:"Undisclosed", buyer:"Various corporate buyers (VCS)", marketValue:"Undisclosed", marketSub:"multiple overlapping projects", communityShare:"<$10/household/year", communitySub:"Asiyanbi & Lund, World Development (2023)", keyFinding:"Enrolled villages showed a statistically significant 14% decline in caloric sufficiency vs. control villages in the same district (Asiyanbi & Lund, World Development 2023)", desc:"REDD+ enrollment in Kilosa District compared enrolled and non-enrolled villages under quasi-experimental design.", outcome:"Carbon payments averaged under $10/household/year, far below the value of foregone agricultural growth. Enrollment made communities measurably worse off.", source:"Asiyanbi & Lund (2023), World Development" },
+  { country:"Uganda", name:"New Forests Company", lat:0.9, lng:31.6, status:"disputed", area:"Kiboga & Mubende districts", developer:"New Forests Company", developerCountry:"UK", certification:"Voluntary market / timber-carbon", creditsIssued:"Undisclosed", buyer:"Various voluntary market", marketValue:"Undisclosed", marketSub:"carbon and timber credits", communityShare:"Negligible", communitySub:"Oakland Institute (2023)", keyFinding:"Families evicted from land farmed for decades; those who returned found crops destroyed (Oakland Institute 2023)", desc:"UK-based developer acquired land in Kiboga and Mubende for plantations generating carbon and timber credits.", outcome:"Evictions with no meaningful compensation or legal process. Displacement of farming communities to make way for timber and carbon plantations.", source:"Oakland Institute (2023)" },
+  { country:"Liberia", name:"Blue Carbon LLC", lat:6.3, lng:-9.4, status:"disputed", area:"1,000,000 ha (10% of national territory)", developer:"Blue Carbon LLC", developerCountry:"Dubai (UAE)", certification:"Uncertified / pre-certification", creditsIssued:"None issued to date", buyer:"Undisclosed", marketValue:"Undisclosed", marketSub:"deal signed 2022", communityShare:"0% documented", communitySub:"no consultation before signing", keyFinding:"Signed by government with no public disclosure, no parliamentary approval, no community consultation", desc:"2022 agreements covering one million hectares to a Dubai-registered company. Contracts gave Blue Carbon sweeping authority over land use and revenue.", outcome:"Communities had no legal standing to object. 40 African civil society organizations called it \"a new scramble for Africa's forests.\"", source:"Vice (2023); Financial Times (2023); CorpWatch (2023)" },
+  { country:"Madagascar", name:"Makira Natural Park Carbon", lat:-15.3, lng:49.9, status:"active", area:"372,470 ha", developer:"Wildlife Conservation Society", developerCountry:"USA", certification:"Verra", creditsIssued:"Undisclosed cumulative", buyer:"Wildlife Conservation Society / voluntary market", marketValue:"$18M+ cumulative", marketSub:"Verra registry data", communityShare:"<3%", communitySub:"New Lines Magazine investigation (2024)", keyFinding:"Less than 3% of $18M+ in credit sales reached affected households despite intensified enforcement on forest-edge communities", desc:"One of Africa's oldest REDD+ projects. Park rangers, partially funded by credit revenue, destroyed crops and confiscated land.", outcome:"Household food insecurity increased. Families farming the forest for generations were effectively criminalized.", source:"New Lines Magazine (2024); Verra public registry" },
+  { country:"DR Congo", name:"Mai Ndombe REDD+", lat:-2.3, lng:18.1, status:"active", area:"~3,000,000 ha", developer:"Wildlife Works", developerCountry:"USA", certification:"Verra", creditsIssued:"Undisclosed (one of largest REDD+ projects globally)", buyer:"Disney, BP, others", marketValue:"$100M+ lifetime", marketSub:"Verra registry data", communityShare:"Disputed", communitySub:"Indigenous communities report exclusion", keyFinding:"Consultation process documented as inadequate by Fern (2023)", desc:"Covering nearly 3 million hectares in the DRC. Credits sold to Disney, BP, and others.", outcome:"Communities report lack of meaningful participation in project design and benefit-sharing agreements.", source:"Fern (2023); Verra public registry" },
+  { country:"Mozambique", name:"Lurio Forest REDD+", lat:-13.8, lng:39.4, status:"active", area:"Undisclosed", developer:"Undisclosed", developerCountry:"—", certification:"Verra", creditsIssued:"Undisclosed", buyer:"Carbon market buyers (VCS)", marketValue:"Undisclosed", marketSub:"Verra-certified project", communityShare:"Contested", communitySub:"land conflicts documented, Fern (2023)", keyFinding:"Documented land conflicts between project administrators and communities whose agriculture overlaps the protected zone", desc:"REDD+ project in northern Mozambique with reported conflicts over agricultural overlap with the protected zone.", outcome:"Community members report restricted access to farmland and forest resources. Limited representation in project governance.", source:"Fern (2023)" },
+  { country:"Zambia", name:"Luangwa Valley Community Forest", lat:-13.5, lng:31.5, status:"active", area:"Multiple community zones", developer:"Undisclosed", developerCountry:"—", certification:"Verra", creditsIssued:"Undisclosed", buyer:"Various VCS-certified buyers", marketValue:"Undisclosed", marketSub:"Community Forest Management credits", communityShare:"2–5%", communitySub:"benefit sharing disputes documented", keyFinding:"Governance structures give external developers disproportionate control over revenue despite community-framing", desc:"Community Forest Management carbon projects certified under VCS standards in Zambia's Luangwa Valley.", outcome:"Benefit sharing ratios remain below what is needed to compensate for restrictions on agricultural and resource use.", source:"REDD Monitor; Fern researchers" },
+  { country:"Malawi", name:"Ntupanyama Hills REDD+", lat:-11.5, lng:34.0, status:"active", area:"Undisclosed", developer:"Undisclosed", developerCountry:"—", certification:"Verra", creditsIssued:"Undisclosed", buyer:"Various voluntary market buyers", marketValue:"Undisclosed", marketSub:"VCS-certified project", communityShare:"Unverified", communitySub:"consultation process questioned", keyFinding:"Project governance does not adequately represent the diversity of communities in the project area", desc:"REDD+ project in northern Malawi with questions about consultation and benefit distribution.", outcome:"Community access to forest resources restricted. Revenue sharing reach to most affected households, especially women and smallholder farmers, remains unverified.", source:"Fern (2023)" }
 ];
 
 const statusColors = { suspended:"#c03030", disputed:"#e07b1a", active:"#4a9e44" };
@@ -1445,15 +2080,21 @@ function showPanel(p) {
     <div class="panel-body">
       <p>${p.desc}</p>
       <div class="panel-metrics">
+        <div class="pm-cell"><div class="pm-label">Project Size</div><div class="pm-val">${p.area || 'Undisclosed'}</div></div>
+        <div class="pm-cell"><div class="pm-label">Developer</div><div class="pm-val" style="font-size:0.78rem;line-height:1.3;">${p.developer || 'Undisclosed'}${p.developerCountry && p.developerCountry !== '—' ? ' (' + p.developerCountry + ')' : ''}</div></div>
+        <div class="pm-cell"><div class="pm-label">Certification</div><div class="pm-val" style="font-size:0.78rem;line-height:1.3;">${p.certification || 'Undisclosed'}</div></div>
+        <div class="pm-cell"><div class="pm-label">Credits Issued</div><div class="pm-val" style="font-size:0.78rem;line-height:1.3;">${p.creditsIssued || 'Undisclosed'}</div></div>
         <div class="pm-cell"><div class="pm-label">Corporate Buyer</div><div class="pm-val" style="font-size:0.78rem;line-height:1.3;">${p.buyer}</div></div>
         <div class="pm-cell"><div class="pm-label">Market Value</div><div class="pm-val">${p.marketValue}</div><div class="pm-sub">${p.marketSub}</div></div>
         <div class="pm-cell"><div class="pm-label">Community Share</div><div class="pm-val">${p.communityShare}</div><div class="pm-sub">${p.communitySub}</div></div>
         <div class="pm-cell"><div class="pm-label">Status</div><span class="status-badge ${statusClass[p.status]}">${statusLabels[p.status]}</span></div>
       </div>
+      ${p.keyFinding ? `<div class="panel-key-finding"><div class="out-label">Key Finding</div><p>${p.keyFinding}</p></div>` : ''}
       <div class="panel-outcome">
         <div class="out-label">Community Outcome</div>
         <p>${p.outcome}</p>
       </div>
+      ${p.source ? `<p class="panel-source">Source: ${p.source}</p>` : ''}
     </div>`;
 }
 
@@ -1462,7 +2103,7 @@ projects.forEach(p => {
   m.bindTooltip(p.name, { direction:'top', offset:[0,-37] });
   m.on('click', () => {
     showPanel(p);
-    /* on mobile the panel stacks below the map — scroll it into view */
+    updateHectareCounter(p);
     if (window.innerWidth < 900) {
       setTimeout(() => {
         document.getElementById('map-panel').scrollIntoView({ behavior:'smooth', block:'nearest' });
@@ -1470,6 +2111,31 @@ projects.forEach(p => {
     }
   });
 });
+
+const projectHectareMap = {
+  'Kariba REDD+': 785000,
+  'Kajiado Carbon Project': 50000,
+  'Kilosa REDD+': 28000,
+  'New Forests Company': 120000,
+  'Blue Carbon LLC': 1000000,
+  'Makira Natural Park Carbon': 372000,
+  'Mai Ndombe REDD+': 2900000
+};
+const clickedProjectNames = new Set();
+let totalHectaresExplored = 0;
+
+function updateHectareCounter(p) {
+  if (clickedProjectNames.has(p.name)) return;
+  clickedProjectNames.add(p.name);
+  totalHectaresExplored += projectHectareMap[p.name] || 0;
+  const hcVal = document.getElementById('hcValue');
+  const hcWrap = document.getElementById('hectareCounter');
+  if (hcVal) {
+    const millions = totalHectaresExplored / 1e6;
+    hcVal.textContent = millions >= 1 ? millions.toFixed(2) : millions.toFixed(3).replace(/0+$/, '').replace(/\.$/, '') || '0';
+  }
+  if (hcWrap && clickedProjectNames.size >= projects.length) hcWrap.classList.add('all-clicked');
+}
 
 /* ── CHARTS ─────────────────────────────────────────────────────────── */
 const F = { family:"'Lora', Georgia, serif", size:11 };
@@ -1722,21 +2388,53 @@ new Chart(document.getElementById('chartLine'), {
   }
 
   // ── Railway lines ─────────────────────────────────────────────────
+  const RAIL_EXTRACTION = '#d4422a';
+  const RAIL_CONNECTIVE = '#4a90a4';
+
+  function railTooltip(r) {
+    const yrs = r.builtEnd ? r.builtStart + '–' + r.builtEnd : String(r.builtStart);
+    return `<strong>${r.name}</strong><br>Built: ${yrs}<br>Extract: ${r.extract}<br>Colonial power: ${r.power}`;
+  }
+
+  function createRailwayLayer(r) {
+    const color = r.type === 'connective' ? RAIL_CONNECTIVE : RAIL_EXTRACTION;
+    const shadow = L.polyline(r.coords, { color:'#0d0d0d', weight:8, opacity:0.45, lineCap:'round', lineJoin:'round' });
+    const glow   = L.polyline(r.coords, { color:'#fff',    weight:7, opacity:0.22, lineCap:'round', lineJoin:'round' });
+    const line   = L.polyline(r.coords, { color,           weight:5, opacity:0.96, lineCap:'round', lineJoin:'round' });
+    const group  = L.layerGroup([shadow, glow, line]);
+    group.bindTooltip(railTooltip(r), { direction:'top', sticky:true });
+    return group;
+  }
+
   const railways = [
-    { builtStart:1896, label:'Uganda Railway (1896–1901) | Mombasa → Kampala | Secured British East Africa',
-      color:'#c0392b', coords:[[-4.05,39.66],[-1.28,36.82],[0.32,32.58]] },
-    { builtStart:1890, label:"Cape–Bulawayo Line (1890s) | Cape Town → Zimbabwe | Cecil Rhodes's Cape-to-Cairo project",
-      color:'#c0392b', coords:[[-33.9,18.4],[-28,24],[-22,28],[-18.5,27]] },
-    { builtStart:1905, label:'Central Line (1905–1914) | Dar es Salaam → Lake Tanganyika | German extraction route',
-      color:'#7f8c8d', coords:[[-6.8,39.3],[-6.8,35],[-6.5,30]] },
-    { builtStart:1902, label:'Benguela Railway (1902–1929) | Lobito → DRC border | Copper and mineral extraction',
-      color:'#6c3483', coords:[[-12.4,13.5],[-12,18],[-11,23]] },
-    { builtStart:1885, label:'Dakar–Niger Railway (1885–1923) | Dakar → Bamako | French West Africa groundnut export route',
-      color:'#2471a3', coords:[[14.7,-17.4],[12.6,-8.0]] },
-    { builtStart:1895, label:'Delagoa Bay Line (1895) | Maputo → Johannesburg | Built for Witwatersrand gold',
-      color:'#6c3483', coords:[[-25.97,32.59],[-26.2,28.0]] },
-    { builtStart:1921, label:'Congo–Ocean Railway (1921–34) | Brazzaville → Pointe-Noire | ~17,000 deaths in construction',
-      color:'#d35400', coords:[[-4.3,15.3],[-4.6,11.8]] },
+    { name:'Matadi–Leopoldville Railway', builtStart:1898, extract:'Rubber, ivory, and minerals from Congo interior to Atlantic port', power:'Belgian', type:'extraction',
+      coords:[[-5.82,13.45],[-5.1,14.2],[-4.33,15.31]] },
+    { name:'Katanga Copper Belt → Beira Port', builtStart:1929, builtEnd:1930, extract:'Copper and cobalt from Katanga to Indian Ocean export', power:'Belgian/British (via Rhodesias)', type:'extraction',
+      coords:[[-11.66,27.48],[-15.5,28.5],[-19.0,32.5],[-19.83,34.85]] },
+    { name:'Uganda Railway', builtStart:1896, builtEnd:1901, extract:'Secured British East Africa; ivory, later tea and coffee exports', power:'British', type:'extraction',
+      coords:[[-4.05,39.66],[-2.5,38.0],[-1.29,36.82],[-0.09,34.77]] },
+    { name:'Central Line', builtStart:1905, builtEnd:1914, extract:'German East African agricultural and mineral extraction to coast', power:'German (built); British after 1918', type:'extraction',
+      coords:[[-6.79,39.28],[-6.16,35.75],[-5.02,32.80],[-4.88,29.63]] },
+    { name:'Beira–Bulawayo Railway', builtStart:1899, builtEnd:1902, extract:'Rhodesian minerals and agricultural exports via Beira', power:'British', type:'extraction',
+      coords:[[-19.83,34.85],[-20.15,32.5],[-20.15,28.59]] },
+    { name:'Dakar–Niger Railway', builtStart:1881, builtEnd:1923, extract:'Groundnuts and cotton from Sénégalese interior to coast', power:'French', type:'extraction',
+      coords:[[14.72,-17.47],[13.8,-13.7],[12.65,-8.0]] },
+    { name:'Lagos–Kano Railway', builtStart:1898, builtEnd:1911, extract:'Groundnuts, cotton, and tin from northern Nigeria to Lagos port', power:'British', type:'extraction',
+      coords:[[6.45,3.39],[7.38,3.95],[9.08,7.50],[10.52,7.44],[12.00,8.59]] },
+    { name:'Cape Town–Kimberley–Johannesburg', builtStart:1886, builtEnd:1895, extract:'Diamonds (Kimberley) and gold (Witwatersrand) to Cape export route', power:'British', type:'extraction',
+      coords:[[-33.92,18.42],[-31.0,22.0],[-28.73,24.75],[-26.20,28.05]] },
+    { name:'Lourenço Marques–Transvaal Railway', builtStart:1895, extract:'Gold from Witwatersrand mines via Portuguese port', power:'Portuguese/British', type:'extraction',
+      coords:[[-25.97,32.59],[-25.43,31.93],[-25.80,29.0],[-26.20,28.05]] },
+    { name:'Benguela Railway', builtStart:1902, builtEnd:1929, extract:'Copper and minerals from interior to Lobito port', power:'Portuguese', type:'extraction',
+      coords:[[-12.37,13.54],[-12.0,17.5],[-11.0,22.0],[-10.5,24.0]] },
+    { name:'Congo–Ocean Railway', builtStart:1921, builtEnd:1934, extract:'Timber and minerals from Brazzaville to Atlantic (forced-labor construction)', power:'French', type:'extraction',
+      coords:[[-4.27,15.28],[-4.50,13.0],[-4.78,11.86]] },
+    { name:'Bulawayo–Salisbury (Harare) Line', builtStart:1899, extract:'Internal Rhodesia link between mining center and administrative capital', power:'British', type:'connective',
+      coords:[[-20.15,28.59],[-19.5,29.5],[-18.97,30.25],[-17.83,31.05]] },
+    { name:'Nairobi–Kampala Branch', builtStart:1931, extract:'Capital-to-capital extension of the Uganda Railway inland', power:'British', type:'connective',
+      coords:[[-1.29,36.82],[0.05,33.0],[0.32,32.58]] },
+    { name:'Johannesburg–Durban Main Line', builtStart:1892, extract:'Connects Witwatersrand industrial belt to Natal port and coastal cities', power:'British', type:'connective',
+      coords:[[-26.20,28.05],[-27.0,29.5],[-28.5,30.5],[-29.85,31.02]] },
   ];
 
   // ── Carbon projects ───────────────────────────────────────────────
@@ -1777,17 +2475,30 @@ new Chart(document.getElementById('chartLine'), {
     }).addTo(coastalLG);
   });
 
-  // Railways are time-gated; we create the lines once and add/remove them by year.
-  railways.forEach(r => {
-    r.line = L.polyline(r.coords, { color:r.color, weight:2.5, opacity:0.85, dashArray:'7,4' })
-      .bindTooltip(r.label, { direction:'top', sticky:true });
-  });
+  // Railways are time-gated; create once and add/remove by construction year.
+  railways.forEach(r => { r.layer = createRailwayLayer(r); });
 
   function setInfrastructureForYear(yearShown) {
     infraLG.clearLayers();
     railways.forEach(r => {
-      if ((r.builtStart || 0) <= yearShown) infraLG.addLayer(r.line);
+      if ((r.builtStart || 0) <= yearShown) infraLG.addLayer(r.layer);
     });
+  }
+
+  function updateCarbonToggle(step) {
+    const btn = document.getElementById('slbCarbon');
+    if (step.snap < 2000) {
+      btn.disabled = true;
+      btn.classList.add('slb-disabled');
+      btn.classList.remove('slb-active');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.title = 'No carbon projects yet (voluntary carbon market begins ~2000)';
+      activeSlayers.carbon = false;
+    } else {
+      btn.disabled = false;
+      btn.classList.remove('slb-disabled');
+      btn.title = 'Carbon offset projects, 2000–2020';
+    }
   }
 
   forestZones.forEach(z => {
@@ -1802,6 +2513,91 @@ new Chart(document.getElementById('chartLine'), {
         { direction:'top' }
       ).addTo(carbonLG);
   });
+
+  // ── Country law panel (Then vs. Now) ────────────────────────────────
+  const countryLawData = {
+    'Kenya': {
+      colonialTitle:'Crown Lands Ordinance 1915', colonialYear:'1915',
+      colonialDesc:'Classified all untitled land as state property, enabling allocation of fertile land to European settlers.',
+      modernTitle:'Forest Act 2016', modernYear:'2016',
+      modernDesc:'Improved but did not fully resolve customary rights recognition.',
+      bridgeLabel:'directly derived'
+    },
+    'Tanzania': {
+      colonialTitle:'German East Africa Land Ordinance 1895', colonialYear:'1895',
+      colonialDesc:'Established colonial framework for land classification and state control over "unoccupied" territory.',
+      modernTitle:'Land Acts 1999', modernYear:'1999',
+      modernDesc:'Preserved colonial distinction between native reserves and state land.',
+      bridgeLabel:'directly derived'
+    },
+    'Liberia': {
+      colonialTitle:'Public Lands Law 1956', colonialYear:'1956',
+      colonialDesc:'Derived from earlier colonial framework; never substantially reformed. State retains control over public forest.',
+      modernTitle:'Public Lands Law (current)', modernYear:'Present',
+      modernDesc:'Still in effect, unchanged. Communities lack formal standing over public lands.',
+      bridgeLabel:'still in force'
+    },
+    'Uganda': {
+      colonialTitle:'Crown Lands Ordinance 1903', colonialYear:'1903',
+      colonialDesc:'Vested untitled and communal lands in the colonial state.',
+      modernTitle:'Land Act 1998', modernYear:'1998',
+      modernDesc:'Retained state ownership of "public" land available for external allocation.',
+      bridgeLabel:'directly derived'
+    },
+    'DR Congo': {
+      colonialTitle:'Belgian Congo land decree 1885', colonialYear:'1885',
+      colonialDesc:'All land vested in the colonial state; communities held use rights only.',
+      modernTitle:'Land Law 1973', modernYear:'1973',
+      modernDesc:'State retains radical title over all land; customary tenure remains legally subordinate.',
+      bridgeLabel:'directly derived'
+    },
+    'Zimbabwe': {
+      colonialTitle:'Land Apportionment Act 1930', colonialYear:'1930',
+      colonialDesc:'Formalized racial land segregation; African communities confined to native reserves.',
+      modernTitle:'Rural Land Act 2000s', modernYear:'2000s',
+      modernDesc:'Customary tenure still lacks formal recognition in national registry.',
+      bridgeLabel:'directly derived'
+    },
+    'Madagascar': {
+      colonialTitle:'French colonial land decree 1896', colonialYear:'1896',
+      colonialDesc:'Converted customary land to state domain under French administration.',
+      modernTitle:'Land tenure reform 2005', modernYear:'2005',
+      modernDesc:'Partial reform; customary land still largely unregistered.',
+      bridgeLabel:'directly derived'
+    }
+  };
+
+  function showScrambleLawPanel(countryName) {
+    const panel = document.getElementById('scrambleLawPanel');
+    if (!panel) return;
+    const d = countryLawData[countryName];
+    if (!d) {
+      panel.innerHTML = '<p class="scramble-law-panel empty-msg" style="margin:0;">Colonial land laws in force here have not been individually documented in this project\'s sources. See bibliography.</p>';
+    } else {
+      panel.innerHTML = `
+        <div class="law-panel-country">${countryName}: colonial law → today</div>
+        <div class="law-split">
+          <div class="law-col">
+            <div class="law-col-head">Colonial era</div>
+            <div class="law-col-title">${d.colonialTitle}</div>
+            <div class="law-col-year">${d.colonialYear}</div>
+            <p class="law-col-desc">${d.colonialDesc}</p>
+          </div>
+          <div class="law-bridge">
+            <span class="law-bridge-arrow">→</span>
+            <span class="law-bridge-label">${d.bridgeLabel}</span>
+          </div>
+          <div class="law-col">
+            <div class="law-col-head">Current law</div>
+            <div class="law-col-title">${d.modernTitle}</div>
+            <div class="law-col-year">${d.modernYear}</div>
+            <p class="law-col-desc">${d.modernDesc}</p>
+          </div>
+        </div>`;
+    }
+    panel.classList.add('open');
+    panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
 
   // ── Dynamic GeoJSON country layer ────────────────────────────────
   let geoLayer    = null;
@@ -1857,6 +2653,10 @@ new Chart(document.getElementById('chartLine'), {
         layer.bindTooltip(tip, { direction:'top', sticky:true });
         layer.on('mouseover', function() { this.setStyle({ weight:1.5, color:'rgba(255,255,255,0.4)' }); });
         layer.on('mouseout',  function() { geoLayer && geoLayer.resetStyle(this); });
+        layer.on('click', function(e) {
+          L.DomEvent.stopPropagation(e);
+          showScrambleLawPanel(meta.name);
+        });
       }
     }).addTo(scrambleMap);
   }
@@ -1898,7 +2698,8 @@ new Chart(document.getElementById('chartLine'), {
       }
     }
     if (activeSlayers.infrastructure) {
-      html += `<div class="sl-entry"><span class="sl-line" style="background:#c0392b"></span>Extraction railway (mine→port, 90%)</div>`;
+      html += `<div class="sl-entry"><span class="sl-line" style="background:${RAIL_EXTRACTION};height:4px"></span>Extraction railway (mine→port, ~90%)</div>`;
+      html += `<div class="sl-entry"><span class="sl-line" style="background:${RAIL_CONNECTIVE};height:4px"></span>Connective railway (internal, ~10%)</div>`;
     }
     if (activeSlayers.forest) {
       html += `<div class="sl-entry"><span class="sl-swatch" style="background:#2d5a27"></span>Major forest zone</div>`;
@@ -1921,9 +2722,7 @@ new Chart(document.getElementById('chartLine'), {
     currentYearShown = snapYear;
     const step = SNAP_BY_YEAR[snapYear];
 
-    // Year label makes the snap explicit (no fake precision).
-    const yearLabel = (snapYear === yearSelected) ? String(yearSelected) : `${yearSelected} (shown as ${snapYear})`;
-    document.getElementById('scrambleYear').textContent = yearLabel;
+    document.getElementById('scrambleYear').textContent = String(snapYear);
     document.getElementById('scrambleStat').textContent = step.stat;
 
     const slider = document.getElementById('timeSlider');
@@ -1937,6 +2736,7 @@ new Chart(document.getElementById('chartLine'), {
       if (el) el.classList.toggle('tick-active', y === snapYear);
     });
 
+    updateCarbonToggle(step);
     setMapLayers(step);
   }
 
@@ -1947,6 +2747,7 @@ new Chart(document.getElementById('chartLine'), {
 
   document.querySelectorAll('.scramble-layer-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (btn.disabled) return;
       const layer = btn.dataset.slayer;
       if (!layer) return;
       activeSlayers[layer] = !activeSlayers[layer];
